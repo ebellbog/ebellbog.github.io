@@ -1,0 +1,65 @@
+body {
+  background-color: #d5bef9;
+}
+
+#portrait {
+  margin: 15px 0 5px 0;
+}
+
+#portrait img {
+  height: 175px;
+  border-radius: 50px;
+}
+
+#footer {
+  flex-grow: 1;
+  position: relative;
+}
+
+#social {
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  width: 100%;
+  color: rgba(0,0,0,.4);
+}
+
+a {
+  color: inherit;
+}
+
+h1 {
+  font-family: 'Amatic SC', cursive;
+  font-size: 4.5em;
+  color: #fb9171;
+  margin: 0;
+}
+
+h3 {
+  font-family: 'Indie Flower', cursive;
+  font-weight: lighter;
+  font-size: 1.8em;
+  color: lightgray;
+  margin: 0;
+}
+
+#heart {
+  color: rgba(200,0,0,.4);
+}
+
+#content {
+  background-color: white;
+  border-radius: 50px;
+  border: 6px dotted orange;
+  width: 75%;
+  height: 66vh;
+  max-height: 450px;
+  margin-top: 17vh;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
