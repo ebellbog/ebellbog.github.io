@@ -3,7 +3,7 @@ body {
 }
 
 #portrait {
-  margin: 15px 0 5px 0;
+  margin-bottom: 20px;
 }
 
 #portrait img {
@@ -12,16 +12,10 @@ body {
 }
 
 #footer {
-  flex-grow: 1;
-  position: relative;
-}
-
-#social {
-  position: absolute;
-  bottom: 15px;
-  left: 0;
-  width: 100%;
-  color: rgba(0,0,0,.4);
+  margin-top: 20px;
+  color: rgba(50,50,150,.4);
+  display: flex;
+  justify-content: center;
 }
 
 a {
@@ -51,10 +45,9 @@ h3 {
   background-color: white;
   border-radius: 50px;
   border: 6px dotted orange;
-  width: 75%;
-  height: 66vh;
-  max-height: 450px;
-  margin-top: 17vh;
+  width: 600px;
+  height: 425px;
+  margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
