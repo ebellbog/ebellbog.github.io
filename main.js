@@ -17,6 +17,8 @@ const hexHeight = yDelta+outerBorder
 const maxPixels = 800
 const minPixels = 600
 
+const animationSpeed = 0.05
+
 // setup
 
 $(document).ready(()=>{
@@ -36,7 +38,7 @@ $(document).ready(()=>{
 })
 
 function update() {
-  innerBorder = 3.5+1*Math.sin(Date.now()/400)
+  innerBorder = 4.5+.8*Math.sin(Date.now()/400)
   redraw()
   animationId = requestAnimationFrame(update)
 }
@@ -68,19 +70,18 @@ function generateGrid() {
     let row = []
 
     for (let j = 0; j < width-i%2; j++) {
-      let newHex = {
-        color: '',
-        hole: false,
-        animating: false,
-        coords: [i, j],
-        destination: [],
-        progress: 0
-      }
 
+      let newHex
       if (Math.random() > 1-holes) {
-        newHex.hole = true
+        newHex = generateHole()
       } else {
-        newHex.color = randColor()
+        newHex = {
+          color: randColor(),
+          hole: false,
+          animating: false,
+          destination: [],
+          progress: 0
+        }
       }
 
       row.push(newHex)
@@ -101,33 +102,55 @@ function redraw () {
   const offsetX = (cWidth-hexWidth*(width-1))/2
   const offsetY = (cHeight-hexHeight*(height-1))/2
 
-  grid.forEach((row)=>{
-    row.forEach((hex)=>{
+  grid.forEach((row, i)=>{
+    row.forEach((hex, j)=>{
       if (hex.hole) {
         return
       }
 
-      drawHex(hex.coords[0], hex.coords[1],
-              offsetX, offsetY,
-              hex.color)
+      let center = centerForCoords(i,j)
+      let scale = 1
+      if (hex.animating) {
+        if (hex.progress < 1) {
+          hex.progress += animationSpeed
+
+          const destCoord = centerForCoords(...hex.destination)
+          const deltaX = destCoord[0]-center[0]
+          const deltaY = destCoord[1]-center[1]
+
+          center = [center[0]+deltaX*hex.progress,
+                    center[1]+deltaY*hex.progress]
+          scale = Math.abs(hex.progress-.5)+.5
+        }
+        else {
+          hex.animating = false
+          hex.progress = 0
+
+          grid[hex.destination[0]][hex.destination[1]] = hex
+          grid[i][j] = generateHole()
+
+          center = centerForCoords(...hex.destination)
+        }
+      }
+
+      drawHex(center[0]+offsetX, center[1]+offsetY, hex.color, scale)
     })
   })
 }
 
-function drawHex(row, col, offsetX, offsetY, color) {
+function drawHex(x, y, color, scale) {
+  if (!scale) scale = 1
   const rotation = Math.PI/6
-  const centerX = hexWidth*(col+.5*(row%2))+offsetX
-  const centerY = hexHeight*row+offsetY
 
-  drawPolygon(ctx, 
-              centerX, centerY,
-              6, hexRadius,
+  drawPolygon(ctx,
+              x, y,
+              6, hexRadius*scale,
               {style:'fill', color:color, rotation:rotation})
 
   if (innerBorder > 0) {
     drawPolygon(ctx, 
-                centerX, centerY,
-                6, hexRadius-innerBorder/1.8,
+                x, y,
+                6, (hexRadius-innerBorder/1.8)*scale,
                 {style:'stroke', weight:innerBorder,
                  color:'rgba(0,0,0,.2)', rotation:rotation})
   }
@@ -137,4 +160,21 @@ function drawHex(row, col, offsetX, offsetY, color) {
 
 function randColor() {
   return hexColors[Math.floor(Math.random()*hexColors.length)]
+}
+
+function centerForCoords(row, col) {
+  const centerX = hexWidth*(col+.5*(row%2))
+  const centerY = hexHeight*row
+
+  return [centerX, centerY]
+}
+
+function generateHole() {
+  return {
+    color: '',
+    hole: true,
+    animating: false,
+    destination: [],
+    progress: 0
+  }
 }
