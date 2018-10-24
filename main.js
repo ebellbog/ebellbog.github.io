@@ -1,17 +1,23 @@
+// config
+
 const hexColors = ['tomato', '#ee5', 'mediumaquamarine', 'mediumslateblue', 'magenta']
+
+const holes = .05
 
 const hexRadius = 25
 const xDelta = hexRadius*Math.cos(Math.PI/6)
 const yDelta = hexRadius*(1+Math.sin(Math.PI/6))
 
 const outerBorder = 4
-const innerBorder = 3
+let innerBorder = 3
 
 const hexWidth = xDelta*2+outerBorder
 const hexHeight = yDelta+outerBorder
 
 const maxPixels = 800
 const minPixels = 600
+
+// setup
 
 $(document).ready(()=>{
   $content = $('#content')
@@ -20,11 +26,20 @@ $(document).ready(()=>{
 
   $(window).resize(()=>{
     resizeCanvas()
-    redrawGrid()})
+    generateGrid()
+  })
 
   resizeCanvas()
-  redrawGrid()
+  generateGrid()
+
+  animationId = requestAnimationFrame(update)
 })
+
+function update() {
+  innerBorder = 3.5+1*Math.sin(Date.now()/400)
+  redraw()
+  animationId = requestAnimationFrame(update)
+}
 
 function resizeCanvas() {
   cWidth = $content.width()
@@ -44,18 +59,59 @@ function resizeCanvas() {
   $canvas.attr({height:cHeight, width:cWidth})
 }
 
-function redrawGrid() {
+function generateGrid() {
   let width = Math.floor(cWidth/hexWidth)
   let height = Math.floor(cHeight/(hexHeight+outerBorder))
+
+  grid = []
+  for (let i = 0; i < height; i++) {
+    let row = []
+
+    for (let j = 0; j < width-i%2; j++) {
+      let newHex = {
+        color: '',
+        hole: false,
+        animating: false,
+        coords: [i, j],
+        destination: [],
+        progress: 0
+      }
+
+      if (Math.random() > 1-holes) {
+        newHex.hole = true
+      } else {
+        newHex.color = randColor()
+      }
+
+      row.push(newHex)
+    }
+
+    grid.push(row)
+  }
+}
+
+// draw methods
+
+function redraw () {
+  ctx.clearRect(0, 0, cWidth, cHeight)
+
+  const width = grid[0].length
+  const height = grid.length
 
   const offsetX = (cWidth-hexWidth*(width-1))/2
   const offsetY = (cHeight-hexHeight*(height-1))/2
 
-  for (let j = 0; j < height; j++) {
-    for (let i = 0; i < width-j%2; i++) {
-      drawHex(j, i, offsetX, offsetY, randColor());
-    }
-  }
+  grid.forEach((row)=>{
+    row.forEach((hex)=>{
+      if (hex.hole) {
+        return
+      }
+
+      drawHex(hex.coords[0], hex.coords[1],
+              offsetX, offsetY,
+              hex.color)
+    })
+  })
 }
 
 function drawHex(row, col, offsetX, offsetY, color) {
@@ -73,9 +129,11 @@ function drawHex(row, col, offsetX, offsetY, color) {
                 centerX, centerY,
                 6, hexRadius-innerBorder/1.8,
                 {style:'stroke', weight:innerBorder,
-                 color:'rgba(0,0,0,.15)', rotation:rotation})
+                 color:'rgba(0,0,0,.2)', rotation:rotation})
   }
 }
+
+// helper methods
 
 function randColor() {
   return hexColors[Math.floor(Math.random()*hexColors.length)]
