@@ -1,5 +1,5 @@
 body {
-  background-color: #d5bef9;
+  background-color: #444;
 }
 
 #portrait {
@@ -12,7 +12,7 @@ body {
 }
 
 a {
-  color: inherit;
+  color: #eee;
 }
 
 h1 {
@@ -37,8 +37,8 @@ h3 {
 #content {
   background-color: white;
   width: calc(100%-120px);
-  height: 70vh;
-  margin: 60px 60px 30px 60px;
+  height: 80vh;
+  margin: 40px 60px 5px 60px;
 }
 
 #content canvas {

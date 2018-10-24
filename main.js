@@ -4,61 +4,73 @@ const hexRadius = 25
 const xDelta = hexRadius*Math.cos(Math.PI/6)
 const yDelta = hexRadius*(1+Math.sin(Math.PI/6))
 
-const outerBorder = 2
+const outerBorder = 4
 const innerBorder = 3
 
-const maxPixels = 910
+const hexWidth = xDelta*2+outerBorder
+const hexHeight = yDelta+outerBorder
+
+const maxPixels = 800
+const minPixels = 600
 
 $(document).ready(()=>{
   $content = $('#content')
   $canvas = $('canvas')
   ctx = $canvas[0].getContext('2d')
 
-  $(window).resize(layoutGrid)
-  layoutGrid()
+  $(window).resize(()=>{
+    resizeCanvas()
+    redrawGrid()})
+
+  resizeCanvas()
+  redrawGrid()
 })
 
-function layoutGrid() {
+function resizeCanvas() {
   cWidth = $content.width()
   cHeight = $content.height()
   const aspect = cWidth/cHeight
 
   if (aspect < 1) {
-    cWidth = maxPixels*aspect
-    cHeight = maxPixels
+    let pixels = Math.max(minPixels, Math.min(cHeight, maxPixels))
+    cWidth = pixels*aspect
+    cHeight = pixels
   } else {
-    cHeight = maxPixels/aspect
-    cWidth = maxPixels
+    let pixels = Math.max(minPixels, Math.min(cWidth, maxPixels))
+    cHeight = pixels/aspect
+    cWidth = pixels
   }
-  $canvas.attr({height:cHeight, width:cWidth})
 
-  drawGrid()
+  $canvas.attr({height:cHeight, width:cWidth})
 }
 
-function drawGrid() {
-  const width = Math.ceil(cWidth/(2*(xDelta+outerBorder)))
-  const height = Math.floor(cHeight/(yDelta+2*outerBorder))
+function redrawGrid() {
+  let width = Math.floor(cWidth/hexWidth)
+  let height = Math.floor(cHeight/(hexHeight+outerBorder))
+
+  const offsetX = (cWidth-hexWidth*(width-1))/2
+  const offsetY = (cHeight-hexHeight*(height-1))/2
 
   for (let j = 0; j < height; j++) {
     for (let i = 0; i < width-j%2; i++) {
-      drawHex(j, i, randColor());
+      drawHex(j, i, offsetX, offsetY, randColor());
     }
   }
 }
 
-function drawHex(row, col, color) {
+function drawHex(row, col, offsetX, offsetY, color) {
   const rotation = Math.PI/6
+  const centerX = hexWidth*(col+.5*(row%2))+offsetX
+  const centerY = hexHeight*row+offsetY
 
   drawPolygon(ctx, 
-              (xDelta+outerBorder/2)*(2*col+1+row%2)+outerBorder/2,
-              (yDelta+outerBorder)*row+hexRadius+outerBorder,
+              centerX, centerY,
               6, hexRadius,
               {style:'fill', color:color, rotation:rotation})
 
   if (innerBorder > 0) {
     drawPolygon(ctx, 
-                (xDelta+outerBorder/2)*(2*col+1+row%2)+outerBorder/2,
-                (yDelta+outerBorder)*row+hexRadius+outerBorder,
+                centerX, centerY,
                 6, hexRadius-innerBorder/1.8,
                 {style:'stroke', weight:innerBorder,
                  color:'rgba(0,0,0,.15)', rotation:rotation})
