@@ -35,7 +35,6 @@ h3 {
 }
 
 #content {
-  background-color: white;
   width: calc(100%-120px);
   height: 80vh;
   margin: 40px 60px 10px 60px;

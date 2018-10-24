@@ -35,7 +35,8 @@ $(document).ready(()=>{
   resizeCanvas()
   generateGrid()
 
-  fillingHoles = false
+  doneAnimating = true
+  waiting = false
   animationId = requestAnimationFrame(update)
 
   $(document).keydown(function(e) {
@@ -44,17 +45,6 @@ $(document).ready(()=>{
     }
   })
 })
-
-function update() {
-  if (!fillingHoles) {
-    fillingHoles = true
-    setTimeout(fillHoles, animationDelay)
-  }
-
-  innerBorder = 4.5+.8*Math.sin(Date.now()/350)
-  redraw()
-  animationId = requestAnimationFrame(update)
-}
 
 function resizeCanvas() {
   cWidth = $content.width()
@@ -92,6 +82,7 @@ function generateGrid() {
           color: randColor(),
           hole: false,
           animating: false,
+          lastAnimated: 0,
           destination: [],
           progress: 0
         }
@@ -115,6 +106,7 @@ function redraw () {
   const offsetX = (cWidth-hexWidth*(width-1))/2
   const offsetY = (cHeight-hexHeight*(height-1))/2
 
+  let animating = false
   grid.forEach((row, i)=>{
     row.forEach((hex, j)=>{
       if (hex.hole) {
@@ -124,6 +116,7 @@ function redraw () {
       let center = centerForCoords(i,j)
       let scale = 1
       if (hex.animating) {
+        animating = true
         if (hex.progress < 1) {
           hex.progress += animationSpeed
 
@@ -136,8 +129,8 @@ function redraw () {
           scale = .75*Math.abs(hex.progress-.5)+.625
         }
         else {
-          fillingHoles = false
           hex.animating = false
+          hex.lastAnimated = Date.now()
           hex.progress = 0
 
           grid[hex.destination[0]][hex.destination[1]] = hex
@@ -150,6 +143,8 @@ function redraw () {
       drawHex(center[0]+offsetX, center[1]+offsetY, hex.color, scale)
     })
   })
+
+  doneAnimating = !animating
 }
 
 function drawHex(x, y, color, scale) {
@@ -172,13 +167,28 @@ function drawHex(x, y, color, scale) {
 
 // actions
 
+function update() {
+  if (doneAnimating && !waiting) {
+    waiting = true
+    setTimeout(fillHoles, animationDelay)
+  }
+
+  innerBorder = 4.5+.8*Math.sin(Date.now()/350)
+  redraw()
+  animationId = requestAnimationFrame(update)
+}
+
 function fillHoles() {
+  waiting = false
+  doneAnimating = false
   grid.forEach((row,i)=>{
     row.forEach((hex,j)=>{
       if (hex.hole) {
         const neighbor = randNeighbor(i, j)
-        neighbor.destination = [i,j]
-        neighbor.animating = true
+        if (neighbor) {
+          neighbor.destination = [i,j]
+          neighbor.animating = true
+        }
       }
     })
   })
@@ -217,7 +227,7 @@ function randNeighbor(row, col) {
   while (neighbors.length > 0) {
     const candidate = randItem(neighbors, true)
     const hex = hexForCoords(candidate)
-    if (!hex.animating) {
+    if (!(hex.animating || Date.now()-hex.lastAnimated < 1000)) {
       return hex
     }
   }
