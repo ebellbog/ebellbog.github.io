@@ -2,7 +2,7 @@
 
 const hexColors = ['tomato', '#ee5', 'mediumaquamarine', 'mediumslateblue', 'magenta']
 
-const holes = .05
+const holes = .1
 
 const hexRadius = 25
 const xDelta = hexRadius*Math.cos(Math.PI/6)
@@ -14,10 +14,11 @@ let innerBorder = 3
 const hexWidth = xDelta*2+outerBorder
 const hexHeight = yDelta+outerBorder
 
-const maxPixels = 800
+const maxPixels = 900
 const minPixels = 600
 
-const animationSpeed = 0.05
+const animationSpeed = 0.04
+const animationDelay = 150
 
 // setup
 
@@ -34,11 +35,23 @@ $(document).ready(()=>{
   resizeCanvas()
   generateGrid()
 
+  fillingHoles = false
   animationId = requestAnimationFrame(update)
+
+  $(document).keydown(function(e) {
+    if (e.which === 32) {
+      //fillHoles()
+    }
+  })
 })
 
 function update() {
-  innerBorder = 4.5+.8*Math.sin(Date.now()/400)
+  if (!fillingHoles) {
+    fillingHoles = true
+    setTimeout(fillHoles, animationDelay)
+  }
+
+  innerBorder = 4.5+.8*Math.sin(Date.now()/350)
   redraw()
   animationId = requestAnimationFrame(update)
 }
@@ -120,9 +133,10 @@ function redraw () {
 
           center = [center[0]+deltaX*hex.progress,
                     center[1]+deltaY*hex.progress]
-          scale = Math.abs(hex.progress-.5)+.5
+          scale = .75*Math.abs(hex.progress-.5)+.625
         }
         else {
+          fillingHoles = false
           hex.animating = false
           hex.progress = 0
 
@@ -156,10 +170,33 @@ function drawHex(x, y, color, scale) {
   }
 }
 
+// actions
+
+function fillHoles() {
+  grid.forEach((row,i)=>{
+    row.forEach((hex,j)=>{
+      if (hex.hole) {
+        const neighbor = randNeighbor(i, j)
+        neighbor.destination = [i,j]
+        neighbor.animating = true
+      }
+    })
+  })
+}
+
+
 // helper methods
 
+function randItem(list, remove) {
+  const index = Math.floor(Math.random()*list.length)
+  const item = list[index]
+
+  if (remove) list.splice(index,1)
+  return item
+}
+
 function randColor() {
-  return hexColors[Math.floor(Math.random()*hexColors.length)]
+  return randItem(hexColors)
 }
 
 function centerForCoords(row, col) {
@@ -171,10 +208,65 @@ function centerForCoords(row, col) {
 
 function generateHole() {
   return {
-    color: '',
-    hole: true,
-    animating: false,
-    destination: [],
-    progress: 0
+    hole: true
   }
+}
+
+function randNeighbor(row, col) {
+  const neighbors = getNeighbors(row, col)
+  while (neighbors.length > 0) {
+    const candidate = randItem(neighbors, true)
+    const hex = hexForCoords(candidate)
+    if (!hex.animating) {
+      return hex
+    }
+  }
+
+  return false
+}
+
+function hexForCoords(coords) {
+  return grid[coords[0]][coords[1]]
+}
+
+function getNeighbors(row, col) {
+  const neighbors = []
+  if (col > 0) {
+    neighbors.push([row, col-1])
+  }
+  if (col < grid[row].length-1) {
+    neighbors.push([row, col+1])
+  }
+
+  if (row > 0) {
+    if (row % 2) { // short rows
+      neighbors.push([row-1, col])
+      neighbors.push([row-1, col+1])
+    } else { // long rows
+      if (col < grid[row].length-1) {
+        neighbors.push([row-1, col])
+      }
+      if (col > 0) {
+        neighbors.push([row-1, col-1])
+      }
+    }
+  }
+
+  if (row < grid.length-1) {
+    if (row % 2) { // short rows
+      neighbors.push([row+1, col])
+      neighbors.push([row+1, col+1])
+    } else { // long rows
+      if (col < grid[row].length-1) {
+        neighbors.push([row+1, col])
+      }
+      if (col > 0) {
+        neighbors.push([row+1, col-1])
+      }
+    }
+  }
+
+  return neighbors.filter((n)=>{
+    if (!hexForCoords(n).hole) return n
+  })
 }

@@ -38,7 +38,7 @@ h3 {
   background-color: white;
   width: calc(100%-120px);
   height: 80vh;
-  margin: 40px 60px 5px 60px;
+  margin: 40px 60px 10px 60px;
 }
 
 #content canvas {
