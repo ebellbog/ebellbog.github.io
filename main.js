@@ -2,7 +2,7 @@
 
 const hexColors = ['tomato', '#ee5', 'mediumaquamarine', 'mediumslateblue', 'magenta']
 
-const holes = .1
+const holes = .06
 
 const hexRadius = 25
 const xDelta = hexRadius*Math.cos(Math.PI/6)
@@ -17,8 +17,24 @@ const hexHeight = yDelta+outerBorder
 const maxPixels = 900
 const minPixels = 600
 
+const statuses = {
+  STOPPED: 0,
+  STARTING: 1,
+  RUNNING: 2,
+  WAITING: 3
+}
+
+const modes = {
+  BLOCK: 0,
+  STAGGERED: 1
+}
+
+const animationMode = modes.STAGGERED
+
 const animationSpeed = 0.04
-const animationDelay = 150
+const animationDelay = 350
+const repetitionDelay = 600
+const staggerInterval = 260
 
 // setup
 
@@ -30,18 +46,19 @@ $(document).ready(()=>{
   $(window).resize(()=>{
     resizeCanvas()
     generateGrid()
+    if (animationMode == modes.STAGGERED)
+      animationStatus = statuses.STOPPED
   })
 
   resizeCanvas()
   generateGrid()
+  animationStatus = statuses.STOPPED
 
-  doneAnimating = true
-  waiting = false
   animationId = requestAnimationFrame(update)
 
   $(document).keydown(function(e) {
     if (e.which === 32) {
-      //fillHoles()
+      // test function
     }
   })
 })
@@ -109,9 +126,7 @@ function redraw () {
   let animating = false
   grid.forEach((row, i)=>{
     row.forEach((hex, j)=>{
-      if (hex.hole) {
-        return
-      }
+      if (hex.hole) return
 
       let center = centerForCoords(i,j)
       let scale = 1
@@ -144,7 +159,11 @@ function redraw () {
     })
   })
 
-  doneAnimating = !animating
+  if (animationMode == modes.BLOCK &&
+      animationStatus == statuses.RUNNING &&
+      !animating) {
+    animationStatus = statuses.WAITING
+  }
 }
 
 function drawHex(x, y, color, scale) {
@@ -168,9 +187,24 @@ function drawHex(x, y, color, scale) {
 // actions
 
 function update() {
-  if (doneAnimating && !waiting) {
-    waiting = true
-    setTimeout(fillHoles, animationDelay)
+  if (animationMode == modes.BLOCK) {
+    if (animationStatus == statuses.STOPPED ||
+        animationStatus == statuses.WAITING) {
+      animationStatus = statuses.STARTING
+      setTimeout(fillHoles, animationDelay)
+    }
+  }
+  else if (animationMode == modes.STAGGERED) {
+    if (animationStatus == statuses.STOPPED) {
+      startStaggering()
+    }
+
+    else if (animationStatus == statuses.RUNNING) {
+      let holes = getHoles(true)
+      holes.forEach((hole)=>{
+        animateHole(...hole.coords, hole)
+      })
+    }
   }
 
   innerBorder = 4.5+.8*Math.sin(Date.now()/350)
@@ -179,25 +213,40 @@ function update() {
 }
 
 function fillHoles() {
-  waiting = false
-  doneAnimating = false
-  grid.forEach((row,i)=>{
-    row.forEach((hex,j)=>{
-      if (hex.hole) {
-        const neighbor = randNeighbor(i, j)
-        if (neighbor) {
-          neighbor.destination = [i,j]
-          neighbor.animating = true
-        }
-      }
-    })
+  animationStatus = statuses.RUNNING
+
+  getHoles().forEach((hole)=>{
+    animateHole(...hole.coords, hole)
   })
 }
 
+function startStaggering() {
+  animationStatus = statuses.STARTING
+
+  const holes = getHoles()
+  let hole, i=0
+  while (hole = randItem(holes, true)) {
+    hole.lastAnimated = Date.now()
+                        +(i++*staggerInterval)
+  }
+
+  animationStatus = statuses.RUNNING
+}
+
+function animateHole(row, col, hole) {
+  const neighbor = randNeighbor(row, col)
+  if (neighbor) {
+    hole.animating = true
+    neighbor.destination = [row, col]
+    neighbor.animating = true
+  }
+}
 
 // helper methods
 
 function randItem(list, remove) {
+  if (!list.length) return false
+
   const index = Math.floor(Math.random()*list.length)
   const item = list[index]
 
@@ -218,8 +267,25 @@ function centerForCoords(row, col) {
 
 function generateHole() {
   return {
-    hole: true
+    hole: true,
+    animating: false,
+    lastAnimated: Date.now()+Math.random()*staggerInterval
   }
+}
+
+function getHoles(readyToAnimate) {
+  return grid.reduce((a,b,i)=>{
+                return a.concat(b.filter((h,j)=>{
+                  if (h.hole) {
+                    if (readyToAnimate &&
+                        (h.animating ||
+                        Date.now()-h.lastAnimated < animationDelay))
+                      return
+                    h.coords=[i,j]
+                    return h
+                  }
+                }))
+              }, [])
 }
 
 function randNeighbor(row, col) {
@@ -227,9 +293,9 @@ function randNeighbor(row, col) {
   while (neighbors.length > 0) {
     const candidate = randItem(neighbors, true)
     const hex = hexForCoords(candidate)
-    if (!(hex.animating || Date.now()-hex.lastAnimated < 1000)) {
+    if (!(hex.animating ||
+          Date.now()-hex.lastAnimated < repetitionDelay))
       return hex
-    }
   }
 
   return false
