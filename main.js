@@ -2,15 +2,15 @@
 
 const hexColors = ['tomato', '#ee5', 'mediumaquamarine', 'mediumslateblue', 'magenta']
 
-const holes = .06
+const holes = .2 // percent
 
 const hexRadius = 20
 const xDelta = hexRadius*Math.cos(Math.PI/6)
 const yDelta = hexRadius*(1+Math.sin(Math.PI/6))
 
-const outerBorder = 3.75
-const baseInnerBorder = 4.2
-const innerBorderDelta = 0.6
+const outerBorder = 3.6
+const baseInnerBorder = 4.3
+const innerBorderDelta = 0.7
 
 const hexWidth = xDelta*2+outerBorder
 const hexHeight = yDelta+outerBorder
@@ -37,7 +37,7 @@ const animationSpeed = 0.04 // a little higher == a lot faster
 const animationDelay = 350 // for moves of the same hex
 const repetitionDelay = 800 // increase to reduce back-and-forth
 const staggerInterval = 280 // intial staggering of hexes
-const sequenceInterval = 300 // between sequential hexes
+const sequenceInterval = 200 // between sequential hexes
 
 // setup
 
@@ -48,14 +48,14 @@ $(document).ready(()=>{
 
   $(window).resize(()=>{
     resizeCanvas()
-    generateGrid()
+    generateGrid(true)
     if (animationMode == modes.STAGGERED ||
         animationMode == modes.SEQUENTIAL)
       animationStatus = statuses.STOPPED
   })
 
   resizeCanvas()
-  generateGrid()
+  generateGrid(true)
   animationStatus = statuses.STOPPED
 
   animationId = requestAnimationFrame(update)
@@ -72,6 +72,9 @@ function resizeCanvas() {
   cHeight = $canvas.height()
   const aspect = cWidth/cHeight
 
+  borderCols = Math.max(Math.floor((cWidth-400)/(hexRadius*5)), 2)
+  borderRows = Math.max(Math.floor((cHeight-250)/(hexRadius*5)), 2)
+
   if (aspect < 1) {
     let pixels = Math.max(minPixels, Math.min(cHeight, maxPixels))
     cWidth = pixels*aspect
@@ -85,7 +88,7 @@ function resizeCanvas() {
   $canvas.attr({height:cHeight, width:cWidth})
 }
 
-function generateGrid() {
+function generateGrid(asFrame) {
   let width = Math.floor(cWidth/hexWidth)
   let height = Math.ceil(cHeight/(hexHeight+outerBorder))
 
@@ -96,7 +99,15 @@ function generateGrid() {
     for (let j = 0; j < width-i%2; j++) {
 
       let newHex
-      if (Math.random() > 1-holes) {
+
+      if (asFrame && (
+          (i >= borderRows && i <= height-borderRows-1) &&
+          (j >= borderCols && j <= width-borderCols-1)
+          )) {
+        newHex = generateHole()
+        newHex.empty = true
+      }
+      else if (Math.random() > 1-holes) {
         newHex = generateHole()
       } else {
         newHex = {
@@ -319,7 +330,7 @@ function generateHole() {
 function getHoles(readyToAnimate) {
   return grid.reduce((a,b,i)=>{
                 return a.concat(b.filter((h,j)=>{
-                  if (h.hole) {
+                  if (h.hole && !h.empty) {
                     if (readyToAnimate &&
                         (h.animating ||
                         Date.now()-h.lastAnimated < animationDelay))
