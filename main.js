@@ -4,12 +4,13 @@ const hexColors = ['tomato', '#ee5', 'mediumaquamarine', 'mediumslateblue', 'mag
 
 const holes = .06
 
-const hexRadius = 25
+const hexRadius = 20
 const xDelta = hexRadius*Math.cos(Math.PI/6)
 const yDelta = hexRadius*(1+Math.sin(Math.PI/6))
 
-const outerBorder = 4
-let innerBorder = 3
+const outerBorder = 3.75
+const baseInnerBorder = 4.2
+const innerBorderDelta = 0.6
 
 const hexWidth = xDelta*2+outerBorder
 const hexHeight = yDelta+outerBorder
@@ -34,9 +35,9 @@ const animationMode = modes.SEQUENTIAL
 
 const animationSpeed = 0.04 // a little higher == a lot faster
 const animationDelay = 350 // for moves of the same hex
-const repetitionDelay = 600 // increase to reduce back-and-forth
+const repetitionDelay = 800 // increase to reduce back-and-forth
 const staggerInterval = 280 // intial staggering of hexes
-const sequenceInterval = 320 // between sequential hexes
+const sequenceInterval = 300 // between sequential hexes
 
 // setup
 
@@ -67,8 +68,8 @@ $(document).ready(()=>{
 })
 
 function resizeCanvas() {
-  cWidth = $content.width()
-  cHeight = $content.height()
+  cWidth = $canvas.width()
+  cHeight = $canvas.height()
   const aspect = cWidth/cHeight
 
   if (aspect < 1) {
@@ -86,7 +87,7 @@ function resizeCanvas() {
 
 function generateGrid() {
   let width = Math.floor(cWidth/hexWidth)
-  let height = Math.floor(cHeight/(hexHeight+outerBorder))
+  let height = Math.ceil(cHeight/(hexHeight+outerBorder))
 
   grid = []
   for (let i = 0; i < height; i++) {
@@ -233,7 +234,8 @@ function update() {
     }
   }
 
-  innerBorder = 4.5+.8*Math.sin(Date.now()/350)
+  innerBorder = baseInnerBorder+
+                innerBorderDelta*Math.sin(Date.now()/350)
   redraw()
   animationId = requestAnimationFrame(update)
 }
