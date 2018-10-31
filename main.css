@@ -115,30 +115,40 @@ h3 {
   animation-direction: alternate-reverse;
 }
 
+.btn:after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 100px;
+}
+
 .btn:hover {
   animation: none;
-  font-size: 40px;
-  width: 134px;
-  height: 134px;
-  line-height: 134px;
-  border-radius: 67px;
+  font-size: 38px;
+  width: 132px;
+  height: 132px;
+  line-height: 132px;
+  border-radius: 66px;
 }
 
 @keyframes jiggle {
   to {
-    font-size: 32px;
-    width: 118px;
-    height: 118px;
-    line-height: 118px;
-    border-radius: 59px;
+    font-size: 30px;
+    width: 116px;
+    height: 116px;
+    line-height0 116px;
+    border-radius: 58px;
   }
 
   from {
-    font-size: 36px;
-    width: 126px;
-    height: 126px;
-    line-height: 126px;
-    border-radius: 63px;
+    font-size: 34px;
+    width: 124px;
+    height: 124px;
+    line-height: 124px;
+    border-radius: 62px;
   }
 }
 
@@ -147,20 +157,36 @@ h3 {
   transform: translate(-50%,-50%) translate(-160px, -110px);
   animation-delay: 0;
 }
+#about:after {
+  border: mediumaquamarine 2px solid;
+}
+
 #resume {
   background-color: mediumslateblue;
   transform: translate(-50%,-50%) translate(-160px, 110px);
   animation-delay: 1.2s;
 }
+#resume:after {
+  border: mediumslateblue 2px solid;
+}
+
 #portfolio {
   background-color: magenta;
   transform: translate(-50%,-50%) translate(160px, -110px);
   animation-delay: .4s;
 }
+#portfolio:after {
+  border: magenta 2px solid;
+}
+
+
 #contact {
   background-color: #ee5;
   transform: translate(-50%, -50%) translate(160px, 110px);
   animation-delay: .8s;
+}
+#contact:after {
+  border: #ee5 2px solid;
 }
 
 .label {
