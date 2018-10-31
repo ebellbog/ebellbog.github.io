@@ -26,15 +26,17 @@ const statuses = {
 
 const modes = {
   BLOCK: 0,
-  STAGGERED: 1
+  STAGGERED: 1,
+  SEQUENTIAL: 2
 }
 
-const animationMode = modes.STAGGERED
+const animationMode = modes.SEQUENTIAL
 
-const animationSpeed = 0.04
-const animationDelay = 350
-const repetitionDelay = 600
-const staggerInterval = 260
+const animationSpeed = 0.04 // a little higher == a lot faster
+const animationDelay = 350 // for moves of the same hex
+const repetitionDelay = 600 // increase to reduce back-and-forth
+const staggerInterval = 280 // intial staggering of hexes
+const sequenceInterval = 320 // between sequential hexes
 
 // setup
 
@@ -46,7 +48,8 @@ $(document).ready(()=>{
   $(window).resize(()=>{
     resizeCanvas()
     generateGrid()
-    if (animationMode == modes.STAGGERED)
+    if (animationMode == modes.STAGGERED ||
+        animationMode == modes.SEQUENTIAL)
       animationStatus = statuses.STOPPED
   })
 
@@ -148,8 +151,14 @@ function redraw () {
           hex.lastAnimated = Date.now()
           hex.progress = 0
 
+          const newHole = generateHole()
+          if (animationMode == modes.SEQUENTIAL) {
+            const oldHole = hexForCoords(hex.destination)
+            newHole.index = oldHole.index
+          }
+
           grid[hex.destination[0]][hex.destination[1]] = hex
-          grid[i][j] = generateHole()
+          grid[i][j] = newHole
 
           center = centerForCoords(...hex.destination)
         }
@@ -200,10 +209,27 @@ function update() {
     }
 
     else if (animationStatus == statuses.RUNNING) {
-      let holes = getHoles(true)
+      const holes = getHoles(true)
       holes.forEach((hole)=>{
         animateHole(...hole.coords, hole)
       })
+    }
+  }
+  else if (animationMode == modes.SEQUENTIAL) {
+    if (animationStatus == statuses.STOPPED) {
+      startSequencing()
+    } else if (animationStatus == statuses.RUNNING &&
+               Date.now()-lastMove > sequenceInterval) {
+      const holes = getHoles()
+      let nextHole = holes.find((h)=>{
+        return (!h.animating && h.index == currentHoleIndex)
+      })
+
+      if (nextHole) {
+        animateHole(...nextHole.coords, nextHole)
+        currentHoleIndex = (currentHoleIndex+1)%holes.length
+        lastMove = Date.now()
+      }
     }
   }
 
@@ -229,6 +255,21 @@ function startStaggering() {
     hole.lastAnimated = Date.now()
                         +(i++*staggerInterval)
   }
+
+  animationStatus = statuses.RUNNING
+}
+
+function startSequencing() {
+  animationStatus = statuses.STARTING
+
+  const holes = getHoles()
+  let hole, i=0
+  while (hole = randItem(holes, true)) {
+    hole.index = i++
+  }
+
+  currentHoleIndex = 0
+  lastMove = Date.now()-sequenceInterval
 
   animationStatus = statuses.RUNNING
 }
@@ -269,7 +310,7 @@ function generateHole() {
   return {
     hole: true,
     animating: false,
-    lastAnimated: Date.now()+Math.random()*staggerInterval
+    lastAnimated: Date.now()+(Math.random()+.5)*staggerInterval
   }
 }
 
