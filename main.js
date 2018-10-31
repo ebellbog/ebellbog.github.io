@@ -4,7 +4,7 @@ const hexColors = ['tomato', '#ee5', 'mediumaquamarine', 'mediumslateblue', 'mag
 
 const holes = .2 // percent
 
-const hexRadius = 20
+const hexRadius = 22
 const xDelta = hexRadius*Math.cos(Math.PI/6)
 const yDelta = hexRadius*(1+Math.sin(Math.PI/6))
 
@@ -72,8 +72,6 @@ function resizeCanvas() {
   cHeight = $canvas.height()
   const aspect = cWidth/cHeight
 
-  borderCols = Math.max(Math.floor((cWidth-400)/(hexRadius*5)), 2)
-  borderRows = Math.max(Math.floor((cHeight-250)/(hexRadius*5)), 2)
 
   if (aspect < 1) {
     let pixels = Math.max(minPixels, Math.min(cHeight, maxPixels))
@@ -86,6 +84,12 @@ function resizeCanvas() {
   }
 
   $canvas.attr({height:cHeight, width:cWidth})
+  scale = cHeight/$canvas.height()
+
+  borderCols = Math.max(Math.floor((cWidth-500*scale)/
+               (hexRadius*5)), 1)
+  borderRows = Math.max(Math.floor((cHeight-275*scale)/
+               (hexRadius*5)), 1)
 }
 
 function generateGrid(asFrame) {
@@ -102,7 +106,7 @@ function generateGrid(asFrame) {
 
       if (asFrame && (
           (i >= borderRows && i <= height-borderRows-1) &&
-          (j >= borderCols && j <= width-borderCols-1)
+          (j >= borderCols && j <= width-borderCols-i%2-1)
           )) {
         newHex = generateHole()
         newHex.empty = true
