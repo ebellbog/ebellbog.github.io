@@ -34,6 +34,8 @@ const modes = {
 const animationMode = modes.SEQUENTIAL
 
 const animationSpeed = 0.04 // a little higher == a lot faster
+const spinSpeed = 0.07
+const waveSpeed = 1.75
 const animationDelay = 350 // for moves of the same hex
 const repetitionDelay = 800 // increase to reduce back-and-forth
 const staggerInterval = 280 // intial staggering of hexes
@@ -52,17 +54,30 @@ $(document).ready(()=>{
     if (animationMode == modes.STAGGERED ||
         animationMode == modes.SEQUENTIAL)
       animationStatus = statuses.STOPPED
+    spinDirection = -1
   })
 
   resizeCanvas()
   generateGrid(true)
   animationStatus = statuses.STOPPED
+  spinDirection = -1
+  spinColor = false
 
   animationId = requestAnimationFrame(update)
 
+  $('.btn').click((e)=>{
+    e.stopPropagation()
+    spinColor = $(e.target).css('background-color')
+    spinHexes(true)
+  })
+
+  $('body').click(()=>spinHexes(false))
+
   $(document).keydown(function(e) {
     if (e.which === 32) {
-      // test function
+      spinHexes(true)
+    } else if (e.which === 13) {
+      spinHexes(false)
     }
   })
 })
@@ -118,9 +133,13 @@ function generateGrid(asFrame) {
           color: randColor(),
           hole: false,
           animating: false,
+          spinning: false,
           lastAnimated: 0,
           destination: [],
-          progress: 0
+          progress: 0,
+          spinProgress: 0,
+          spinDelay: 0,
+          isStatic: false
         }
       }
 
@@ -180,7 +199,24 @@ function redraw () {
         }
       }
 
-      drawHex(center[0]+offsetX, center[1]+offsetY, hex.color, scale)
+      if (hex.spinDelay && Date.now() > hex.spinDelay) {
+        hex.spinDelay = false
+        hex.spinning = true
+        hex.spinProgress = spinDirection > 0 ? spinSpeed
+                                             : Math.PI-spinSpeed
+      }
+
+      drawHex(center[0]+offsetX, center[1]+offsetY,
+              hex.color, scale, hex.spinProgress)
+
+     if (hex.spinning) {
+       hex.spinProgress += spinSpeed*spinDirection
+       if ((spinDirection > 0 && hex.spinProgress >= Math.PI) ||
+           (spinDirection < 0 && hex.spinProgress <= 0)) {
+         hex.spinning = false
+         hex.isStatic = hex.spinProgress > 0
+       }
+     }
     })
   })
 
@@ -191,21 +227,32 @@ function redraw () {
   }
 }
 
-function drawHex(x, y, color, scale) {
+function drawHex(x, y, color, scale, spin) {
   if (!scale) scale = 1
-  const rotation = Math.PI/6
+  const rotateZ = Math.PI/6
+  const rotateY = spin ? spin : 0
+
+  let radius = hexRadius
+  if (rotateY > Math.PI/2) {
+    radius += outerBorder/1.4
+    color = spinColor
+  }
+
+  radius *= scale
 
   drawPolygon(ctx,
               x, y,
-              6, hexRadius*scale,
-              {style:'fill', color:color, rotation:rotation})
+              6, radius,
+              {style:'fill', color:color,
+                rotateZ:rotateZ, rotateY:rotateY})
 
-  if (innerBorder > 0) {
+  if (innerBorder > 0 && rotateY < Math.PI/2) {
     drawPolygon(ctx, 
                 x, y,
-                6, (hexRadius-innerBorder/1.8)*scale,
+                6, radius-scale*innerBorder/1.8,
                 {style:'stroke', weight:innerBorder,
-                 color:'rgba(0,0,0,.2)', rotation:rotation})
+                 color:'rgba(0,0,0,.2)',
+                 rotateZ:rotateZ, rotateY:rotateY})
   }
 }
 
@@ -250,9 +297,31 @@ function update() {
   }
 
   innerBorder = baseInnerBorder+
-                innerBorderDelta*Math.sin(Date.now()/350)
+                innerBorderDelta*Math.sin(Date.now()/300)
   redraw()
   animationId = requestAnimationFrame(update)
+}
+
+function spinHexes(forwards) {
+  newDirection = forwards ? 1 : -1
+  if (spinDirection == newDirection) return
+  spinDirection = newDirection
+
+  let origin = forwards ? [0, 0] : [grid.length,
+                                    grid[grid.length-1].length]
+  origin = centerForCoords(...origin)
+
+  grid.forEach((row, i)=>{
+    row.forEach((hex, j)=>{
+      if (hex.hole || hex.empty) return
+      hex.isStatic = true
+
+      const center = centerForCoords(i, j)
+      const dist = getDist(origin, center, true)
+
+      hex.spinDelay = Date.now()+dist*waveSpeed
+    })
+  })
 }
 
 function fillHoles() {
@@ -323,6 +392,17 @@ function centerForCoords(row, col) {
   return [centerX, centerY]
 }
 
+function getDist(p1, p2, manhattan) {
+  let dist
+  if (manhattan) {
+    dist = Math.abs(p2[1]-p1[1])+Math.abs(p2[0]-p1[0])
+  } else {
+    dist = Math.sqrt(Math.pow(p2[0]-p1[0], 2)+
+                     Math.pow(p2[1]-p1[1], 2))
+  }
+  return dist 
+}
+
 function generateHole() {
   return {
     hole: true,
@@ -352,6 +432,7 @@ function randNeighbor(row, col) {
     const candidate = randItem(neighbors, true)
     const hex = hexForCoords(candidate)
     if (!(hex.animating ||
+          hex.isStatic ||
           Date.now()-hex.lastAnimated < repetitionDelay))
       return hex
   }
