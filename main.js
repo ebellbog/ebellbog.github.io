@@ -33,38 +33,50 @@ const modes = {
 
 const animationMode = modes.SEQUENTIAL
 
-const animationSpeed = 0.04 // a little higher == a lot faster
+const animationSpeed = 0.035 // a little higher == a lot faster
 const spinSpeed = 0.07
 const waveSpeed = 1.75
-const fadeSpeed = 0.008
+const fadeSpeed = 0.007
+const maxFade = .55
 const fadeDelay = 500
-const fadeAmount = .55
 const animationDelay = 350 // for moves of the same hex
 const repetitionDelay = 800 // increase to reduce back-and-forth
 const staggerInterval = 280 // intial staggering of hexes
-const sequenceInterval = 200 // between sequential hexes
+const sequenceInterval = 375 // between sequential hexes
 
 // setup
 
+function resetParams() {
+  spinDirection = -1
+  spinColor = false
+
+  fading = false
+  fadeStart = false
+  fadeProgress = 0
+}
+
 $(document).ready(()=>{
   $content = $('#content')
-  $canvas = $('canvas')
-  ctx = $canvas[0].getContext('2d')
+  $hexes = $('#hexes')
+  $background = $('#background')
+
+  ctxHex = getContext($hexes)
+  ctxBack = getContext($background)
 
   $(window).resize(()=>{
+    resetParams()
     resizeCanvas()
     generateGrid(true)
     if (animationMode == modes.STAGGERED ||
         animationMode == modes.SEQUENTIAL)
       animationStatus = statuses.STOPPED
-    spinDirection = -1
   })
 
+  resetParams()
   resizeCanvas()
   generateGrid(true)
+
   animationStatus = statuses.STOPPED
-  spinDirection = -1
-  spinColor = false
 
   animationId = requestAnimationFrame(update)
 
@@ -86,8 +98,8 @@ $(document).ready(()=>{
 })
 
 function resizeCanvas() {
-  cWidth = $canvas.width()
-  cHeight = $canvas.height()
+  cWidth = $hexes.width()
+  cHeight = $hexes.height()
   const aspect = cWidth/cHeight
 
 
@@ -101,8 +113,10 @@ function resizeCanvas() {
     cWidth = pixels
   }
 
-  $canvas.attr({height:cHeight, width:cWidth})
-  scale = cHeight/$canvas.height()
+  $hexes.attr({height:cHeight, width:cWidth})
+  $background.attr({height:cHeight, width:cWidth})
+
+  scale = cHeight/$hexes.height()
 
   borderCols = Math.max(Math.floor((cWidth-500*scale)/
                (hexRadius*5)), 1)
@@ -144,7 +158,8 @@ function generateGrid(asFrame) {
 // draw methods
 
 function redraw () {
-  ctx.clearRect(0, 0, cWidth, cHeight)
+  ctxHex.clearRect(0, 0, cWidth, cHeight)
+  if (fading) ctxBack.clearRect(0, 0, cWidth, cHeight)
 
   const width = grid[0].length
   const height = grid.length
@@ -152,20 +167,36 @@ function redraw () {
   const offsetX = (cWidth-hexWidth*(width-1))/2
   const offsetY = (cHeight-hexHeight*(height-1))/2
 
+  if (fadeStart && Date.now() > fadeStart) {
+    fadeStart = false
+    fading = true
+    fadeProgress = spinDirection > 0 ? 0 : 1
+  }
+
+  if (fading) {
+    fadeProgress += fadeSpeed*spinDirection
+
+    if ((spinDirection > 0 && fadeProgress >= 1) ||
+        (spinDirection < 0 && fadeProgress <= 0)) {
+      fading = false
+      fadeProgress = Math.max(0, fadeProgress)
+    }
+
+    $background.css('opacity', fadeProgress*maxFade)
+  }
+
+
   let animating = false
   grid.forEach((row, i)=>{
     row.forEach((hex, j)=>{
-      if (hex.hole) return
+      if (hex.hole ||
+          (hex.filler && fadeProgress <= 0))
+        return
 
-      if (hex.spinDelay && Date.now() > hex.spinDelay) {
-        hex.spinDelay = false
+      if (hex.spinStart && Date.now() > hex.spinStart) {
+        hex.spinStart = false
         hex.spinning = true
         hex.spinProgress = spinDirection > 0 ? 0 : Math.PI
-      }
-      else if (hex.fadeDelay && Date.now() > hex.fadeDelay) {
-        hex.fadeDelay = false
-        hex.fading = true
-        hex.fadeProgress = spinDirection > 0 ? 0 : 1
       }
 
       if (hex.spinning) {
@@ -177,18 +208,6 @@ function redraw () {
           hex.isStatic = hex.spinProgress > 0
         }
       }
-      else if (hex.fading) {
-        hex.fadeProgress += fadeSpeed*spinDirection
-
-        if ((spinDirection > 0 && hex.fadeProgress >= 1) ||
-            (spinDirection < 0 && hex.fadeProgress <= 0)) {
-          hex.fading = false
-          hex.fadeProgress = Math.max(0, hex.fadeProgress)
-        }
-      }
-
-      let progress = hex.filler ? hex.fadeProgress : hex.spinProgress
-      if (hex.filler && !hex.fadeProgress) return
 
       let center = centerForCoords(i,j)
       let scale = 1
@@ -224,7 +243,7 @@ function redraw () {
       }
 
       drawHex(center[0]+offsetX, center[1]+offsetY,
-              hex.color, scale, progress, hex.filler)
+              hex.color, scale, hex.filler, hex.spinProgress)
     })
   })
 
@@ -235,28 +254,27 @@ function redraw () {
   }
 }
 
-function drawHex(x, y, color, scale, progress, filler) {
-  if (!scale) scale = 1
-  const spin = filler ? 0 : (progress || 0)
-  const fade = filler ? progress*fadeAmount : 1
+function drawHex(x, y, color, scale, filler, spin) {
+  const ctx = filler ? ctxBack : ctxHex
+  scale = scale || 1
+  spin = spin || 0
 
   let size = hexRadius
   if (spin > Math.PI/2 || filler) {
-    size += outerBorder/(filler ? 1.55 : 1.4)
+    size += outerBorder/1.4
     color = spinColor
   }
   size *= scale
 
-  tracePath(getHexPath(x, y, size, spin))
+  tracePath(ctx, getHexPath(x, y, size, spin))
 
-  ctx.globalAlpha = fade
   ctx.fillStyle = color
   ctx.fill()
 
   if (innerBorder > 0 && spin < Math.PI/2 && !filler) {
     size -= scale*innerBorder/1.8
 
-    tracePath(getHexPath(x, y, size, spin))
+    tracePath(ctx, getHexPath(x, y, size, spin))
 
     ctx.strokeStyle = 'rgba(0,0,0,.2)'
     ctx.lineWidth = innerBorder
@@ -289,7 +307,7 @@ function getHexPath(x, y, size, spin) {
   return path
 }
 
-function tracePath(path) {
+function tracePath(ctx, path) {
   let start = path.shift()
 
   ctx.beginPath()
@@ -352,24 +370,22 @@ function spinHexes(forwards) {
 
   spinDirection = newDirection
 
+  fadeStart = Date.now()+fadeDelay
+
   let origin = forwards ? [0, 0] : [grid.length,
                                     grid[grid.length-1].length]
   origin = centerForCoords(...origin)
 
   grid.forEach((row, i)=>{
     row.forEach((hex, j)=>{
-      if (hex.hole) return
-      else if (hex.filler) {
-        hex.fadeDelay = Date.now()+fadeDelay
-        return
-      }
+      if (hex.hole || hex.filler) return
 
       hex.isStatic = true
 
       const center = centerForCoords(i, j)
       const dist = getDist(origin, center, true)
 
-      hex.spinDelay = Date.now()+dist*waveSpeed
+      hex.spinStart = Date.now()+dist*waveSpeed
     })
   })
 }
@@ -421,6 +437,10 @@ function animateHole(row, col, hole) {
 
 // helper methods
 
+function getContext($element) {
+  return $element[0].getContext('2d')
+}
+
 function randItem(list, remove) {
   if (!list.length) return false
 
@@ -461,8 +481,8 @@ function generateHex() {
     lastAnimated: 0,
     destination: [],
     progress: 0,
+    spinStart: 0,
     spinProgress: 0,
-    spinDelay: 0,
     isStatic: false
   }
 }
@@ -479,9 +499,6 @@ function generateFiller() {
   return {
     filler: true,
     isStatic: true,
-    fading: false,
-    fadeDelay: 0,
-    fadeProgress: 0,
   }
 }
 

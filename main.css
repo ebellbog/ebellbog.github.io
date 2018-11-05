@@ -83,9 +83,19 @@ h3 {
   margin: 5px 0 50px 0;
 }
 
-#content canvas {
+#hexes {
   width: 100%;
   height: 100%;
+  z-index: 2;
+}
+
+#background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 #footer {
