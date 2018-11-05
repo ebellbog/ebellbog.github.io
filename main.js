@@ -36,6 +36,9 @@ const animationMode = modes.SEQUENTIAL
 const animationSpeed = 0.04 // a little higher == a lot faster
 const spinSpeed = 0.07
 const waveSpeed = 1.75
+const fadeSpeed = 0.008
+const fadeDelay = 500
+const fadeAmount = .55
 const animationDelay = 350 // for moves of the same hex
 const repetitionDelay = 800 // increase to reduce back-and-forth
 const staggerInterval = 280 // intial staggering of hexes
@@ -123,24 +126,12 @@ function generateGrid(asFrame) {
           (i >= borderRows && i <= height-borderRows-1) &&
           (j >= borderCols && j <= width-borderCols-i%2-1)
           )) {
-        newHex = generateHole()
-        newHex.empty = true
+        newHex = generateFiller()
       }
       else if (Math.random() > 1-holes) {
         newHex = generateHole()
       } else {
-        newHex = {
-          color: randColor(),
-          hole: false,
-          animating: false,
-          spinning: false,
-          lastAnimated: 0,
-          destination: [],
-          progress: 0,
-          spinProgress: 0,
-          spinDelay: 0,
-          isStatic: false
-        }
+        newHex = generateHex()
       }
 
       row.push(newHex)
@@ -165,6 +156,39 @@ function redraw () {
   grid.forEach((row, i)=>{
     row.forEach((hex, j)=>{
       if (hex.hole) return
+
+      if (hex.spinDelay && Date.now() > hex.spinDelay) {
+        hex.spinDelay = false
+        hex.spinning = true
+        hex.spinProgress = spinDirection > 0 ? 0 : Math.PI
+      }
+      else if (hex.fadeDelay && Date.now() > hex.fadeDelay) {
+        hex.fadeDelay = false
+        hex.fading = true
+        hex.fadeProgress = spinDirection > 0 ? 0 : 1
+      }
+
+      if (hex.spinning) {
+        hex.spinProgress += spinSpeed*spinDirection
+
+        if ((spinDirection > 0 && hex.spinProgress >= Math.PI) ||
+            (spinDirection < 0 && hex.spinProgress <= 0)) {
+          hex.spinning = false
+          hex.isStatic = hex.spinProgress > 0
+        }
+      }
+      else if (hex.fading) {
+        hex.fadeProgress += fadeSpeed*spinDirection
+
+        if ((spinDirection > 0 && hex.fadeProgress >= 1) ||
+            (spinDirection < 0 && hex.fadeProgress <= 0)) {
+          hex.fading = false
+          hex.fadeProgress = Math.max(0, hex.fadeProgress)
+        }
+      }
+
+      let progress = hex.filler ? hex.fadeProgress : hex.spinProgress
+      if (hex.filler && !hex.fadeProgress) return
 
       let center = centerForCoords(i,j)
       let scale = 1
@@ -199,24 +223,8 @@ function redraw () {
         }
       }
 
-      if (hex.spinDelay && Date.now() > hex.spinDelay) {
-        hex.spinDelay = false
-        hex.spinning = true
-        hex.spinProgress = spinDirection > 0 ? spinSpeed
-                                             : Math.PI-spinSpeed
-      }
-
       drawHex(center[0]+offsetX, center[1]+offsetY,
-              hex.color, scale, hex.spinProgress)
-
-     if (hex.spinning) {
-       hex.spinProgress += spinSpeed*spinDirection
-       if ((spinDirection > 0 && hex.spinProgress >= Math.PI) ||
-           (spinDirection < 0 && hex.spinProgress <= 0)) {
-         hex.spinning = false
-         hex.isStatic = hex.spinProgress > 0
-       }
-     }
+              hex.color, scale, progress, hex.filler)
     })
   })
 
@@ -227,23 +235,25 @@ function redraw () {
   }
 }
 
-function drawHex(x, y, color, scale, spin) {
+function drawHex(x, y, color, scale, progress, filler) {
   if (!scale) scale = 1
-  spin = spin || 0
+  const spin = filler ? 0 : (progress || 0)
+  const fade = filler ? progress*fadeAmount : 1
 
   let size = hexRadius
-  if (spin > Math.PI/2) {
-    size += outerBorder/1.4
+  if (spin > Math.PI/2 || filler) {
+    size += outerBorder/(filler ? 1.55 : 1.4)
     color = spinColor
   }
   size *= scale
 
   tracePath(getHexPath(x, y, size, spin))
 
+  ctx.globalAlpha = fade
   ctx.fillStyle = color
   ctx.fill()
 
-  if (innerBorder > 0 && spin < Math.PI/2) {
+  if (innerBorder > 0 && spin < Math.PI/2 && !filler) {
     size -= scale*innerBorder/1.8
 
     tracePath(getHexPath(x, y, size, spin))
@@ -336,7 +346,10 @@ function update() {
 
 function spinHexes(forwards) {
   newDirection = forwards ? 1 : -1
+
+  // don't re-spin
   if (spinDirection == newDirection) return
+
   spinDirection = newDirection
 
   let origin = forwards ? [0, 0] : [grid.length,
@@ -345,7 +358,12 @@ function spinHexes(forwards) {
 
   grid.forEach((row, i)=>{
     row.forEach((hex, j)=>{
-      if (hex.hole || hex.empty) return
+      if (hex.hole) return
+      else if (hex.filler) {
+        hex.fadeDelay = Date.now()+fadeDelay
+        return
+      }
+
       hex.isStatic = true
 
       const center = centerForCoords(i, j)
@@ -435,11 +453,35 @@ function getDist(p1, p2, manhattan) {
   return dist 
 }
 
+function generateHex() {
+  return {
+    color: randColor(),
+    animating: false,
+    spinning: false,
+    lastAnimated: 0,
+    destination: [],
+    progress: 0,
+    spinProgress: 0,
+    spinDelay: 0,
+    isStatic: false
+  }
+}
+
 function generateHole() {
   return {
     hole: true,
     animating: false,
     lastAnimated: Date.now()+(Math.random()+.5)*staggerInterval
+  }
+}
+
+function generateFiller() {
+  return {
+    filler: true,
+    isStatic: true,
+    fading: false,
+    fadeDelay: 0,
+    fadeProgress: 0,
   }
 }
 

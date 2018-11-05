@@ -32,18 +32,18 @@ body {
 }
 
 #headshot:hover {
-  color: black;
+  color: rgba(0,0,0,.75);
   transition: all 1.5s;
   transform: translate(-50%,-50%) rotate(360deg);
 }
 
 #wheee {
-  font-size: 32px;
+  font-size: 28px;
   font-family: 'Amatic SC', cursive;
   font-weight: 700;
   text-align: center;
   position: absolute;
-  bottom: 2px;
+  bottom: 1px;
   left: 0;
   width: 100%;
 }
