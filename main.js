@@ -229,31 +229,63 @@ function redraw () {
 
 function drawHex(x, y, color, scale, spin) {
   if (!scale) scale = 1
-  const rotateZ = Math.PI/6
-  const rotateY = spin ? spin : 0
+  spin = spin || 0
 
-  let radius = hexRadius
-  if (rotateY > Math.PI/2) {
-    radius += outerBorder/1.4
+  let size = hexRadius
+  if (spin > Math.PI/2) {
+    size += outerBorder/1.4
     color = spinColor
   }
+  size *= scale
 
-  radius *= scale
+  tracePath(getHexPath(x, y, size, spin))
 
-  drawPolygon(ctx,
-              x, y,
-              6, radius,
-              {style:'fill', color:color,
-                rotateZ:rotateZ, rotateY:rotateY})
+  ctx.fillStyle = color
+  ctx.fill()
 
-  if (innerBorder > 0 && rotateY < Math.PI/2) {
-    drawPolygon(ctx, 
-                x, y,
-                6, radius-scale*innerBorder/1.8,
-                {style:'stroke', weight:innerBorder,
-                 color:'rgba(0,0,0,.2)',
-                 rotateZ:rotateZ, rotateY:rotateY})
+  if (innerBorder > 0 && spin < Math.PI/2) {
+    size -= scale*innerBorder/1.8
+
+    tracePath(getHexPath(x, y, size, spin))
+
+    ctx.strokeStyle = 'rgba(0,0,0,.2)'
+    ctx.lineWidth = innerBorder
+    ctx.stroke()
   }
+}
+
+function getHexPath(x, y, size, spin) {
+  const rotation = Math.PI/6
+  const path = []
+
+  for (let i = 0; i < 6; i++) {
+    const angle = i*Math.PI/3 + rotation
+
+    let ptY = y+size*Math.sin(angle)
+    let ptX = x+size*Math.cos(angle)
+
+    if (spin) {
+      if (ptX > x+.01) {
+        ptY = y+(ptY-y)*(1-Math.sin(spin)*.25)
+      } else if (ptX < x-.01) {
+        ptY = y+(ptY-y)*(.25*Math.sin(spin)+1)
+      }
+      ptX = x+(ptX-x)*Math.cos(spin)
+
+    }
+
+    path.push({x: ptX, y:ptY})
+  }
+  return path
+}
+
+function tracePath(path) {
+  let start = path.shift()
+
+  ctx.beginPath()
+  ctx.moveTo(start.x, start.y)
+  path.map(p => ctx.lineTo(p.x, p.y))
+  ctx.closePath()
 }
 
 // actions
