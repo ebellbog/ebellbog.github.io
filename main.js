@@ -18,6 +18,9 @@ const hexHeight = yDelta+outerBorder
 const maxPixels = 900
 const minPixels = 600
 
+const btnDeltaX = 170
+const btnDeltaY = 110
+
 const statuses = {
   STOPPED: 0,
   STARTING: 1,
@@ -31,8 +34,17 @@ const modes = {
   SEQUENTIAL: 2
 }
 
+const views = {
+  HOME: 0,
+  ABOUT: 1,
+  PORTFOLIO: 2,
+  RESUME: 3,
+  CONTACT: 4
+}
+
 const animationMode = modes.SEQUENTIAL
 
+const layoutSpeed = 800 // milliseconds
 const animationSpeed = 0.035 // a little higher == a lot faster
 const spinSpeed = 0.07
 const waveSpeed = 1.75
@@ -53,6 +65,8 @@ function resetParams() {
   fading = false
   fadeStart = false
   fadeProgress = 0
+
+  currentView = views.HOME
 }
 
 $(document).ready(()=>{
@@ -66,6 +80,7 @@ $(document).ready(()=>{
   $(window).resize(()=>{
     resetParams()
     resizeCanvas()
+    layoutButtons()
     generateGrid(true)
     if (animationMode == modes.STAGGERED ||
         animationMode == modes.SEQUENTIAL)
@@ -74,6 +89,7 @@ $(document).ready(()=>{
 
   resetParams()
   resizeCanvas()
+  layoutButtons(true)
   generateGrid(true)
 
   animationStatus = statuses.STOPPED
@@ -82,8 +98,19 @@ $(document).ready(()=>{
 
   $('.btn').click((e)=>{
     e.stopPropagation()
-    spinColor = $(e.target).css('background-color')
+
+    const $btn = $(e.target)
+
+    const viewName = $btn.attr('id').toUpperCase()
+    currentView = views[viewName]
+
+    spinColor = $btn.css('background-color')
     spinHexes(true)
+
+    $btn.animate({
+      top: 0,
+      left: '50%',
+    }, 1000)
   })
 
   $('body').click(()=>spinHexes(false))
@@ -122,6 +149,25 @@ function resizeCanvas() {
                (hexRadius*5)), 1)
   borderRows = Math.max(Math.floor((cHeight-275*scale)/
                (hexRadius*5)), 1)
+}
+
+function layoutButtons(animated) {
+  $headshot = $('#headshot')
+  const y = parseInt($headshot.css('top'), 10)
+  const x = parseInt($headshot.css('left'), 10)
+
+  let func = animated ? 'animate' : 'css'
+  let btns = ['about', 'portfolio', 'resume', 'contact']
+
+  for (let i = 0; i < 2; i++) {
+    for (let j = 0; j < 2; j++) {
+      const $btn = $(`#${btns[j+2*i]}`)
+      $btn[func]({
+        'top': `${y+btnDeltaY*(2*i-1)}px`,
+        'left': `${x+btnDeltaX*(2*j-1)}px`
+      }, layoutSpeed)
+    }
+  }
 }
 
 function generateGrid(asFrame) {
