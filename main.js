@@ -21,6 +21,23 @@ const minPixels = 600
 const btnDeltaX = 170
 const btnDeltaY = 110
 
+// styles in JS to avoid using !important
+// need to be applied directly to element
+const selectedBtnStyle = {
+  'top': '55px',
+  'left': '50%',
+  'font-size': '68px',
+  'width': '250px',
+  'height': '100px'
+}
+
+const defaultBtnStyle = {
+  'font-size': '32px',
+  'width': '118px',
+  'height': '118px',
+  'opacity': 1
+}
+
 const statuses = {
   STOPPED: 0,
   STARTING: 1,
@@ -48,7 +65,7 @@ const layoutSpeed = 800 // milliseconds
 const selectSpeed = 1750
 const selectDelay = 0
 const animationSpeed = 0.035 // a little higher == a lot faster
-const spinSpeed = 0.07
+const spinSpeed = 0.08
 const waveSpeed = 1
 const fadeSpeed = 0.015
 const maxFade = .55
@@ -124,14 +141,9 @@ $(document).ready(()=>{
       $btn.addClass('selected')
 
       // move selected button, fade border
-      $btn.animate({
-        'top': '50px',
-        'left': '50%',
-        'font-size': '64px',
-        'width': '250px',
-        'height': '60px'
-      }, selectSpeed)
+      $btn.animate(selectedBtnStyle, selectSpeed)
       $border.animate({opacity: 0}, selectSpeed)
+      $background.animate({opacity: 0.75}, selectSpeed)
 
       // hide headshot and other buttons
       $('#headshot').animate({opacity:0}, selectSpeed/16)
@@ -202,20 +214,19 @@ function layoutButtons(animated, duration, callback) {
     for (let j = 0; j < 2; j++) {
       const $btn = $(`#${btns[j+2*i]}`)
       const $border = $btn.find('.btn-border')
-      $btn[func]({
-        'top': `${y+btnDeltaY*(2*i-1)}px`,
-        'left': `${x+btnDeltaX*(2*j-1)}px`,
-        'font-size': '32px',
-        'width': '118px',
-        'height': '118px',
-        'opacity': 1
-      }, duration, ()=>{
+      const $background = $btn.find('.btn-background')
+
+      const style = Object.assign({}, defaultBtnStyle,
+          {'top': `${y+btnDeltaY*(2*i-1)}px`,
+          'left': `${x+btnDeltaX*(2*j-1)}px`})
+
+      $btn[func](style, duration, ()=>{
         $('.btn').removeClass('selected')
         if (callback) callback()
       })
-      $border[func]({
-        'opacity': 1
-      }, duration)
+
+      $border[func]({'opacity': 1}, duration)
+      $background[func]({'opacity': 1}, duration)
     }
   }
 

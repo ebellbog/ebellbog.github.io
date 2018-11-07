@@ -30,9 +30,9 @@ body {
   top: 50%;
   left: 50%;
   z-index: 1;
-  height: 160px;
-  width: 160px;
-  border-radius: 90px;
+  height: 180px;
+  width: 180px;
+  border-radius: 120px;
   border: 9px solid tomato;
   overflow: hidden;
   transform: translate(-50%,-50%) rotate(0deg);
@@ -51,12 +51,12 @@ body {
 }
 
 #wheee {
-  font-size: 28px;
+  font-size: 32px;
   font-family: 'Amatic SC', cursive;
   font-weight: 700;
   text-align: center;
   position: absolute;
-  bottom: 1px;
+  bottom: 2px;
   left: 0;
   width: 100%;
 }
@@ -138,9 +138,6 @@ h3 {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
-  font-size: 32px;
-  width: 118px;
-  height: 118px;
   animation-name: jiggle;
   animation-duration: 1.2s;
   animation-iteration-count: infinite;
@@ -243,4 +240,5 @@ h3 {
   font-weight: 700;
   text-shadow: 2px 1px 0 #222;
   user-select: none;
+  z-index: 1;
 }
