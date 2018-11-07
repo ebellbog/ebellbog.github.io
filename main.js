@@ -45,12 +45,14 @@ const views = {
 const animationMode = modes.SEQUENTIAL
 
 const layoutSpeed = 800 // milliseconds
+const selectSpeed = 1750
+const selectDelay = 0
 const animationSpeed = 0.035 // a little higher == a lot faster
 const spinSpeed = 0.07
-const waveSpeed = 1.75
-const fadeSpeed = 0.007
+const waveSpeed = 1
+const fadeSpeed = 0.015
 const maxFade = .55
-const fadeDelay = 500
+const fadeDelay = 400
 const animationDelay = 350 // for moves of the same hex
 const repetitionDelay = 800 // increase to reduce back-and-forth
 const staggerInterval = 280 // intial staggering of hexes
@@ -79,9 +81,13 @@ $(document).ready(()=>{
 
   $(window).resize(()=>{
     resetParams()
+
     resizeCanvas()
-    layoutButtons()
     generateGrid(true)
+
+    layoutButtons()
+    $('#headshot').css({opacity:1})
+
     if (animationMode == modes.STAGGERED ||
         animationMode == modes.SEQUENTIAL)
       animationStatus = statuses.STOPPED
@@ -89,7 +95,7 @@ $(document).ready(()=>{
 
   resetParams()
   resizeCanvas()
-  layoutButtons(true)
+  layoutButtons(true, layoutSpeed)
   generateGrid(true)
 
   animationStatus = statuses.STOPPED
@@ -98,28 +104,61 @@ $(document).ready(()=>{
 
   $('.btn').click((e)=>{
     e.stopPropagation()
+    if (!currentView == views.HOME) return
 
-    const $btn = $(e.target)
+    // $btn is itself, or highest parent with .btn class
+    let $btn = $(e.target)
+    const parents = $(e.target).parents('.btn')
+    $btn = parents.length > 0 ? parents.last() : $btn
+
+    const $background = $btn.find('.btn-background')
+    const $border = $btn.find('.btn-border')
 
     const viewName = $btn.attr('id').toUpperCase()
     currentView = views[viewName]
 
-    spinColor = $btn.css('background-color')
+    spinColor = $background.css('background-color')
     spinHexes(true)
 
-    $btn.animate({
-      top: 0,
-      left: '50%',
-    }, 1000)
+    setTimeout(()=>{
+      $btn.addClass('selected')
+
+      // move selected button, fade border
+      $btn.animate({
+        'top': '50px',
+        'left': '50%',
+        'font-size': '64px',
+        'width': '250px',
+        'height': '60px'
+      }, selectSpeed)
+      $border.animate({opacity: 0}, selectSpeed)
+
+      // hide headshot and other buttons
+      $('#headshot').animate({opacity:0}, selectSpeed/16)
+      $('.btn:not(.selected)').each((index, otherBtn)=>{
+        $(otherBtn).animate({opacity:0}, selectSpeed/2)
+      })
+    }, selectDelay)
   })
 
-  $('body').click(()=>spinHexes(false))
+  $('body').click(()=>{
+    spinHexes(false)
+    setTimeout(()=>{
+      // fade headshot back in
+      $('#headshot').animate({opacity: 1}, selectSpeed/8)
+
+      // rearrange buttons (includes fade-in and removing class)
+      layoutButtons(true, selectSpeed,()=>{
+                      currentView = views.HOME
+                    })
+    }, selectDelay)
+  })
 
   $(document).keydown(function(e) {
     if (e.which === 32) {
-      spinHexes(true)
+      //spinHexes(true)
     } else if (e.which === 13) {
-      spinHexes(false)
+      //spinHexes(false)
     }
   })
 })
@@ -151,23 +190,36 @@ function resizeCanvas() {
                (hexRadius*5)), 1)
 }
 
-function layoutButtons(animated) {
+function layoutButtons(animated, duration, callback) {
   $headshot = $('#headshot')
   const y = parseInt($headshot.css('top'), 10)
   const x = parseInt($headshot.css('left'), 10)
 
-  let func = animated ? 'animate' : 'css'
-  let btns = ['about', 'portfolio', 'resume', 'contact']
+  const func = animated ? 'animate' : 'css'
+  const btns = ['about', 'portfolio', 'resume', 'contact']
 
   for (let i = 0; i < 2; i++) {
     for (let j = 0; j < 2; j++) {
       const $btn = $(`#${btns[j+2*i]}`)
+      const $border = $btn.find('.btn-border')
       $btn[func]({
         'top': `${y+btnDeltaY*(2*i-1)}px`,
-        'left': `${x+btnDeltaX*(2*j-1)}px`
-      }, layoutSpeed)
+        'left': `${x+btnDeltaX*(2*j-1)}px`,
+        'font-size': '32px',
+        'width': '118px',
+        'height': '118px',
+        'opacity': 1
+      }, duration, ()=>{
+        $('.btn').removeClass('selected')
+        if (callback) callback()
+      })
+      $border[func]({
+        'opacity': 1
+      }, duration)
     }
   }
+
+  if (!duration) $('.btn').removeClass('selected')
 }
 
 function generateGrid(asFrame) {
