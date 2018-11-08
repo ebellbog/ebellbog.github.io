@@ -1,19 +1,8 @@
-// config
+/** config **/
 
 const hexColors = ['tomato', '#ee5', 'mediumaquamarine', 'mediumslateblue', 'magenta']
 
 const holes = .2 // percent
-
-const hexRadius = 22
-const xDelta = hexRadius*Math.cos(Math.PI/6)
-const yDelta = hexRadius*(1+Math.sin(Math.PI/6))
-
-const outerBorder = 3.6
-const baseInnerBorder = 4.3
-const innerBorderDelta = 0.7
-
-const hexWidth = xDelta*2+outerBorder
-const hexHeight = yDelta+outerBorder
 
 const maxPixels = 900
 const minPixels = 600
@@ -26,7 +15,7 @@ const btnDeltaY = 110
 const selectedBtnStyle = {
   'top': '55px',
   'left': '50%',
-  'font-size': '68px',
+  'font-size': '64px',
   'width': '250px',
   'height': '100px'
 }
@@ -37,6 +26,8 @@ const defaultBtnStyle = {
   'height': '118px',
   'opacity': 1
 }
+
+// enums (ish)
 
 const statuses = {
   STOPPED: 0,
@@ -59,7 +50,14 @@ const views = {
   CONTACT: 4
 }
 
-const animationMode = modes.SEQUENTIAL
+const devices = {
+  MOBILE: 0,
+  DESKTOP: 1
+}
+
+let animationMode = modes.SEQUENTIAL
+
+// animation params
 
 const layoutSpeed = 800 // milliseconds
 const selectSpeed = 1750
@@ -75,7 +73,40 @@ const repetitionDelay = 800 // increase to reduce back-and-forth
 const staggerInterval = 280 // intial staggering of hexes
 const sequenceInterval = 375 // between sequential hexes
 
-// setup
+/** setup **/
+
+function configDevice() {
+  deviceMode = isMobileDevice() ? devices.MOBILE : devices.DESKTOP
+
+  if (deviceMode === devices.DESKTOP) {
+    outerBorder = 3.6
+    baseInnerBorder = 4.3
+    innerBorderDelta = 0.7
+
+    setHexSize(22)
+
+    $('#name').show()
+    $('body').removeClass('mobile')
+  }else {
+    outerBorder = 5
+    baseInnerBorder = 7
+    innerBorderDelta = 1.2
+
+    setHexSize(33)
+    $('#name').hide()
+    $('body').addClass('mobile')
+  }
+}
+
+function setHexSize(size) {
+  hexRadius = size
+
+  xDelta = hexRadius*Math.cos(Math.PI/6)
+  yDelta = hexRadius*(1+Math.sin(Math.PI/6))
+
+  hexWidth = xDelta*2+outerBorder
+  hexHeight = yDelta+outerBorder
+}
 
 function resetParams() {
   spinDirection = -1
@@ -96,11 +127,13 @@ $(document).ready(()=>{
   ctxHex = getContext($hexes)
   ctxBack = getContext($background)
 
+
   $(window).resize(()=>{
     resetParams()
+    configDevice()
 
     resizeCanvas()
-    generateGrid(true)
+    generateGrid(deviceMode === devices.DESKTOP)
 
     layoutButtons()
     $('#headshot').css({opacity:1})
@@ -111,9 +144,11 @@ $(document).ready(()=>{
   })
 
   resetParams()
+  configDevice()
+
   resizeCanvas()
   layoutButtons(true, layoutSpeed)
-  generateGrid(true)
+  generateGrid(deviceMode === devices.DESKTOP)
 
   animationStatus = statuses.STOPPED
 
@@ -235,7 +270,7 @@ function layoutButtons(animated, duration, callback) {
 
 function generateGrid(asFrame) {
   let width = Math.floor(cWidth/hexWidth)
-  let height = Math.ceil(cHeight/(hexHeight+outerBorder))
+  let height = Math.floor(cHeight/(hexHeight+outerBorder/3))
 
   grid = []
   for (let i = 0; i < height; i++) {
@@ -264,7 +299,7 @@ function generateGrid(asFrame) {
   }
 }
 
-// draw methods
+/** draw methods **/
 
 function redraw () {
   ctxHex.clearRect(0, 0, cWidth, cHeight)
@@ -425,7 +460,7 @@ function tracePath(ctx, path) {
   ctx.closePath()
 }
 
-// actions
+/** actions **/
 
 function update() {
   if (animationMode == modes.BLOCK) {
@@ -544,7 +579,19 @@ function animateHole(row, col, hole) {
   }
 }
 
-// helper methods
+
+/**  helper methods **/
+
+function isMobileDevice() {
+  return ( navigator.userAgent.match(/Android/i)
+      || navigator.userAgent.match(/webOS/i)
+      || navigator.userAgent.match(/iPhone/i)
+      || navigator.userAgent.match(/iPad/i)
+      || navigator.userAgent.match(/iPod/i)
+      || navigator.userAgent.match(/BlackBerry/i)
+      || navigator.userAgent.match(/Windows Phone/i)
+    ) ? true : false
+}
 
 function getContext($element) {
   return $element[0].getContext('2d')
