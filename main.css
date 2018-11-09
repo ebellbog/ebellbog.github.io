@@ -26,13 +26,15 @@ body {
 }
 
 body.mobile {
-  background: repeating-linear-gradient(
+  /*background: repeating-linear-gradient(
    135deg,
    #222,
    #222 45px,
    #333 45px,
    #333 90px
-  );
+  );*/
+  background: none;
+  background-color: #222;
 }
 
 #headshot {
@@ -64,12 +66,14 @@ body.mobile {
   width: 45vw;
   height: 45vw;
   border: 20px tomato solid;
+  box-shadow: 0px 0px 55px 5px black;
 }
 
 .mobile.landscape #headshot {
   width: 45vh;
   height: 45vh;
   border: 10px tomato solid;
+  box-shadow: 0px 0px 40px 3px black;
 }
 
 #wheee {
@@ -82,6 +86,13 @@ body.mobile {
   left: 0;
   width: 100%;
   transition: color 1.5s;
+}
+
+.mobile.landscape #wheee {
+  font-size: 4.5vw;
+}
+.mobile.portrait #wheee {
+  font-size: 4.5vh;
 }
 
 a {
@@ -134,6 +145,10 @@ h3 {
   z-index: 2;
 }
 
+.mobile #hexes {
+  opacity: 0.7;
+}
+
 #background {
   position: absolute;
   left: 0;
@@ -172,6 +187,11 @@ h3 {
 
 .mobile #footer {
   background-color: rgba(0,0,0,.7);
+}
+.mobile.portrait #footer {
+  height: 11vh;
+}
+.mobile.landscape #footer {
   height: 15vh;
 }
 
@@ -191,9 +211,15 @@ h3 {
 }
 
 .mobile #links {
-  font-size: 5vh;
-  width: 75%;
   background-color: transparent;
+}
+.mobile.portrait #links {
+  font-size: 4vh;
+  width: 80%;
+}
+.mobile.landscape #links {
+  font-size: 5vh;
+  width: 60%;
 }
 
 #footer .svg-inline--fa:hover{
@@ -212,6 +238,14 @@ h3 {
   animation-direction: alternate-reverse;
   padding: 10px;
   overflow: visible;
+}
+
+.mobile.portrait .btn {
+  animation-name: jiggle-mobile-portrait;
+}
+
+.mobile.landscape .btn {
+  animation-name: jiggle-mobile-landscape;
 }
 
 .btn.selected {
@@ -240,19 +274,55 @@ h3 {
   }
 }
 
+@keyframes jiggle-mobile-portrait {
+  to {
+    font-size: 7.75vw;
+    width: 29vw;
+    height: 29vw;
+  }
+
+  from {
+    font-size: 9vw;
+    width: 31vw;
+    height: 31vw;
+  }
+}
+
+@keyframes jiggle-mobile-landscape {
+  to {
+    font-size: 6.75vh;
+    width: 27vh;
+    height: 27vh;
+  }
+
+  from {
+    font-size: 8vh;
+    width: 29vh;
+    height: 29vh;
+  }
+}
+
 .btn-border {
   position: absolute;
   top: 0;
   left: 0px;
   bottom: 0px;
   right: 0px;
-  border-radius: 100px;
+  border-radius: 300px;
+}
+
+.mobile .btn-border {
+  display: none;
 }
 
 .btn-background {
   width: 100%;
   height: 100%;
-  border-radius: 100px;
+  border-radius: 300px;
+}
+
+.mobile .btn-background {
+  box-shadow: 0px 0px 40px black;
 }
 
 #about {

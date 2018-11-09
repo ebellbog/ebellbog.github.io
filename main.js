@@ -7,11 +7,9 @@ const holes = .2 // percent
 const maxPixels = 900
 const minPixels = 600
 
-const btnDeltaX = 170
-const btnDeltaY = 110
-
 // styles in JS to avoid using !important
-// need to be applied directly to element
+// need to be applied directly to element;
+// must match 'to' keyframe
 const selectedBtnStyle = {
   'top': '55px',
   'left': '50%',
@@ -20,10 +18,24 @@ const selectedBtnStyle = {
   'height': '100px'
 }
 
-const defaultBtnStyle = {
+const desktopBtnStyle = {
   'font-size': '32px',
   'width': '118px',
   'height': '118px',
+  'opacity': 1
+}
+
+const mobilePortraitStyle = {
+  'font-size': '7.75vw',
+  'width': '29vw',
+  'height': '29vw',
+  'opacity': 1
+}
+
+const mobileLandscapeStyle = {
+  'font-size': '6.75vh',
+  'width': '27vh',
+  'height': '27vh',
   'opacity': 1
 }
 
@@ -55,6 +67,11 @@ const devices = {
   DESKTOP: 1
 }
 
+const orientations = {
+  PORTRAIT: 0,
+  LANDSCAPE: 1
+}
+
 let animationMode = modes.SEQUENTIAL
 
 // animation params
@@ -84,13 +101,15 @@ function configDevice() {
     innerBorderDelta = 0.7
 
     setHexSize(22)
+    const btnDeltaX = 170
+    const btnDeltaY = 110
 
     $('#name').show()
     $('body').removeClass('mobile landscape portrait')
   }else {
     outerBorder = 5
-    baseInnerBorder = 7
-    innerBorderDelta = 1.2
+    baseInnerBorder = 0
+    innerBorderDelta = 0
 
     setHexSize(33)
     $('#name').hide()
@@ -215,23 +234,37 @@ function resizeCanvas() {
   cHeight = $hexes.height()
   const aspect = cWidth/cHeight
 
+  btnDeltaX = 170
+  btnDeltaY = 110
 
   if (aspect < 1) {
     let pixels = Math.max(minPixels, Math.min(cHeight, maxPixels))
     cWidth = pixels*aspect
     cHeight = pixels
 
-    if (deviceMode === devices.MOBILE) $('body')
-                         .removeClass('landscape')
-                         .addClass('portrait')
+    if (deviceMode === devices.MOBILE) {
+      mobileOrientation = orientations.PORTRAIT
+
+      $('body').removeClass('landscape')
+               .addClass('portrait')
+
+      btnDeltaX = 275
+      btnDeltaY = 400
+    }
   } else {
     let pixels = Math.max(minPixels, Math.min(cWidth, maxPixels))
     cHeight = pixels/aspect
     cWidth = pixels
 
-    if (deviceMode === devices.MOBILE) $('body')
-                         .removeClass('portrait')
-                         .addClass('landscape')
+    if (deviceMode === devices.MOBILE) {
+      mobileOrientation = orientations.LANDSCAPE
+
+      $('body').removeClass('portrait')
+               .addClass('landscape')
+
+      btnDeltaX = 300
+      btnDeltaY = 125
+    }
   }
 
   $hexes.attr({height:cHeight, width:cWidth})
@@ -253,13 +286,19 @@ function layoutButtons(animated, duration, callback) {
   const func = animated ? 'animate' : 'css'
   const btns = ['about', 'portfolio', 'resume', 'contact']
 
+  const baseStyle = deviceMode === devices.DESKTOP ?
+                      desktopBtnStyle :
+                      (mobileOrientation === orientations.PORTRAIT ?
+                        mobilePortraitStyle :
+                        mobileLandscapeStyle)
+
   for (let i = 0; i < 2; i++) {
     for (let j = 0; j < 2; j++) {
       const $btn = $(`#${btns[j+2*i]}`)
       const $border = $btn.find('.btn-border')
       const $background = $btn.find('.btn-background')
 
-      const style = Object.assign({}, defaultBtnStyle,
+      const style = Object.assign({}, baseStyle,
           {'top': `${y+btnDeltaY*(2*i-1)}px`,
           'left': `${x+btnDeltaX*(2*j-1)}px`})
 
