@@ -86,7 +86,7 @@ function configDevice() {
     setHexSize(22)
 
     $('#name').show()
-    $('body').removeClass('mobile')
+    $('body').removeClass('mobile landscape portrait')
   }else {
     outerBorder = 5
     baseInnerBorder = 7
@@ -181,7 +181,7 @@ $(document).ready(()=>{
       $background.animate({opacity: 0.75}, selectSpeed)
 
       // hide headshot and other buttons
-      $('#headshot').animate({opacity:0}, selectSpeed/16)
+      $('#headshot').animate({opacity:0}, selectSpeed/2)
       $('.btn:not(.selected)').each((index, otherBtn)=>{
         $(otherBtn).animate({opacity:0}, selectSpeed/2)
       })
@@ -192,7 +192,7 @@ $(document).ready(()=>{
     spinHexes(false)
     setTimeout(()=>{
       // fade headshot back in
-      $('#headshot').animate({opacity: 1}, selectSpeed/8)
+      $('#headshot').animate({opacity: 1}, selectSpeed)
 
       // rearrange buttons (includes fade-in and removing class)
       layoutButtons(true, selectSpeed,()=>{
@@ -220,10 +220,18 @@ function resizeCanvas() {
     let pixels = Math.max(minPixels, Math.min(cHeight, maxPixels))
     cWidth = pixels*aspect
     cHeight = pixels
+
+    if (deviceMode === devices.MOBILE) $('body')
+                         .removeClass('landscape')
+                         .addClass('portrait')
   } else {
     let pixels = Math.max(minPixels, Math.min(cWidth, maxPixels))
     cHeight = pixels/aspect
     cWidth = pixels
+
+    if (deviceMode === devices.MOBILE) $('body')
+                         .removeClass('portrait')
+                         .addClass('landscape')
   }
 
   $hexes.attr({height:cHeight, width:cWidth})

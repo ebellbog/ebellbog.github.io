@@ -42,11 +42,11 @@ body.mobile {
   z-index: 1;
   height: 180px;
   width: 180px;
-  border-radius: 120px;
+  border-radius: 300px;
   border: 9px solid tomato;
   overflow: hidden;
+  transition: transform 1.5s;
   transform: translate(-50%,-50%) rotate(0deg);
-  transition: all 1.5s;
   color: transparent;
 }
 
@@ -56,8 +56,20 @@ body.mobile {
 
 #headshot:hover {
   color: rgba(0,0,0,.75);
-  transition: all 1.5s;
+  transition: transform 1.5s;
   transform: translate(-50%,-50%) rotate(360deg);
+}
+
+.mobile.portrait #headshot {
+  width: 45vw;
+  height: 45vw;
+  border: 20px tomato solid;
+}
+
+.mobile.landscape #headshot {
+  width: 45vh;
+  height: 45vh;
+  border: 10px tomato solid;
 }
 
 #wheee {
@@ -69,6 +81,7 @@ body.mobile {
   bottom: 2px;
   left: 0;
   width: 100%;
+  transition: color 1.5s;
 }
 
 a {
