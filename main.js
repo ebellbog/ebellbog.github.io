@@ -40,14 +40,14 @@ const desktopBtnStyle = {
 }
 const mobilePortraitStyle = {
   'font-size': '7.75vw',
-  'width': '29vw',
-  'height': '29vw',
+  'width': '30vw',
+  'height': '30vw',
   'opacity': 1
 }
 const mobileLandscapeStyle = {
-  'font-size': '6.75vh',
-  'width': '27vh',
-  'height': '27vh',
+  'font-size': '7vh',
+  'width': '28vh',
+  'height': '28vh',
   'opacity': 1
 }
 
@@ -115,8 +115,6 @@ function configDevice() {
     innerBorderDelta = 0.7
 
     setHexSize(22)
-    const btnDeltaX = 170
-    const btnDeltaY = 110
 
     $('#name').show()
     $('body').removeClass('mobile landscape portrait')
@@ -150,9 +148,14 @@ function resetParams() {
   fadeProgress = 0
 
   currentView = views.HOME
+
+  $('#page-wrapper').css({display:'none', opacity: 0})
+                    .scrollTop(0)
 }
 
 $(document).ready(()=>{
+  window.scrollTo(0,1) // fullscreen hack
+
   $content = $('#content')
   $hexes = $('#hexes')
   $background = $('#background')
@@ -162,7 +165,6 @@ $(document).ready(()=>{
 
   ctxHex = getContext($hexes)
   ctxBack = getContext($background)
-
 
   $(window).resize(()=>{
     resetParams()
@@ -225,7 +227,9 @@ $(document).ready(()=>{
       $btn.animate(style, selectSpeed)
       $border.animate({opacity: 0}, selectSpeed)
       $background.animate(backgroundStyle, selectSpeed, ()=>{
-        $('#page-wrapper').animate({opacity:1}, pageFadeIn)
+        $('#page-wrapper').css({display:'block'})
+                          .scrollTop(0)
+                          .animate({opacity:1}, pageFadeIn)
       })
 
       // hide headshot and other buttons
@@ -240,6 +244,7 @@ $(document).ready(()=>{
     if (currentView === views.HOME) return
 
     $('#page-wrapper').animate({opacity: 0}, pageFadeOut, ()=>{
+      $('#page-wrapper').css({display: 'none'})
       spinHexes(false)
 
       setTimeout(()=>{
@@ -264,6 +269,11 @@ $(document).ready(()=>{
 })
 
 function resizeCanvas() {
+  if (deviceMode === devices.MOBILE) {
+    const vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+  }
+
   cWidth = $hexes.width()
   cHeight = $hexes.height()
   const aspect = cWidth/cHeight
@@ -282,8 +292,8 @@ function resizeCanvas() {
       $('body').removeClass('landscape')
                .addClass('portrait')
 
-      btnDeltaX = 275
-      btnDeltaY = 400
+      btnDeltaX = 20
+      btnDeltaY = 25
     }
   } else {
     let pixels = Math.max(minPixels, Math.min(cWidth, maxPixels))
@@ -296,8 +306,8 @@ function resizeCanvas() {
       $('body').removeClass('portrait')
                .addClass('landscape')
 
-      btnDeltaX = 300
-      btnDeltaY = 125
+      btnDeltaX = 20
+      btnDeltaY = 25
     }
   }
 
@@ -309,7 +319,7 @@ function resizeCanvas() {
   borderCols = Math.max(Math.floor((cWidth-500*scale)/
                (hexRadius*5)), 1)
   borderRows = Math.max(Math.floor((cHeight-275*scale)/
-               (hexRadius*5)), 1)
+               (hexRadius*5.5)), 1)
 }
 
 function layoutButtons(animated, duration, callback) {
@@ -332,9 +342,14 @@ function layoutButtons(animated, duration, callback) {
       const $border = $btn.find('.btn-border')
       const $background = $btn.find('.btn-background')
 
-      const style = Object.assign({}, baseStyle,
-          {'top': `${y+btnDeltaY*(2*i-1)}px`,
-          'left': `${x+btnDeltaX*(2*j-1)}px`})
+      let style = baseStyle
+      if (deviceMode === devices.DESKTOP) {
+        style['top'] = `${y+btnDeltaY*(2*i-1)}px`
+        style['left'] = `${x+btnDeltaX*(2*j-1)}px`
+      } else {
+        style['top'] = `${i < 1 ? btnDeltaY : 100-btnDeltaY}%`
+        style['left'] = `${j < 1 ? btnDeltaX : 100-btnDeltaX}%`
+      }
 
       $btn[func](style, duration, ()=>{
         $('.btn').removeClass('selected')

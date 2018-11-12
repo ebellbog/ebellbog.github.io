@@ -1,6 +1,7 @@
 body.mobile {
   background: none;
   background-color: #222;
+  height: calc(var(--vh, 1vh)*100);
 }
 
 .mobile.portrait #headshot {
@@ -86,20 +87,22 @@ body.mobile {
 }
 .mobile.portrait #links {
   font-size: 4vh;
-  width: 80%;
+  width: 70%;
 }
 .mobile.landscape #links {
-  font-size: 5vh;
-  width: 60%;
+  font-size: 5.5vh;
+  width: 50%;
 }
 
 .mobile .btn {
   padding: 20px;
 }
 .mobile.portrait .btn {
+  font-size: 7.75vw;
   animation-name: jiggle-mobile-portrait;
 }
 .mobile.landscape .btn {
+  font-size: 6.75vh;
   animation-name: jiggle-mobile-landscape;
 }
 
@@ -119,27 +122,27 @@ body.mobile {
 @keyframes jiggle-mobile-portrait {
   to {
     font-size: 7.75vw;
-    width: 29vw;
-    height: 29vw;
+    width: 30vw;
+    height: 30vw;
   }
 
   from {
     font-size: 9vw;
-    width: 31vw;
-    height: 31vw;
+    width: 32vw;
+    height: 32vw;
   }
 }
 @keyframes jiggle-mobile-landscape {
   to {
-    font-size: 6.75vh;
-    width: 27vh;
-    height: 27vh;
+    font-size: 7vh;
+    width: 28vh;
+    height: 28vh;
   }
 
   from {
-    font-size: 8vh;
-    width: 29vh;
-    height: 29vh;
+    font-size: 8.3vh;
+    width: 30vh;
+    height: 30vh;
   }
 }
 

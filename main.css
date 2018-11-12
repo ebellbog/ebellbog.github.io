@@ -10,6 +10,11 @@
   font-weight: 600;
 }
 
+html {
+  overflow: hidden;
+  position: relative;
+}
+
 body {
   background: repeating-linear-gradient(
    135deg,
@@ -21,6 +26,7 @@ body {
   height: 100vh;
   width: 100%;
   overflow: hidden;
+  position: relative;
   padding: 0;
   margin: 0;
 }
@@ -100,7 +106,7 @@ h3 {
 }
 
 #page-wrapper {
-  z-index: 2;
+  z-index: 6;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -113,11 +119,11 @@ h3 {
   height: 66%;
   overflow-y: scroll;
   overflow-x: hidden;
+  display: none;
   opacity: 0;
 }
 
 #page {
-  z-index: 2;
   position: absolute;
   top: 20px;
   left: 20px;
@@ -174,7 +180,7 @@ h3 {
 
 #links {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   height: 45px;
   width: 128px;
