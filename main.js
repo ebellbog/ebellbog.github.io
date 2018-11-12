@@ -17,6 +17,20 @@ const selectedBtnStyle = {
   'width': '250px',
   'height': '100px'
 }
+const mobilePortraitSelected = {
+  'top': '6.5vh',
+  'left': '50%',
+  'font-size': '15vw',
+  'width': '100vw',
+  'height': '13vh',
+}
+const mobileLandscapeSelected = {
+  'top': '6.9vh',
+  'left': '50%',
+  'font-size': '13vh',
+  'width': '100vw',
+  'height': '14vh',
+}
 
 const desktopBtnStyle = {
   'font-size': '32px',
@@ -24,14 +38,12 @@ const desktopBtnStyle = {
   'height': '118px',
   'opacity': 1
 }
-
 const mobilePortraitStyle = {
   'font-size': '7.75vw',
   'width': '29vw',
   'height': '29vw',
   'opacity': 1
 }
-
 const mobileLandscapeStyle = {
   'font-size': '6.75vh',
   'width': '27vh',
@@ -188,16 +200,26 @@ $(document).ready(()=>{
     const viewName = $btn.attr('id').toUpperCase()
     currentView = views[viewName]
 
-    spinColor = $background.css('background-color')
+    spinColor = colorForView(currentView)
     spinHexes(true)
+
+    const style = deviceMode === devices.DESKTOP ?
+                    selectedBtnStyle :
+                    (mobileOrientation === orientations.PORTRAIT ?
+                      mobilePortraitSelected :
+                      mobileLandscapeSelected)
+
+    const backgroundStyle = deviceMode === devices.DESKTOP ?
+                            {opacity: .75} :
+                            {'border-radius': 0}
 
     setTimeout(()=>{
       $btn.addClass('selected')
 
       // move selected button, fade border
-      $btn.animate(selectedBtnStyle, selectSpeed)
+      $btn.animate(style, selectSpeed)
       $border.animate({opacity: 0}, selectSpeed)
-      $background.animate({opacity: 0.75}, selectSpeed)
+      $background.animate(backgroundStyle, selectSpeed)
 
       // hide headshot and other buttons
       $('#headshot').animate({opacity:0}, selectSpeed/2)
@@ -308,7 +330,8 @@ function layoutButtons(animated, duration, callback) {
       })
 
       $border[func]({'opacity': 1}, duration)
-      $background[func]({'opacity': 1}, duration)
+      $background[func]({'opacity': 1, 'border-radius': '300px'},
+                         duration)
     }
   }
 
@@ -652,6 +675,27 @@ function randItem(list, remove) {
 
   if (remove) list.splice(index,1)
   return item
+}
+
+function colorForView(view) {
+  let color
+  switch(view) {
+    case views.ABOUT:
+      color = hexColors[2]
+      break
+    case views.PORTFOLIO:
+      color = hexColors[4]
+      break
+    case views.RESUME:
+      color = hexColors[3]
+      break
+    case views.CONTACT:
+      color = hexColors[1]
+      break
+    default:
+      break
+  }
+  return color
 }
 
 function randColor() {

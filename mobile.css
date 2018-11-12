@@ -28,6 +28,7 @@ body.mobile {
   min-height: 0;
   min-width: 0;
   margin: 0;
+  overflow: hidden;
 }
 
 .mobile #hexes {
