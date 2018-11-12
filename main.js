@@ -97,6 +97,8 @@ const waveSpeed = 1
 const fadeSpeed = 0.015
 const maxFade = .55
 const fadeDelay = 400
+const pageFadeIn = 2000
+const pageFadeOut = 500
 const animationDelay = 350 // for moves of the same hex
 const repetitionDelay = 800 // increase to reduce back-and-forth
 const staggerInterval = 280 // intial staggering of hexes
@@ -154,6 +156,9 @@ $(document).ready(()=>{
   $content = $('#content')
   $hexes = $('#hexes')
   $background = $('#background')
+  $page = $('#page')
+
+  $page.html(loremIpsum)
 
   ctxHex = getContext($hexes)
   ctxBack = getContext($background)
@@ -219,7 +224,9 @@ $(document).ready(()=>{
       // move selected button, fade border
       $btn.animate(style, selectSpeed)
       $border.animate({opacity: 0}, selectSpeed)
-      $background.animate(backgroundStyle, selectSpeed)
+      $background.animate(backgroundStyle, selectSpeed, ()=>{
+        $('#page-wrapper').animate({opacity:1}, pageFadeIn)
+      })
 
       // hide headshot and other buttons
       $('#headshot').animate({opacity:0}, selectSpeed/2)
@@ -230,16 +237,21 @@ $(document).ready(()=>{
   })
 
   $('body').click(()=>{
-    spinHexes(false)
-    setTimeout(()=>{
-      // fade headshot back in
-      $('#headshot').animate({opacity: 1}, selectSpeed)
+    if (currentView === views.HOME) return
 
-      // rearrange buttons (includes fade-in and removing class)
-      layoutButtons(true, selectSpeed,()=>{
-                      currentView = views.HOME
-                    })
-    }, selectDelay)
+    $('#page-wrapper').animate({opacity: 0}, pageFadeOut, ()=>{
+      spinHexes(false)
+
+      setTimeout(()=>{
+        // fade headshot back in
+        $('#headshot').animate({opacity: 1}, selectSpeed)
+
+        // rearrange buttons (includes fade-in and removing class)
+        layoutButtons(true, selectSpeed,()=>{
+                        currentView = views.HOME
+                      })
+      }, selectDelay)
+    })
   })
 
   $(document).keydown(function(e) {

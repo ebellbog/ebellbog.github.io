@@ -31,6 +31,42 @@ body.mobile {
   overflow: hidden;
 }
 
+.mobile #page-wrapper {
+  transform: none;
+  left: 0;
+  right: 0;
+  min-width: none;
+  max-width: none;
+  min-height: none;
+  max-height: none;
+  width: auto;
+  height: auto;
+}
+.mobile.portrait #page-wrapper {
+  top: 13vh;
+  bottom: 11vh;
+}
+.mobile.landscape #page-wrapper {
+  top: 14vh;
+  bottom: 15vh;
+}
+
+.mobile.portrait #page {
+  font-size: 5.5vw;
+  top: 7vw;
+  left: 7vw;
+  right: 7vw;
+  bottom: 7vw;
+}
+.mobile.landscape #page {
+  font-size: 5vh;
+  top: 6vh;
+  left: 6vh;
+  right: 6vh;
+  bottom: 6vh;
+}
+
+
 .mobile #hexes {
   opacity: 0.7;
 }

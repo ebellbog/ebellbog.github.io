@@ -29,7 +29,7 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  z-index: 1;
+  z-index: 5;
   height: 180px;
   width: 180px;
   border-radius: 300px;
@@ -99,10 +99,40 @@ h3 {
   margin: 5px 0 55px 0;
 }
 
+#page-wrapper {
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 575px;
+  min-width: 500px;
+  width: 75%;
+  min-height: 330px;
+  max-height: 400px;
+  height: 66%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  opacity: 0;
+}
+
+#page {
+  z-index: 2;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  height: auto;
+  color: white;
+  font-family: 'Pacifico', cursive;
+  font-size: 22px;
+  text-shadow: 2px 1px 0 rgba(0,0,0,.4);
+}
+
 #hexes {
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 3;
 }
 
 #background {
@@ -111,7 +141,7 @@ h3 {
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 1;
 }
 
 #name {
@@ -139,6 +169,7 @@ h3 {
   bottom: 0;
   left: 0;
   height: 66px;
+  z-index: 6;
 }
 
 #links {
@@ -165,7 +196,7 @@ h3 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 0;
+  z-index: 4;
   animation-name: jiggle;
   animation-duration: 1.2s;
   animation-iteration-count: infinite;
@@ -176,7 +207,7 @@ h3 {
 
 .btn.selected {
   animation: none;
-  z-index: 2;
+  z-index: 7;
 }
 
 .btn:not(.selected):hover {
