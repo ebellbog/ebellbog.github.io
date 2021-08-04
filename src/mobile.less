@@ -1,0 +1,192 @@
+body.mobile {
+    background: none;
+    background-color: #222;
+    height: calc(var(--vh, 1vh)*100);
+
+    #content {
+        height: 100vh;
+        min-height: 0;
+        min-width: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    #page-wrapper {
+        transform: none;
+        left: 0;
+        right: 0;
+        min-width: none;
+        max-width: none;
+        min-height: none;
+        max-height: none;
+        width: auto;
+        height: auto;
+    }
+
+    #hexes {
+        opacity: 0.7;
+    }
+
+    .btn {
+        padding: 20px;
+    }
+    .btn-border {
+        display: none;
+    }
+    .btn-background {
+        box-shadow: 0px 0px 35px 5px black;
+    }
+
+
+    #about .btn-background {
+        background: radial-gradient(
+            #d2ff69,
+            mediumaquamarine 70%
+        );
+    }
+    #resume .btn-background {
+        background: radial-gradient(
+            #4cf3c6,
+            mediumslateblue 80%
+        );
+    }
+    #portfolio .btn-background {
+        background: radial-gradient(
+            #b927f3,
+            magenta 65%
+        );
+    }
+    #contact .btn-background {
+        background: radial-gradient(
+            #f99f74,
+            #ee5 70%
+        );
+    }
+
+    #footer {
+        background-color: rgba(0,0,0,.7);
+    }
+
+    #links {
+        background-color: transparent;
+    }
+
+    &.portrait {
+        #headshot {
+            width: 45vw;
+            height: 45vw;
+            border: 20px tomato solid;
+            box-shadow: 0px 0px 55px 5px black;
+        }
+
+        #wheee {
+            font-size: 4.5vh;
+        }
+
+        #page-wrapper {
+            top: 13vh;
+            bottom: 11vh;
+        }
+        #page {
+            font-size: 5.5vw;
+            top: 7vw;
+            left: 7vw;
+            right: 7vw;
+            bottom: 7vw;
+        }
+
+        .btn {
+            font-size: 7.75vw;
+            animation-name: jiggle-mobile-portrait;
+            &:not(.selected):hover {
+                animation: none;
+                font-size: 10vw!important;
+                width: 32vw!important;
+                height: 32vw!important;
+            }
+        }
+        .label {
+            text-shadow: 4px 2px 0 #222;
+        }
+
+        #footer {
+            height: 11vh;
+        }
+        #links {
+            font-size: 4vh;
+            width: 70%;
+        }
+    }
+
+    &.landscape {
+        #headshot {
+            width: 45vh;
+            height: 45vh;
+            border: 10px tomato solid;
+            box-shadow: 0px 0px 40px 3px black;
+        }
+
+        #wheee {
+            font-size: 4.5vw;
+        }
+
+        #page-wrapper {
+            top: 14vh;
+            bottom: 15vh;
+        }
+        #page {
+            font-size: 5vh;
+            top: 6vh;
+            left: 6vh;
+            right: 6vh;
+            bottom: 6vh;
+        }
+
+        .btn {
+            font-size: 6.75vh;
+            animation-name: jiggle-mobile-landscape;
+            &:not(.selected):hover {
+                animation: none;
+                font-size: 9vh!important;
+                width: 31vh!important;
+                height: 31vh!important;
+            }
+        }
+
+        #footer {
+            height: 15vh;
+        }
+        #links {
+            font-size: 5.5vh;
+            width: 50%;
+        }
+    }
+}
+
+@keyframes jiggle-mobile-portrait {
+    to {
+        font-size: 7.75vw;
+        width: 30vw;
+        height: 30vw;
+    }
+
+    from {
+        font-size: 9vw;
+        width: 32vw;
+        height: 32vw;
+    }
+}
+
+@keyframes jiggle-mobile-landscape {
+    to {
+        font-size: 7vh;
+        width: 28vh;
+        height: 28vh;
+    }
+
+    from {
+        font-size: 8.3vh;
+        width: 30vh;
+        height: 30vh;
+    }
+}
