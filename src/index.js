@@ -5,6 +5,7 @@ import loremIpsum from './lorem.js';
 /** config **/
 
 const hexColors = ['tomato', '#ee5', 'mediumaquamarine', 'mediumslateblue', 'magenta']
+const colorClasses = ['red', 'yellow', 'green', 'blue', 'purple'];
 
 const holes = .2 // percent
 
@@ -605,12 +606,17 @@ function clearSvg() {
     $svgHexes.find('polygon').remove();
 }
 
-function drawSvgHex(x, y, color) {
+function drawSvgHex(x, y) {
     const path = getHexPath(x, y, hexRadius);
+    const borderPercent = .2;
     $(createSvg('polygon'))
         .attr('points', path.map((p) => `${p.x},${p.y}`).join(' '))
-        .addClass('hex')
-        .css('fill', color)
+        .addClass(`hex ${randColorClass()}`)
+        .css({
+            'stroke-width': hexRadius * borderPercent,
+            transform:  `scale(${1 / (1 + borderPercent / 2)})`,
+            'transform-origin': `${x}px ${y}px`,
+        })
         .appendTo($svgHexes);
 }
 
@@ -812,6 +818,9 @@ function colorForView(view) {
 
 function randColor() {
     return randItem(hexColors)
+}
+function randColorClass() {
+    return randItem(colorClasses);
 }
 
 function centerForCoords(row, col) {

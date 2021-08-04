@@ -15,26 +15,7 @@
         </div>
         <canvas width=500 height=500 id="hexes" class="fullscreen"></canvas>
         <canvas width=500 height=500 id="background" class="fullscreen"></canvas>
-        <svg id="svg-hexes" class="fullscreen">
-            <defs>
-                <filter id='inner-stroke' x='-50%' y='-50%' width='200%' height='200%'>
-                    <!--inside-stroke-->
-                    <feFlood flood-color="rgba(0, 0, 0, 0.5)" result="inside-color"/>
-                    <feComposite in2="SourceAlpha" operator="in" result="inside-stroke"/>
-                    <!--fill-area-->
-                    <feMorphology in="SourceAlpha" operator="erode" id="erode" radius="3.5"/>
-                    <feComposite in="SourceGraphic" operator="in" result="fill-area"/>
-                    <!--merge graphics-->
-                    <feMerge>
-                        <feMergeNode in="SourceGraphic" />
-                        <feMergeNode in="inside-stroke" />
-                        <feMergeNode in="fill-area" />
-                    </feMerge>
-                </filter>
-                <!-- <animate xlink:href="#erode" attributeName="radius"
-                from="2" to="4" dur="1s" begin="0s" repeatCount="indefinite"/> -->
-            </defs>
-        </svg>
+        <svg id="svg-hexes" class="fullscreen"></svg>
         <div id="headshot">
             <div id="wheee">Wheee!</div>
             <img src="../img/elana.jpg"></img>

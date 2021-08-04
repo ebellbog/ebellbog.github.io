@@ -1,3 +1,9 @@
+@red: tomato;
+@yellow: #ee5;
+@green: mediumaquamarine;
+@blue: mediumslateblue;
+@purple: magenta;
+
 @font-face {
     font-family: 'Amatic SC';
     src: url('../fonts/AmaticSC-Regular.ttf');
@@ -39,7 +45,7 @@ body {
     height: 180px;
     width: 180px;
     border-radius: 300px;
-    border: 9px solid tomato;
+    border: 9px solid @red;
     overflow: hidden;
     transition: transform 1.5s;
     transform: translate(-50%,-50%) rotate(0deg);
@@ -141,19 +147,40 @@ h3 {
 
 #hexes {
     z-index: 3;
-    display: none;
 }
 #background {
     z-index: 1;
+}
+
+.hex-color(@color) {
+    fill: @color;
+    stroke: desaturate(darken(@color, 15%), 25%);
 }
 #svg-hexes {
     z-index: 3;
 
     .hex {
-        filter: url('#inner-stroke');
         cursor: pointer;
+
+        &.red {
+            .hex-color(@red);
+        }
+        &.yellow {
+            .hex-color(@yellow);
+        }
+        &.green {
+            .hex-color(@green);
+        }
+        &.blue {
+            .hex-color(@blue);
+        }
+        &.purple {
+            .hex-color(@purple);
+        }
+
         &:hover {
-            fill: white!important;
+            fill: white;
+            stroke: #aaa;
         }
     }
 }
@@ -164,7 +191,7 @@ h3 {
     left: 17px;
     font-family: 'Pacifico', cursive;
     font-size: 1.3em;
-    color: magenta;
+    color: @purple;
     text-shadow: 1px 1px 0 white;
     opacity: .8;
     user-select: none;
@@ -228,19 +255,19 @@ h3 {
 }
 #about {
     animation-delay: 0s;
-    .colored-btn(mediumaquamarine);
+    .colored-btn(@green);
 }
 #portfolio {
     animation-delay: .4s;
-    .colored-btn(magenta);
+    .colored-btn(@purple);
 }
 #contact {
     animation-delay: .8s;
-    .colored-btn(#ee5);
+    .colored-btn(@yellow);
 }
 #resume {
     animation-delay: 1.2s;
-    .colored-btn(mediumslateblue);
+    .colored-btn(@blue);
 }
 
 .label {
