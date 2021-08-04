@@ -108,7 +108,7 @@ const sequenceInterval = 375 // between sequential hexes
 
 // global variables
 
-let $hexes, $background, $page;
+let $hexes, $background, $svgHexes;
 
 let ctxHex, ctxBack;
 let cWidth, cHeight;
@@ -131,44 +131,51 @@ let currentHoleIndex, lastMove;
 /** setup **/
 
 $(document).ready(() => {
-    window.scrollTo(0, 1) // fullscreen hack
+    window.scrollTo(0, 1); // fullscreen hack
 
-    // $content = $('#content'
-    $hexes = $('#hexes')
-    $background = $('#background')
-    $page = $('#page')
+    $hexes = $('#hexes');
+    $background = $('#background');
+    $svgHexes = $('#svg-hexes');
 
-    $page.html(loremIpsum)
+    $('#page').html(loremIpsum);
 
-    ctxHex = getContext($hexes)
-    ctxBack = getContext($background)
+    ctxHex = getContext($hexes);
+    ctxBack = getContext($background);
 
-    $(window).resize(() => {
-        resetParams()
-        configDevice()
+    $(window).resize(_.debounce(() => {
+        resetParams();
+        configDevice();
 
-        resizeCanvas()
-        generateGrid(deviceMode === devices.DESKTOP)
+        resizeCanvas();
+        generateGrid(deviceMode === devices.DESKTOP);
 
-        layoutButtons()
-        $('#headshot').css({ opacity: 1 })
+        layoutButtons();
+        $('#headshot').css({ opacity: 1 });
 
         if (animationMode == modes.STAGGERED ||
             animationMode == modes.SEQUENTIAL)
-            animationStatus = statuses.STOPPED
-    })
+            animationStatus = statuses.STOPPED;
 
-    resetParams()
-    configDevice()
+        clearSvg();
+        setupSvg();
+    }, 600));
 
-    resizeCanvas()
-    layoutButtons(true, layoutSpeed)
-    generateGrid(deviceMode === devices.DESKTOP)
+    resetParams();
+    configDevice();
 
-    animationStatus = statuses.STOPPED
+    resizeCanvas();
+    layoutButtons(true, layoutSpeed);
+    generateGrid(deviceMode === devices.DESKTOP);
 
-    animationId = requestAnimationFrame(update)
+    animationStatus = statuses.STOPPED;
+    // animationId = requestAnimationFrame(update);
 
+    setupSvg();
+
+    hookEvents();
+})
+
+function hookEvents() {
     $('.btn').click((e) => {
         e.stopPropagation()
         if (!currentView == views.HOME) return
@@ -244,7 +251,7 @@ $(document).ready(() => {
             //spinHexes(false)
         }
     })
-})
+}
 
 function configDevice() {
     deviceMode = isMobileDevice() ? devices.MOBILE : devices.DESKTOP
@@ -422,7 +429,13 @@ function generateGrid(asFrame) {
 }
 
 /** draw methods **/
-// TODO: replace with SVG
+
+function getOffsets(width, height) {
+    return [
+        (cWidth - hexWidth * (width - 1)) / 2,
+        (cHeight - hexHeight * (height - 1)) / 2
+    ];
+}
 
 function redraw() {
     ctxHex.clearRect(0, 0, cWidth, cHeight)
@@ -430,9 +443,6 @@ function redraw() {
 
     const width = grid[0].length
     const height = grid.length
-
-    const offsetX = (cWidth - hexWidth * (width - 1)) / 2
-    const offsetY = (cHeight - hexHeight * (height - 1)) / 2
 
     if (fadeStart && Date.now() > fadeStart) {
         fadeStart = false
@@ -453,7 +463,9 @@ function redraw() {
     }
 
 
+    const [offsetX, offsetY] = getOffsets(width, height);
     let animating = false
+
     grid.forEach((row, i) => {
         row.forEach((hex, j) => {
             if (hex.hole ||
@@ -510,7 +522,7 @@ function redraw() {
             }
 
             drawHex(center[0] + offsetX, center[1] + offsetY,
-                hex.color, scale, hex.filler, hex.spinProgress)
+                hex.color, scale, hex.filler, hex.spinProgress);
         })
     })
 
@@ -579,8 +591,55 @@ function tracePath(ctx, path) {
 
     ctx.beginPath()
     ctx.moveTo(start.x, start.y)
-    path.map(p => ctx.lineTo(p.x, p.y))
+    path.forEach(p => ctx.lineTo(p.x, p.y))
     ctx.closePath()
+}
+
+/** SVG methods **/
+
+function createSvg(element) {
+    return document.createElementNS('http://www.w3.org/2000/svg', element);
+}
+
+function clearSvg() {
+    $svgHexes.find('polygon').remove();
+}
+
+function drawSvgHex(x, y, color) {
+    const path = getHexPath(x, y, hexRadius);
+    $(createSvg('polygon'))
+        .attr('points', path.map((p) => `${p.x},${p.y}`).join(' '))
+        .addClass('hex')
+        .css('fill', color)
+        .appendTo($svgHexes);
+}
+
+function setupSvg() {
+    const width = grid[0].length;
+    const height = grid.length;
+
+    const svgScale = $hexes.outerWidth() / $hexes.attr('width');
+    const [offsetX, offsetY] = getOffsets(width, height);
+
+    const oldRadius = hexRadius;
+    const oldBorder = outerBorder;
+
+    outerBorder = outerBorder * svgScale;
+    setHexSize(oldRadius * svgScale);
+
+    grid.forEach((row, i) => {
+        row.forEach((hex, j) => {
+            if (hex.hole ||
+                (hex.filler && fadeProgress <= 0))
+                return
+
+            const center = centerForCoords(i, j);
+            drawSvgHex(center[0] + offsetX * svgScale, center[1] + offsetY * svgScale, hex.color);
+        });
+    });
+
+    outerBorder = oldBorder;
+    setHexSize(oldRadius);
 }
 
 /** actions **/
@@ -607,7 +666,7 @@ function update() {
     }
     else if (animationMode == modes.SEQUENTIAL) {
         if (animationStatus == statuses.STOPPED) {
-            startSequencing()
+            // startSequencing()
         } else if (animationStatus == statuses.RUNNING &&
             Date.now() - lastMove > sequenceInterval) {
             const holes = getHoles()
