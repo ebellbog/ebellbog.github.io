@@ -162,6 +162,9 @@ h3 {
     .hex {
         cursor: pointer;
 
+        transition: transform 2s, stroke-width .8s, stroke .6s, fill .6s;
+        transition-delay: 0s, .3s, .5s, .5s;
+
         &.red {
             .hex-color(@red);
         }
@@ -178,9 +181,9 @@ h3 {
             .hex-color(@purple);
         }
 
-        &:hover {
-            fill: white;
-            stroke: #aaa;
+        &.spin {
+            transform: rotate3d(0, 1, 0, 180deg) scale(1.15)!important;
+            stroke-width: 0!important;
         }
     }
 }
@@ -321,15 +324,14 @@ h3 {
 }
 
 @keyframes jiggle {
-    to {
-        font-size: 30px;
-        width: 116px;
-        height: 116px;
-    }
-
     from {
         font-size: 34px;
         width: 124px;
         height: 124px;
+    }
+    to {
+        font-size: 30px;
+        width: 116px;
+        height: 116px;
     }
 }

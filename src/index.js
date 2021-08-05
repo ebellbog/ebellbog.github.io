@@ -245,13 +245,10 @@ function hookEvents() {
         })
     })
 
-    $(document).keydown(function (e) {
-        if (e.which === 32) {
-            //spinHexes(true)
-        } else if (e.which === 13) {
-            //spinHexes(false)
-        }
-    })
+    $('.hex').on('click', (e) => {
+        const colorClass = $(e.target).attr('class').split(' ')[1];
+        spinSvgHexes(colorClass);
+    });
 }
 
 function configDevice() {
@@ -606,12 +603,12 @@ function clearSvg() {
     $svgHexes.find('polygon').remove();
 }
 
-function drawSvgHex(x, y) {
+function drawSvgHex(x, y, color) {
     const path = getHexPath(x, y, hexRadius);
     const borderPercent = .2;
-    $(createSvg('polygon'))
+    return $(createSvg('polygon'))
         .attr('points', path.map((p) => `${p.x},${p.y}`).join(' '))
-        .addClass(`hex ${randColorClass()}`)
+        .addClass(`hex ${color}`)
         .css({
             'stroke-width': hexRadius * borderPercent,
             transform:  `scale(${1 / (1 + borderPercent / 2)})`,
@@ -640,7 +637,8 @@ function setupSvg() {
                 return
 
             const center = centerForCoords(i, j);
-            drawSvgHex(center[0] + offsetX * svgScale, center[1] + offsetY * svgScale, hex.color);
+            const $hex = drawSvgHex(center[0] + offsetX * svgScale, center[1] + offsetY * svgScale, hex.color);
+            Object.assign(hex, {$hex});
         });
     });
 
@@ -704,8 +702,7 @@ function spinHexes(forwards) {
 
     fadeStart = Date.now() + fadeDelay
 
-    let origin = forwards ? [0, 0] : [grid.length,
-    grid[grid.length - 1].length]
+    let origin = forwards ? [0, 0] : [grid.length, grid[grid.length - 1].length];
     origin = centerForCoords(...origin)
 
     grid.forEach((row, i) => {
@@ -718,6 +715,34 @@ function spinHexes(forwards) {
             const dist = getDist(origin, center, true)
 
             hex.spinStart = Date.now() + dist * waveSpeed
+        })
+    })
+}
+
+function spinSvgHexes(color) {
+    spinDirection = -spinDirection;
+
+    const forwards = Boolean(spinDirection + 1);
+    const origin = centerForCoords(...(forwards ? [0, 0] : [grid.length, grid[grid.length - 1].length]));
+
+    grid.forEach((row, i) => {
+        row.forEach((hex, j) => {
+            if (hex.hole || hex.filler) return
+
+            hex.isStatic = true
+
+            const center = centerForCoords(i, j)
+            const dist = getDist(origin, center, true)
+
+            setTimeout(() => {
+                const {$hex} = hex;
+                $hex.removeClass(`spin ${colorClasses.join(' ')}`);
+                if (forwards) {
+                    $hex.addClass(`spin ${color}`);
+                } else {
+                    $hex.addClass(hex.color);
+                }
+            }, dist * 2);
         })
     })
 }
@@ -844,7 +869,7 @@ function getDist(p1, p2, manhattan) {
 
 function generateHex() {
     return {
-        color: randColor(),
+        color: randColorClass(),
         animating: false,
         spinning: false,
         lastAnimated: 0,
