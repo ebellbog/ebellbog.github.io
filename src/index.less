@@ -1,5 +1,5 @@
 @red: tomato;
-@yellow: #ee5;
+@yellow:#ee5;
 @green: mediumaquamarine;
 @blue: mediumslateblue;
 @purple: magenta;
@@ -152,10 +152,6 @@ h3 {
     z-index: 1;
 }
 
-.hex-color(@color) {
-    fill: @color;
-    stroke: desaturate(darken(@color, 15%), 25%);
-}
 #svg-hexes {
     z-index: 3;
 
@@ -165,27 +161,41 @@ h3 {
         transition: transform 2s, stroke-width .8s, stroke .6s, fill .6s;
         transition-delay: 0s, .3s, .5s, .5s;
 
-        &.red {
-            .hex-color(@red);
-        }
-        &.yellow {
-            .hex-color(@yellow);
-        }
-        &.green {
-            .hex-color(@green);
-        }
-        &.blue {
-            .hex-color(@blue);
-        }
-        &.purple {
-            .hex-color(@purple);
-        }
-
         &.spin {
             transform: rotate3d(0, 1, 0, 180deg) scale(1.15)!important;
             stroke-width: 0!important;
         }
+        &.moving {
+            transition: transform .35s!important;
+        }
     }
+}
+
+.color-class(@color) {
+    fill: @color;
+    stroke: desaturate(darken(@color, 15%), 25%);
+
+    .btn-background {
+        background-color: @color;
+    }
+    .btn-border {
+        border: @color 2px solid;
+    }
+}
+.red {
+    .color-class(@red);
+}
+.yellow {
+    .color-class(@yellow);
+}
+.green {
+    .color-class(@green);
+}
+.blue {
+    .color-class(@blue);
+}
+.purple {
+    .color-class(@purple);
 }
 
 #name {
@@ -248,29 +258,17 @@ h3 {
     border-radius: 300px;
 }
 
-.colored-btn(@color) {
-    .btn-background {
-        background-color: @color;
-    }
-    .btn-border {
-        border: @color 2px solid;
-    }
-}
 #about {
     animation-delay: 0s;
-    .colored-btn(@green);
 }
 #portfolio {
     animation-delay: .4s;
-    .colored-btn(@purple);
 }
 #contact {
     animation-delay: .8s;
-    .colored-btn(@yellow);
 }
 #resume {
     animation-delay: 1.2s;
-    .colored-btn(@blue);
 }
 
 .label {

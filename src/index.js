@@ -107,6 +107,9 @@ const repetitionDelay = 800 // increase to reduce back-and-forth
 const staggerInterval = 280 // intial staggering of hexes
 const sequenceInterval = 375 // between sequential hexes
 
+const BORDER_PERCENT = .2;
+const HEX_SCALE = 1 / (1 + BORDER_PERCENT / 2);
+
 // global variables
 
 let $hexes, $background, $svgHexes;
@@ -129,6 +132,9 @@ let btnDeltaX, btnDeltaY;
 let grid, borderCols, borderRows;
 let currentHoleIndex, lastMove;
 
+let offsetX, offsetY;
+let svgScale;
+
 /** setup **/
 
 $(document).ready(() => {
@@ -149,6 +155,7 @@ $(document).ready(() => {
 
         resizeCanvas();
         generateGrid(deviceMode === devices.DESKTOP);
+        setOffsets();
 
         layoutButtons();
         $('#headshot').css({ opacity: 1 });
@@ -167,6 +174,7 @@ $(document).ready(() => {
     resizeCanvas();
     layoutButtons(true, layoutSpeed);
     generateGrid(deviceMode === devices.DESKTOP);
+    setOffsets();
 
     animationStatus = statuses.STOPPED;
     // animationId = requestAnimationFrame(update);
@@ -177,23 +185,23 @@ $(document).ready(() => {
 })
 
 function hookEvents() {
-    $('.btn').click((e) => {
-        e.stopPropagation()
+    $('.btn').on('click', (e) => {
+        e.stopPropagation();
+
         if (!currentView == views.HOME) return
 
-        // $btn is itself, or highest parent with .btn class
-        let $btn = $(e.target)
-        const parents = $(e.target).parents('.btn')
-        $btn = parents.length > 0 ? parents.last() : $btn
-
+        const $btn = $(e.currentTarget);
         const $btnBackground = $btn.find('.btn-background')
         const $border = $btn.find('.btn-border')
 
         const viewName = $btn.attr('id').toUpperCase()
         currentView = views[viewName]
 
-        spinColor = colorForView(currentView)
-        spinHexes(true)
+        const colorClass = $(e.currentTarget).attr('class').split(' ')[1];
+        spinSvgHexes(colorClass);
+
+        // spinColor = colorForView(currentView)
+        // spinHexes(true)
 
         const style = deviceMode === devices.DESKTOP ?
             selectedBtnStyle :
@@ -231,7 +239,7 @@ function hookEvents() {
 
         $('#page-wrapper').animate({ opacity: 0 }, pageFadeOut, () => {
             $('#page-wrapper').css({ display: 'none' })
-            spinHexes(false)
+            spinSvgHexes()
 
             setTimeout(() => {
                 // fade headshot back in
@@ -245,9 +253,39 @@ function hookEvents() {
         })
     })
 
-    $('.hex').on('click', (e) => {
-        const colorClass = $(e.target).attr('class').split(' ')[1];
-        spinSvgHexes(colorClass);
+    // Just for fun ;)
+    $('body').on('mouseover', '.hex:not(.moving, .spin)', (e) => {
+        const $hex = $(e.target);
+
+        const row = parseInt($hex.attr('data-row'));
+        const col = parseInt($hex.attr('data-col'));
+
+        const neighboringHoles = getNeighbors(row, col, true);
+        const holeCoords = randItem(neighboringHoles);
+
+        if (holeCoords) {
+            const holeCenter = centerForCoords(...holeCoords, true);
+            const myCenter = centerForCoords(row, col, true);
+
+            const deltaX = myCenter[0] - holeCenter[0];
+            const deltaY = myCenter[1] - holeCenter[1];
+
+            $hex
+                .addClass('moving') // Prevent further interaction until animation complete
+                .css('transform', `translate(${-deltaX / 2}px, ${-deltaY / 2}px) scale(${HEX_SCALE * .7})`);
+
+            // Swap hole & hex in grid
+            const [holeRow, holeCol] = holeCoords;
+            [grid[row][col], grid[holeRow][holeCol]] = [grid[holeRow][holeCol], grid[row][col]];
+
+            setTimeout(() => {
+                $hex.css('transform', `translate(${-deltaX}px, ${-deltaY}px) scale(${HEX_SCALE})`);
+            }, 350);
+            setTimeout(() => {
+                $hex.removeClass('moving');
+                updateSvgHex($hex, holeCoords);
+            }, 700);
+        }
     });
 }
 
@@ -351,6 +389,8 @@ function resizeCanvas() {
 
     borderCols = Math.max(Math.floor((cWidth - 500 * scale) / (hexRadius * 5)), 1)
     borderRows = Math.max(Math.floor((cHeight - 275 * scale) / (hexRadius * 5.5)), 1)
+
+    svgScale = $hexes.outerWidth() / $hexes.attr('width');
 }
 
 function layoutButtons(animated, duration, callback) {
@@ -433,6 +473,11 @@ function getOffsets(width, height) {
         (cWidth - hexWidth * (width - 1)) / 2,
         (cHeight - hexHeight * (height - 1)) / 2
     ];
+}
+
+function setOffsets() {
+    offsetX = (cWidth - hexWidth * (grid[0].length - 1)) / 2,
+    offsetY = (cHeight - hexHeight * (grid.length - 1)) / 2
 }
 
 function redraw() {
@@ -603,32 +648,40 @@ function clearSvg() {
     $svgHexes.find('polygon').remove();
 }
 
-function drawSvgHex(x, y, color) {
+function drawSvgHex([x, y], color) {
     const path = getHexPath(x, y, hexRadius);
-    const borderPercent = .2;
     return $(createSvg('polygon'))
         .attr('points', path.map((p) => `${p.x},${p.y}`).join(' '))
         .addClass(`hex ${color}`)
         .css({
-            'stroke-width': hexRadius * borderPercent,
-            transform:  `scale(${1 / (1 + borderPercent / 2)})`,
+            'stroke-width': hexRadius * BORDER_PERCENT,
+            transform:  `scale(${HEX_SCALE})`,
             'transform-origin': `${x}px ${y}px`,
         })
         .appendTo($svgHexes);
 }
 
+function updateSvgHex($hex, [newRow, newCol]) {
+    const [newX, newY] = centerForCoords(newRow, newCol, true);
+    const newPath = getHexPath(newX, newY, hexRadius);
+
+    $hex
+        .css({
+            transition: 'none',
+            transform: `scale(${HEX_SCALE})`,
+            'transform-origin': `${newX}px ${newY}px`,
+        })
+        .attr({
+            'points': newPath.map((p) => `${p.x},${p.y}`).join(' '),
+            'data-row': newRow,
+            'data-col': newCol,
+        });
+    setTimeout(() => $hex.css('transition', ''), 350);
+}
+
 function setupSvg() {
-    const width = grid[0].length;
-    const height = grid.length;
-
-    const svgScale = $hexes.outerWidth() / $hexes.attr('width');
-    const [offsetX, offsetY] = getOffsets(width, height);
-
-    const oldRadius = hexRadius;
-    const oldBorder = outerBorder;
-
     outerBorder = outerBorder * svgScale;
-    setHexSize(oldRadius * svgScale);
+    setHexSize(hexRadius * svgScale);
 
     grid.forEach((row, i) => {
         row.forEach((hex, j) => {
@@ -636,14 +689,17 @@ function setupSvg() {
                 (hex.filler && fadeProgress <= 0))
                 return
 
-            const center = centerForCoords(i, j);
-            const $hex = drawSvgHex(center[0] + offsetX * svgScale, center[1] + offsetY * svgScale, hex.color);
+            const center = centerForCoords(i, j, true);
+            const $hex = drawSvgHex(center, hex.color);
+            $hex.attr({'data-row': i, 'data-col': j});
             Object.assign(hex, {$hex});
         });
     });
+}
 
-    outerBorder = oldBorder;
-    setHexSize(oldRadius);
+function moveSvgHex(hex) {
+    const {$hex} = hex;
+    console.log($hex.attr('data-col')); 
 }
 
 /** actions **/
@@ -670,7 +726,7 @@ function update() {
     }
     else if (animationMode == modes.SEQUENTIAL) {
         if (animationStatus == statuses.STOPPED) {
-            // startSequencing()
+            startSequencing()
         } else if (animationStatus == statuses.RUNNING &&
             Date.now() - lastMove > sequenceInterval) {
             const holes = getHoles()
@@ -742,7 +798,7 @@ function spinSvgHexes(color) {
                 } else {
                     $hex.addClass(hex.color);
                 }
-            }, dist * 2);
+            }, dist * 1.2);
         })
     })
 }
@@ -848,11 +904,11 @@ function randColorClass() {
     return randItem(colorClasses);
 }
 
-function centerForCoords(row, col) {
+function centerForCoords(row, col, usingSvg = false) {
     const centerX = hexWidth * (col + .5 * (row % 2))
     const centerY = hexHeight * row
 
-    return [centerX, centerY]
+    return [centerX + offsetX * (usingSvg ? svgScale : 1), centerY + offsetY * (usingSvg ? svgScale : 1)]
 }
 
 function getDist(p1, p2, manhattan) {
@@ -929,7 +985,7 @@ function hexForCoords(coords) {
     return grid[coords[0]][coords[1]]
 }
 
-function getNeighbors(row, col) {
+function getNeighbors(row, col, getHoles = false) {
     const neighbors = []
     if (col > 0) {
         neighbors.push([row, col - 1])
@@ -967,6 +1023,6 @@ function getNeighbors(row, col) {
     }
 
     return neighbors.filter((n) => {
-        if (!hexForCoords(n).hole) return n
+        if (hexForCoords(n).hole === getHoles) return n
     })
 }
