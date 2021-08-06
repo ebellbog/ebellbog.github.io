@@ -156,8 +156,6 @@ h3 {
     z-index: 3;
 
     .hex {
-        cursor: pointer;
-
         transition: transform 2s, stroke-width .8s, stroke .6s, fill .6s;
         transition-delay: 0s, .3s, .5s, .5s;
 
@@ -167,6 +165,7 @@ h3 {
         }
         &.moving {
             transition: transform .35s!important;
+            transition-timing-function: linear;
         }
     }
 }
@@ -301,8 +300,14 @@ h3 {
     height: 66px;
     z-index: 6;
 
-    .svg-inline--fa:hover{
-        color: #ee5;
+    a:nth-child(1):hover path {
+        color: @green;
+    }
+    a:nth-child(2):hover path {
+        color: @purple;
+    }
+    a:nth-child(3):hover path {
+        color: @red;
     }
 }
 

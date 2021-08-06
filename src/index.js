@@ -180,6 +180,7 @@ $(document).ready(() => {
     // animationId = requestAnimationFrame(update);
 
     setupSvg();
+    startSvgSequencing();
 
     hookEvents();
 })
@@ -264,27 +265,7 @@ function hookEvents() {
         const holeCoords = randItem(neighboringHoles);
 
         if (holeCoords) {
-            const holeCenter = centerForCoords(...holeCoords, true);
-            const myCenter = centerForCoords(row, col, true);
-
-            const deltaX = myCenter[0] - holeCenter[0];
-            const deltaY = myCenter[1] - holeCenter[1];
-
-            $hex
-                .addClass('moving') // Prevent further interaction until animation complete
-                .css('transform', `translate(${-deltaX / 2}px, ${-deltaY / 2}px) scale(${HEX_SCALE * .7})`);
-
-            // Swap hole & hex in grid
-            const [holeRow, holeCol] = holeCoords;
-            [grid[row][col], grid[holeRow][holeCol]] = [grid[holeRow][holeCol], grid[row][col]];
-
-            setTimeout(() => {
-                $hex.css('transform', `translate(${-deltaX}px, ${-deltaY}px) scale(${HEX_SCALE})`);
-            }, 350);
-            setTimeout(() => {
-                $hex.removeClass('moving');
-                updateSvgHex($hex, holeCoords);
-            }, 700);
+            moveSvgHex([row, col], holeCoords);
         }
     });
 }
@@ -679,6 +660,37 @@ function updateSvgHex($hex, [newRow, newCol]) {
     setTimeout(() => $hex.css('transition', ''), 350);
 }
 
+function moveSvgHex(hexCoords, holeCoords) {
+    const hexCenter = centerForCoords(...hexCoords, true);
+    const holeCenter = centerForCoords(...holeCoords, true);
+
+    const deltaX = hexCenter[0] - holeCenter[0];
+    const deltaY = hexCenter[1] - holeCenter[1];
+
+    const {$hex} = hexForCoords(hexCoords);
+    $hex
+        .addClass('moving') // Prevent further interaction until animation complete
+        .css('transform', `translate(${-deltaX / 2}px, ${-deltaY / 2}px) scale(${HEX_SCALE * .7})`);
+
+    // Delay other hexes from moving into this hole while first hex is still leaving
+    const hole = hexForCoords(holeCoords);
+    hole.isStatic = true;
+
+    // Swap hole & hex in grid
+    const [hexRow, hexCol] = hexCoords;
+    const [holeRow, holeCol] = holeCoords;
+    [grid[hexRow][hexCol], grid[holeRow][holeCol]] = [grid[holeRow][holeCol], grid[hexRow][hexCol]];
+
+    setTimeout(() => {
+        $hex.css('transform', `translate(${-deltaX}px, ${-deltaY}px) scale(${HEX_SCALE})`);
+        hole.isStatic = false;
+    }, 350);
+    setTimeout(() => {
+        $hex.removeClass('moving');
+        updateSvgHex($hex, holeCoords); // Update actual SVG path, clear transformation
+    }, 700);
+}
+
 function setupSvg() {
     outerBorder = outerBorder * svgScale;
     setHexSize(hexRadius * svgScale);
@@ -697,9 +709,21 @@ function setupSvg() {
     });
 }
 
-function moveSvgHex(hex) {
-    const {$hex} = hex;
-    console.log($hex.attr('data-col')); 
+function startSvgSequencing() {
+    setInterval(() => {
+        const holes = getHoles();
+        let hole, hex;
+        while (holes.length && !(hole && hex)) {
+            hole = randItem(holes, true);
+            if (!hole) return;
+
+            const neighbors = getNeighbors(...hole.coords);
+            if (neighbors.length) {
+                hex = randItem(neighbors);
+            }
+        }
+        if (hex && hole) moveSvgHex(hex, hole.coords);
+    }, 600);
 }
 
 /** actions **/
@@ -785,17 +809,18 @@ function spinSvgHexes(color) {
         row.forEach((hex, j) => {
             if (hex.hole || hex.filler) return
 
-            hex.isStatic = true
+            if (forwards) hex.isStatic = true; // Halt other animations
 
             const center = centerForCoords(i, j)
             const dist = getDist(origin, center, true)
 
             setTimeout(() => {
                 const {$hex} = hex;
-                $hex.removeClass(`spin ${colorClasses.join(' ')}`);
+                $hex.removeClass(`spin ${colorClasses.join(' ')}`); // Reset all color & animation classes
                 if (forwards) {
                     $hex.addClass(`spin ${color}`);
                 } else {
+                    hex.isStatic = false; // Resume animations
                     $hex.addClass(hex.color);
                 }
             }, dist * 1.2);
@@ -955,7 +980,7 @@ function generateFiller() {
 function getHoles(readyToAnimate) {
     return grid.reduce((a, b, i) => {
         return a.concat(b.filter((h, j) => {
-            if (h.hole && !h.empty) {
+            if (h.hole && !h.isStatic) {
                 if (readyToAnimate &&
                     (h.animating ||
                         Date.now() - h.lastAnimated < animationDelay))
@@ -985,7 +1010,7 @@ function hexForCoords(coords) {
     return grid[coords[0]][coords[1]]
 }
 
-function getNeighbors(row, col, getHoles = false) {
+function getNeighbors(row, col, getHoles) {
     const neighbors = []
     if (col > 0) {
         neighbors.push([row, col - 1])
@@ -1023,6 +1048,7 @@ function getNeighbors(row, col, getHoles = false) {
     }
 
     return neighbors.filter((n) => {
-        if (hexForCoords(n).hole === getHoles) return n
+        const hex = hexForCoords(n);
+        if (hex.hole === getHoles && !hex.isStatic) return n
     })
 }
