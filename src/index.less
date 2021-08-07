@@ -154,19 +154,32 @@ h3 {
 
 #svg-hexes {
     z-index: 3;
+}
+#fillers {
+    opacity: 0;
+    transition: opacity 3s;
 
-    .hex {
-        transition: transform 2s, stroke-width .8s, stroke .6s, fill .6s;
-        transition-delay: 0s, .3s, .5s, .5s;
+    &.show {
+        opacity: .5;
+    }
+}
 
-        &.spin {
-            transform: rotate3d(0, 1, 0, 180deg) scale(1.15)!important;
-            stroke-width: 0!important;
-        }
-        &.moving {
-            transition: transform .35s!important;
-            transition-timing-function: linear;
-        }
+.hex {
+    transition: transform 2s, stroke-width .8s, stroke .6s, fill .6s;
+    transition-delay: 0s, .3s, .5s, .5s;
+
+    &.spin {
+        transform: rotate3d(0, 1, 0, 180deg) scale(1.15)!important;
+        stroke-width: 0!important;
+    }
+    &.moving {
+        transition: transform .35s!important;
+        transition-timing-function: linear;
+    }
+    &.filler {
+        fill: transparent;
+        stroke: transparent;
+        transition: unset;
     }
 }
 
@@ -179,6 +192,10 @@ h3 {
     }
     .btn-border {
         border: @color 2px solid;
+    }
+    &.filler {
+        fill: @color;
+        stroke: @color;
     }
 }
 .red {

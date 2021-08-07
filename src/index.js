@@ -254,8 +254,7 @@ function hookEvents() {
         })
     })
 
-    // Just for fun ;)
-    $('body').on('mouseover', '.hex:not(.moving, .spin)', (e) => {
+    $('body').on('mouseover', '.hex:not(.moving, .spin, .filler)', (e) => {
         const $hex = $(e.target);
 
         const row = parseInt($hex.attr('data-row'));
@@ -626,7 +625,7 @@ function createSvg(element) {
 }
 
 function clearSvg() {
-    $svgHexes.find('polygon').remove();
+    $svgHexes.find('g, polygon').remove();
 }
 
 function drawSvgHex([x, y], color) {
@@ -636,10 +635,15 @@ function drawSvgHex([x, y], color) {
         .addClass(`hex ${color}`)
         .css({
             'stroke-width': hexRadius * BORDER_PERCENT,
-            transform:  `scale(${HEX_SCALE})`,
+            transform:  `scale(${getDefaultScale(color)})`,
             'transform-origin': `${x}px ${y}px`,
         })
         .appendTo($svgHexes);
+}
+
+function getDefaultScale(color) {
+    if (color === 'filler' || deviceMode === devices.MOBILE) return 1;
+    else return HEX_SCALE;
 }
 
 function updateSvgHex($hex, [newRow, newCol]) {
@@ -649,7 +653,7 @@ function updateSvgHex($hex, [newRow, newCol]) {
     $hex
         .css({
             transition: 'none',
-            transform: `scale(${HEX_SCALE})`,
+            transform:  `scale(${getDefaultScale()})`,
             'transform-origin': `${newX}px ${newY}px`,
         })
         .attr({
@@ -682,7 +686,7 @@ function moveSvgHex(hexCoords, holeCoords) {
     [grid[hexRow][hexCol], grid[holeRow][holeCol]] = [grid[holeRow][holeCol], grid[hexRow][hexCol]];
 
     setTimeout(() => {
-        $hex.css('transform', `translate(${-deltaX}px, ${-deltaY}px) scale(${HEX_SCALE})`);
+        $hex.css('transform', `translate(${-deltaX}px, ${-deltaY}px) scale(${getDefaultScale()})`);
         hole.isStatic = false;
     }, 350);
     setTimeout(() => {
@@ -695,18 +699,24 @@ function setupSvg() {
     outerBorder = outerBorder * svgScale;
     setHexSize(hexRadius * svgScale);
 
+    const $fillers = [];
     grid.forEach((row, i) => {
         row.forEach((hex, j) => {
-            if (hex.hole ||
-                (hex.filler && fadeProgress <= 0))
-                return
+            if (hex.hole) return;
 
             const center = centerForCoords(i, j, true);
             const $hex = drawSvgHex(center, hex.color);
             $hex.attr({'data-row': i, 'data-col': j});
             Object.assign(hex, {$hex});
+
+            if (hex.filler) $fillers.push($hex);
         });
     });
+
+    // Group fillers together for smoother fading, using parent element
+    const $fillerGroup = $(createSvg('g')).attr('id', 'fillers');
+    $fillers.forEach(($filler) => $filler.detach().appendTo($fillerGroup));
+    $fillerGroup.appendTo($svgHexes);
 }
 
 function startSvgSequencing() {
@@ -807,7 +817,17 @@ function spinSvgHexes(color) {
 
     grid.forEach((row, i) => {
         row.forEach((hex, j) => {
-            if (hex.hole || hex.filler) return
+            if (hex.hole) return
+
+            const {$hex} = hex;
+            const allColors = colorClasses.join(' ');
+
+            if (hex.filler) {
+                if (forwards) {
+                    $hex.removeClass(allColors).addClass(color);
+                }
+                return;
+            }
 
             if (forwards) hex.isStatic = true; // Halt other animations
 
@@ -815,8 +835,7 @@ function spinSvgHexes(color) {
             const dist = getDist(origin, center, true)
 
             setTimeout(() => {
-                const {$hex} = hex;
-                $hex.removeClass(`spin ${colorClasses.join(' ')}`); // Reset all color & animation classes
+                $hex.removeClass(`spin ${allColors}`); // Reset all color & animation classes
                 if (forwards) {
                     $hex.addClass(`spin ${color}`);
                 } else {
@@ -825,7 +844,9 @@ function spinSvgHexes(color) {
                 }
             }, dist * 1.2);
         })
-    })
+    });
+
+    $('#fillers').toggleClass('show', forwards);
 }
 
 function fillHoles() {
@@ -972,6 +993,7 @@ function generateHole() {
 
 function generateFiller() {
     return {
+        color: 'filler',
         filler: true,
         isStatic: true,
     }
@@ -1049,6 +1071,8 @@ function getNeighbors(row, col, getHoles) {
 
     return neighbors.filter((n) => {
         const hex = hexForCoords(n);
-        if (hex.hole === getHoles && !hex.isStatic) return n
-    })
+        if (hex.isStatic) return false;
+        if (getHoles) return hex.hole;
+        else return !hex.hole && !hex.$hex.hasClass('moving');
+    });
 }
