@@ -355,6 +355,10 @@ body {
   }
 }
 
+body.mobile {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+}
 body.mobile #content {
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
