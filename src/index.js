@@ -2,37 +2,30 @@ import './index.less';
 import './mobile.less';
 import loremIpsum from './lorem.js';
 
-const colorClasses = ['red', 'yellow', 'green', 'blue', 'purple'];
+/** constants **/
 
-/** config **/
+const COLOR_CLASSES = ['red', 'yellow', 'green', 'blue', 'purple'];
 
-const HOLES_PERCENT = .2 // percent
-
-const MAX_PIXELS = 1000
-const MIN_PIXELS = 600
-
-const HEX_BORDER_PERCENT = .2;
-const HEX_SCALE = 1 / (1 + HEX_BORDER_PERCENT / 2); // maintain constant overall hex size, regardless of border width
-
-const DEBOUNCE_DURATION = 500;
+const OUTER_BORDER_PERCENT = .17; // spacing between hexes, as percent of hex radius
+const INNER_BORDER_PERCENT = .2; // darkened inset border, as percent of hex radius
+const HEX_SCALE = 1 / (1 + INNER_BORDER_PERCENT / 2); // maintain constant overall hex size, regardless of inner border width
 
 /** global variables **/
 
 let $svgHexes, $content;
 
-let cWidth, cHeight;
+let svgWidth, svgHeight;
+
 let isMobile;
 
-let outerBorder;
 let hexRadius, hexWidth, hexHeight;
 
 let grid;
-let borderCols, borderRows;
 let offsetX, offsetY;
 
 let lastResize;
 
-/** setup **/
+/** setup functions **/
 
 $(document).ready(() => {
     window.scrollTo(0, 1); // fullscreen hack
@@ -43,8 +36,10 @@ $(document).ready(() => {
     $('#page').html(loremIpsum);
 
     $(window).on('resize', () => {
+        const DEBOUNCE_DURATION = 500;
+
         const resize = () => {
-            resizeCanvas();
+            configDevice();
             generateGrid();
 
             clearSvg();
@@ -56,10 +51,9 @@ $(document).ready(() => {
         }
 
         const wasMobile = isMobile;
-        configDevice();
-
-        if (wasMobile || isMobile) {
-            resize(); // Don't debounce when rotating mobile device
+        if (wasMobile || isMobileDevice()) {
+             // Don't debounce when rotating mobile device
+            setTimeout(resize, 0);
         } else {
             lastResize = Date.now();
             setTimeout(() => {
@@ -70,8 +64,6 @@ $(document).ready(() => {
     });
 
     configDevice();
-
-    resizeCanvas();
     generateGrid();
 
     setupSvg();
@@ -122,213 +114,7 @@ function hookEvents() {
     });
 }
 
-function configDevice() {
-    isMobile = isMobileDevice();
-
-    if (!isMobile) {
-        outerBorder = 3.6
-        setHexSize(22)
-
-        $('body').removeClass('mobile landscape portrait')
-    } else {
-        outerBorder = 5
-        setHexSize(33)
-
-        $('body').addClass('mobile')
-    }
-}
-
-function setHexSize(size) {
-    hexRadius = size
-
-    const xDelta = hexRadius * Math.cos(Math.PI / 6)
-    const yDelta = hexRadius * (1 + Math.sin(Math.PI / 6))
-
-    hexWidth = xDelta * 2 + outerBorder
-    hexHeight = yDelta + outerBorder
-}
-
-function resizeCanvas() {
-    if (isMobile) {
-        const vh = window.innerHeight * 0.01
-        document.documentElement.style.setProperty('--vh', `${vh}px`)
-    }
-
-    cWidth = $svgHexes.width()
-    cHeight = $svgHexes.height()
-    const aspect = cWidth / cHeight
-
-    if (aspect < 1) {
-        const pixels = Math.max(MIN_PIXELS, Math.min(cHeight, MAX_PIXELS))
-        cWidth = pixels * aspect
-        cHeight = pixels
-
-        if (isMobile) {
-            $('body')
-                .removeClass('landscape')
-                .addClass('portrait')
-        }
-    } else {
-        let pixels = Math.max(MIN_PIXELS, Math.min(cWidth, MAX_PIXELS))
-        cHeight = pixels / aspect
-        cWidth = pixels
-
-        if (isMobile) {
-            $('body')
-                .removeClass('portrait')
-                .addClass('landscape')
-        }
-    }
-
-    $svgHexes.attr('viewBox', `0 0 ${cWidth} ${cHeight}`);
-
-    const scale = cHeight / $svgHexes.height();
-    borderCols = Math.max(Math.floor((cWidth - 500 * scale) / (hexRadius * 5)), 1)
-    borderRows = Math.max(Math.floor((cHeight - 275 * scale) / (hexRadius * 5.5)), 1)
-}
-
-function generateGrid() {
-    let width = Math.floor(cWidth / hexWidth)
-    let height = Math.floor(cHeight / (hexHeight + outerBorder / 3))
-
-    grid = []
-    for (let i = 0; i < height; i++) {
-        let row = []
-
-        for (let j = 0; j < width - i % 2; j++) {
-
-            let newHex
-
-            if (!isMobile && (
-                (i >= borderRows && i <= height - borderRows - 1) &&
-                (j >= borderCols && j <= width - borderCols - i % 2 - 1)
-            )) {
-                newHex = generateFiller()
-            }
-            else if (Math.random() > 1 - HOLES_PERCENT) {
-                newHex = generateHole()
-            } else {
-                newHex = generateHex()
-            }
-
-            row.push(newHex)
-        }
-
-        grid.push(row)
-    }
-
-    // Update offsets (for centering) based on new grid dimensions
-    offsetX = (cWidth - hexWidth * (grid[0].length - 1)) / 2,
-    offsetY = (cHeight - hexHeight * (grid.length - 1)) / 2
-}
-
-/** draw methods **/
-
-function getHexPath(x, y, size, spin) {
-    const rotation = Math.PI / 6
-    const path = []
-
-    for (let i = 0; i < 6; i++) {
-        const angle = i * Math.PI / 3 + rotation
-
-        let ptY = y + size * Math.sin(angle)
-        let ptX = x + size * Math.cos(angle)
-
-        if (spin) {
-            if (ptX > x + .01) {
-                ptY = y + (ptY - y) * (1 - Math.sin(spin) * .25)
-            } else if (ptX < x - .01) {
-                ptY = y + (ptY - y) * (.25 * Math.sin(spin) + 1)
-            }
-            ptX = x + (ptX - x) * Math.cos(spin)
-
-        }
-
-        path.push({ x: ptX, y: ptY })
-    }
-    return path
-}
-
-/** SVG methods **/
-
-function createSvg(element) {
-    return document.createElementNS('http://www.w3.org/2000/svg', element);
-}
-
-function clearSvg() {
-    $svgHexes.find('g, polygon').remove();
-}
-
-function drawSvgHex([x, y], color) {
-    const path = getHexPath(x, y, hexRadius);
-    return $(createSvg('polygon'))
-        .attr('points', path.map((p) => `${p.x},${p.y}`).join(' '))
-        .addClass(`hex ${color}`)
-        .css({
-            'stroke-width': hexRadius * HEX_BORDER_PERCENT,
-            transform:  `scale(${getDefaultScale(color)})`,
-            'transform-origin': `${x}px ${y}px`,
-        })
-        .appendTo($svgHexes);
-}
-
-function getDefaultScale(color) {
-    if (color === 'filler' || isMobile) return 1;
-    else return HEX_SCALE;
-}
-
-function updateSvgHex($hex, [newRow, newCol]) {
-    const [newX, newY] = centerForCoords(newRow, newCol, true);
-    const newPath = getHexPath(newX, newY, hexRadius);
-
-    $hex
-        .css({
-            transition: 'none',
-            transform:  `scale(${getDefaultScale()})`,
-            'transform-origin': `${newX}px ${newY}px`,
-        })
-        .attr({
-            'points': newPath.map((p) => `${p.x},${p.y}`).join(' '),
-            'data-row': newRow,
-            'data-col': newCol,
-        });
-    setTimeout(() => $hex.css('transition', ''), 350);
-}
-
-function moveSvgHex(hexCoords, holeCoords) {
-    const hexCenter = centerForCoords(...hexCoords, true);
-    const holeCenter = centerForCoords(...holeCoords, true);
-
-    const deltaX = hexCenter[0] - holeCenter[0];
-    const deltaY = hexCenter[1] - holeCenter[1];
-
-    const {$hex} = hexForCoords(hexCoords);
-    $hex
-        .addClass('moving') // Prevent further interaction until animation complete
-        .css('transform', `translate(${-deltaX / 2}px, ${-deltaY / 2}px) scale(${HEX_SCALE * .6})`);
-
-    // Delay other hexes from moving into this hole while first hex is still leaving
-    const hole = hexForCoords(holeCoords);
-    hole.isStatic = true;
-
-    // Swap hole & hex in grid
-    const [hexRow, hexCol] = hexCoords;
-    const [holeRow, holeCol] = holeCoords;
-    [grid[hexRow][hexCol], grid[holeRow][holeCol]] = [grid[holeRow][holeCol], grid[hexRow][hexCol]];
-
-    setTimeout(() => {
-        $hex.css('transform', `translate(${-deltaX}px, ${-deltaY}px) scale(${getDefaultScale()})`);
-        hole.isStatic = false;
-    }, 200);
-    setTimeout(() => {
-        $hex.removeClass('moving');
-        updateSvgHex($hex, holeCoords); // Update actual SVG path, clear transformation
-    }, 700);
-}
-
 function setupSvg() {
-    setHexSize(hexRadius);
-
     const $fillers = [];
     grid.forEach((row, i) => {
         row.forEach((hex, j) => {
@@ -349,144 +135,100 @@ function setupSvg() {
     $fillerGroup.appendTo($svgHexes);
 }
 
-function startSvgSequencing() {
-    setInterval(() => {
-        const holes = getHoles();
-        let hole, hex;
-        while (holes.length && !(hole && hex)) {
-            hole = randItem(holes, true);
-            if (!hole) return;
+/** resize functions */
 
-            const neighbors = getNeighbors(...hole.coords);
-            if (neighbors.length) {
-                hex = randItem(neighbors);
-            }
-        }
-        if (hex && hole) moveSvgHex(hex, hole.coords);
-    }, 600);
-}
+function configDevice() {
+    isMobile = isMobileDevice();
+    if (isMobile) {
+        const vh = window.innerHeight * 0.01
+        document.documentElement.style.setProperty('--vh', `${vh}px`)
+    }
 
-/** actions **/
+    svgWidth = $svgHexes.width()
+    svgHeight = $svgHexes.height()
+    const aspect = svgWidth / svgHeight
 
-function spinSvgHexes(color, doAnimate = true) {
-    const forwards = Boolean(color);
-    const origin = centerForCoords(...(forwards ? [0, 0] : [grid.length, grid[grid.length - 1].length]));
+    const $body = $('body');
+    $body.removeClass('mobile landscape portrait');
 
-    grid.forEach((row, i) => {
-        row.forEach((hex, j) => {
-            if (hex.hole) return
-
-            const {$hex} = hex;
-            const allColors = colorClasses.join(' ');
-
-            if (hex.filler) {
-                if (forwards) {
-                    $hex.removeClass(allColors).addClass(color);
-                }
-                return;
-            }
-
-            if (forwards) hex.isStatic = true; // Halt other animations
-
-            const center = centerForCoords(i, j)
-            const dist = getDist(origin, center, true)
-
-            setTimeout(() => {
-                $hex.removeClass(`spin ${allColors} no-animation`); // Reset all color & animation classes
-                if (forwards) {
-                    $hex.addClass(`spin ${color}${doAnimate ? '' : ' no-animation'}`);
-                } else {
-                    hex.isStatic = false; // Resume animations
-                    $hex.addClass(hex.color);
-                }
-            }, dist * (doAnimate ? 1.1 : 0));
-        })
-    });
-
-    $('#fillers').toggleClass('show', forwards);
-}
-
-/**  helper methods **/
-
-function isMobileDevice() {
-    return (navigator.userAgent.match(/Android/i)
-        || navigator.userAgent.match(/webOS/i)
-        || navigator.userAgent.match(/iPhone/i)
-        || navigator.userAgent.match(/iPad/i)
-        || navigator.userAgent.match(/iPod/i)
-        || navigator.userAgent.match(/BlackBerry/i)
-        || navigator.userAgent.match(/Windows Phone/i)
-    ) ? true : false
-}
-
-function randItem(list, remove) {
-    if (!list.length) return false
-
-    const index = Math.floor(Math.random() * list.length)
-    const item = list[index]
-
-    if (remove) list.splice(index, 1)
-    return item
-}
-
-function randColorClass() {
-    return randItem(colorClasses);
-}
-
-function getColorClass($el) {
-    const allColors = colorClasses.join(' ');
-    const validColors = $el.attr('class').split(' ').filter((color) => colorClasses.includes(color));
-    if (validColors.length) return validColors[0];
-}
-
-function centerForCoords(row, col, usingSvg = false) {
-    const centerX = hexWidth * (col + .5 * (row % 2));
-    const centerY = hexHeight * row;
-
-    return [centerX + offsetX, centerY + offsetY];
-}
-
-function getDist(p1, p2, manhattan) {
-    let dist
-    if (manhattan) {
-        dist = Math.abs(p2[1] - p1[1]) + Math.abs(p2[0] - p1[0])
+    if (!isMobile) {
+        setHexSize(32);
     } else {
-        dist = Math.sqrt(
-            Math.pow(p2[0] - p1[0], 2) +
-            Math.pow(p2[1] - p1[1], 2))
-    }
-    return dist
-}
-
-function generateHex() {
-    return {
-        color: randColorClass(),
+        setHexSize(aspect < 1 ? 58 : 34);
+        $body.addClass(`mobile ${aspect < 1 ? 'portrait' : 'landscape'}`);
     }
 }
 
-function generateHole() {
-    return {
-        hole: true,
-    }
+function setHexSize(size) {
+    hexRadius = size;
+
+    const xDelta = hexRadius * Math.cos(Math.PI / 6);
+    const yDelta = hexRadius * (1 + Math.sin(Math.PI / 6));
+
+    hexWidth = xDelta * 2 + hexRadius * OUTER_BORDER_PERCENT;
+    hexHeight = yDelta + hexRadius * OUTER_BORDER_PERCENT;
 }
 
-function generateFiller() {
-    return {
-        color: 'filler',
-        filler: true,
-        isStatic: true,
-    }
-}
+/** grid functions **/
 
-function getHoles() {
-    return grid.reduce((a, b, i) => {
-        return a.concat(b.filter((h, j) => {
-            if (h.hole && !h.isStatic) {
-                h.coords = [i, j]
-                return h
+function generateGrid() {
+    // Minimum space to reserve in center of grid for buttons etc
+    const UI_WIDTH = 575;
+    const UI_HEIGHT = 275;
+
+    // Min/max dimensions of hex border around central UI
+    const MIN_BORDER = 1;
+    const MAX_BORDER = 6;
+
+    const borderCols = constrainValue(Math.floor((svgWidth - UI_WIDTH) / (hexRadius * 5)), MIN_BORDER, MAX_BORDER);
+    const borderRows = constrainValue(Math.floor((svgHeight - UI_HEIGHT) / (hexRadius * 5.5)), MIN_BORDER, MAX_BORDER);
+
+    const width = Math.floor(svgWidth / hexWidth);
+    const height = Math.floor(svgHeight / (hexHeight + hexRadius * OUTER_BORDER_PERCENT / 3));
+
+    const HOLES_PERCENT = .2;
+
+    grid = [];
+    for (let i = 0; i < height; i++) {
+        let row = [];
+
+        for (let j = 0; j < width - i % 2; j++) {
+            let newHex;
+
+            if (!isMobile && (
+                (i >= borderRows && i <= height - borderRows - 1) &&
+                (j >= borderCols && j <= width - borderCols - i % 2 - 1)
+            )) {
+                newHex = {
+                    color: 'filler',
+                    filler: true,
+                    isStatic: true,
+                };
             }
-        }))
-    }, [])
+            else if (Math.random() > 1 - HOLES_PERCENT) {
+                newHex = {hole: true};
+            } else {
+                newHex = {color: randColorClass()};
+            }
+
+            row.push(newHex);
+        }
+        grid.push(row);
+    }
+
+    // Update offsets (for centering) based on new grid dimensions
+    offsetX = (svgWidth - hexWidth * (width - 1)) / 2;
+    offsetY = (svgHeight - hexHeight * (height - 1)) / 2;
+
+    // Update page wrapper, based on grid dimensions
+    const $pageWrapper = $('#page-wrapper');
+    if (isMobile) {
+        $pageWrapper.css({width: 'unset', height: 'unset'});
+    } else {
+        const usableWidth = (width - borderCols * 2) * hexWidth ;
+        const usableHeight = (height - borderRows * 2 - 1) * hexHeight;
+        $pageWrapper.css({width:  usableWidth, height: usableHeight});
+    }
 }
 
 function hexForCoords(coords) {
@@ -536,4 +278,236 @@ function getNeighbors(row, col, getHoles) {
         if (getHoles) return hex.hole;
         else return !hex.hole && !hex.$hex.hasClass('moving');
     });
+}
+
+function getHoles() {
+    return grid.reduce((a, b, i) => {
+        return a.concat(b.filter((h, j) => {
+            if (h.hole && !h.isStatic) {
+                h.coords = [i, j]
+                return h
+            }
+        }))
+    }, [])
+}
+
+/** geometry functions **/
+
+function centerForCoords(row, col, usingSvg = false) {
+    const centerX = hexWidth * (col + .5 * (row % 2));
+    const centerY = hexHeight * row;
+
+    return [centerX + offsetX, centerY + offsetY];
+}
+
+function getDist(p1, p2, manhattan) {
+    let dist
+    if (manhattan) {
+        dist = Math.abs(p2[1] - p1[1]) + Math.abs(p2[0] - p1[0])
+    } else {
+        dist = Math.sqrt(
+            Math.pow(p2[0] - p1[0], 2) +
+            Math.pow(p2[1] - p1[1], 2))
+    }
+    return dist
+}
+
+/** render functions **/
+
+function createSvg(element) {
+    return document.createElementNS('http://www.w3.org/2000/svg', element);
+}
+
+function clearSvg() {
+    $svgHexes.find('g, polygon').remove();
+}
+
+function getHexPath(x, y, size, spin) {
+    const rotation = Math.PI / 6
+    const path = []
+
+    for (let i = 0; i < 6; i++) {
+        const angle = i * Math.PI / 3 + rotation
+
+        let ptY = y + size * Math.sin(angle)
+        let ptX = x + size * Math.cos(angle)
+
+        if (spin) {
+            if (ptX > x + .01) {
+                ptY = y + (ptY - y) * (1 - Math.sin(spin) * .25)
+            } else if (ptX < x - .01) {
+                ptY = y + (ptY - y) * (.25 * Math.sin(spin) + 1)
+            }
+            ptX = x + (ptX - x) * Math.cos(spin)
+
+        }
+
+        path.push({ x: ptX, y: ptY })
+    }
+    return path
+}
+
+function drawSvgHex([x, y], color) {
+    const path = getHexPath(x, y, hexRadius);
+    return $(createSvg('polygon'))
+        .attr('points', path.map((p) => `${p.x},${p.y}`).join(' '))
+        .addClass(`hex ${color}`)
+        .css({
+            'stroke-width': hexRadius * INNER_BORDER_PERCENT,
+            transform:  `scale(${getDefaultScale(color)})`,
+            'transform-origin': `${x}px ${y}px`,
+        })
+        .appendTo($svgHexes);
+}
+
+function updateSvgHex($hex, [newRow, newCol]) {
+    const [newX, newY] = centerForCoords(newRow, newCol, true);
+    const newPath = getHexPath(newX, newY, hexRadius);
+
+    $hex
+        .css({
+            transition: 'none',
+            transform:  `scale(${getDefaultScale()})`,
+            'transform-origin': `${newX}px ${newY}px`,
+        })
+        .attr({
+            'points': newPath.map((p) => `${p.x},${p.y}`).join(' '),
+            'data-row': newRow,
+            'data-col': newCol,
+        });
+    setTimeout(() => $hex.css('transition', ''), 350);
+}
+
+function getDefaultScale(color) {
+    if (color === 'filler' || isMobile) return 1;
+    else return HEX_SCALE;
+}
+
+/** actions **/
+
+function spinSvgHexes(color, doAnimate = true) {
+    const forwards = Boolean(color);
+    const origin = centerForCoords(...(forwards ? [0, 0] : [grid.length, grid[grid.length - 1].length]));
+
+    grid.forEach((row, i) => {
+        row.forEach((hex, j) => {
+            if (hex.hole) return
+
+            const {$hex} = hex;
+            const allColors = COLOR_CLASSES.join(' ');
+
+            if (hex.filler) {
+                if (forwards) {
+                    $hex.removeClass(allColors).addClass(color);
+                }
+                return;
+            }
+
+            if (forwards) hex.isStatic = true; // Halt other animations
+
+            const center = centerForCoords(i, j)
+            const dist = getDist(origin, center, true)
+
+            setTimeout(() => {
+                $hex.removeClass(`spin ${allColors} no-animation`); // Reset all color & animation classes
+                if (forwards) {
+                    $hex.addClass(`spin ${color}${doAnimate ? '' : ' no-animation'}`);
+                } else {
+                    hex.isStatic = false; // Resume animations
+                    $hex.addClass(hex.color);
+                }
+            }, dist * (doAnimate ? 1.1 : 0));
+        })
+    });
+
+    $('#fillers').toggleClass('show', forwards);
+}
+
+function moveSvgHex(hexCoords, holeCoords) {
+    const hexCenter = centerForCoords(...hexCoords, true);
+    const holeCenter = centerForCoords(...holeCoords, true);
+
+    const deltaX = hexCenter[0] - holeCenter[0];
+    const deltaY = hexCenter[1] - holeCenter[1];
+
+    const {$hex} = hexForCoords(hexCoords);
+    $hex
+        .addClass('moving') // Prevent further interaction until animation complete
+        .css('transform', `translate(${-deltaX / 2}px, ${-deltaY / 2}px) scale(${HEX_SCALE * .6})`);
+
+    // Delay other hexes from moving into this hole while first hex is still leaving
+    const hole = hexForCoords(holeCoords);
+    hole.isStatic = true;
+
+    // Swap hole & hex in grid
+    const [hexRow, hexCol] = hexCoords;
+    const [holeRow, holeCol] = holeCoords;
+    [grid[hexRow][hexCol], grid[holeRow][holeCol]] = [grid[holeRow][holeCol], grid[hexRow][hexCol]];
+
+    setTimeout(() => {
+        $hex.css('transform', `translate(${-deltaX}px, ${-deltaY}px) scale(${getDefaultScale()})`);
+        hole.isStatic = false;
+    }, 200);
+    setTimeout(() => {
+        $hex.removeClass('moving');
+        updateSvgHex($hex, holeCoords); // Update actual SVG path, clear transformation
+    }, 700);
+}
+
+function startSvgSequencing() {
+    setInterval(() => {
+        const holes = getHoles();
+        let hole, hex;
+        while (holes.length && !(hole && hex)) {
+            hole = randItem(holes, true);
+            if (!hole) return;
+
+            const neighbors = getNeighbors(...hole.coords);
+            if (neighbors.length) {
+                hex = randItem(neighbors);
+            }
+        }
+        if (hex && hole) moveSvgHex(hex, hole.coords);
+    }, 600);
+}
+
+/**  helper functions **/
+
+function isMobileDevice() {
+    return (navigator.userAgent.match(/Android/i)
+        || navigator.userAgent.match(/webOS/i)
+        || navigator.userAgent.match(/iPhone/i)
+        || navigator.userAgent.match(/iPad/i)
+        || navigator.userAgent.match(/iPod/i)
+        || navigator.userAgent.match(/BlackBerry/i)
+        || navigator.userAgent.match(/Windows Phone/i)
+    ) ? true : false
+}
+
+function constrainValue(val, min, max) {
+    if (min) {
+        val = Math.max(val, min);
+    } if (max) {
+        val = Math.min(val, max);
+    }
+    return val;
+}
+
+function randItem(list, remove) {
+    if (!list.length) return false
+
+    const index = Math.floor(Math.random() * list.length)
+    const item = list[index]
+
+    if (remove) list.splice(index, 1)
+    return item
+}
+
+function randColorClass() {
+    return randItem(COLOR_CLASSES);
+}
+
+function getColorClass($el) {
+    const validColors = $el.attr('class').split(' ').filter((color) => COLOR_CLASSES.includes(color));
+    if (validColors.length) return validColors[0];
 }

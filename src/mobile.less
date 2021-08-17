@@ -19,14 +19,6 @@ body.mobile {
 
         left: 0;
         right: 0;
-
-        min-width: none;
-        max-width: none;
-        width: auto;
-
-        min-height: none;
-        max-height: none;
-        height: auto;
     }
 
     #svg-hexes {
@@ -129,20 +121,16 @@ body.mobile {
 
         #page-wrapper {
             top: 9vh;
-            bottom: 11vh;
+            bottom: 10vh;
 
             #page {
-                font-size: 46px;
+                font-size: 40px;
                 line-height: 55px;
-
-                top: 7vw;
-                left: 7vw;
-                right: 7vw;
-                bottom: 7vw;
+                padding-top: 50px;
             }
         }
 
-        .btn {
+        .btn, #content.loaded .btn:hover {
             width: 30vw;
             height: 30vw;
 
@@ -194,16 +182,15 @@ body.mobile {
             top: 14vh;
             bottom: 17vh;
 
+            padding: 25px 35px;
+
             #page {
                 font-size: 26px;
-                top: 6vh;
-                left: 6vh;
-                right: 6vh;
-                bottom: 6vh;
+                line-height: 32px;
             }
         }
 
-        .btn {
+        .btn, #content.loaded .btn:hover {
             width: 28vh;
             height: 28vh;
 
