@@ -140,10 +140,10 @@ function setupSvg() {
 
 function configDevice() {
     isMobile = isMobileDevice();
-    if (isMobile) {
-        const vh = window.innerHeight * 0.01
-        document.documentElement.style.setProperty('--vh', `${vh}px`)
-    }
+
+    // Trick for actual full-height layout on mobile
+    const vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
 
     svgWidth = $svgHexes.width()
     svgHeight = $svgHexes.height()
