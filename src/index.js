@@ -1,5 +1,6 @@
 import './index.less';
 import './mobile.less';
+import '../img/elana.jpg';
 import loremIpsum from './lorem.js';
 
 /** constants **/
