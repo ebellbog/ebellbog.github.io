@@ -8,7 +8,6 @@ function getPlugins(mode) {
     const plugins = [
         new webpack.ProvidePlugin({
             $: 'jquery',
-            _: 'lodash'
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, 'src/index.html'),

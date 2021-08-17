@@ -4,17 +4,9 @@
 @blue: mediumslateblue;
 @purple: magenta;
 
-@font-face {
-    font-family: 'Amatic SC';
-    src: url('../fonts/AmaticSC-Regular.ttf');
-    font-weight: 400;
-}
-
-@font-face {
-    font-family: 'Amatic SC';
-    src: url('../fonts/AmaticSC-Bold.ttf');
-    font-weight: 600;
-}
+// Params for cross-dissolving buttons & page content
+@fadeDuration: 1.75s;
+@fadeDelay: 1.5s;
 
 html {
     overflow: hidden;
@@ -22,13 +14,7 @@ html {
 }
 
 body {
-    background: repeating-linear-gradient(
-        135deg,
-        #222,
-        #222 35px,
-        #333 35px,
-        #333 70px
-    );
+    background-color: #1d1747;
     height: 100vh;
     width: 100%;
     overflow: hidden;
@@ -37,104 +23,76 @@ body {
     margin: 0;
 }
 
-#headshot {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 5;
-    height: 180px;
-    width: 180px;
-    border-radius: 300px;
-    border: 9px solid @red;
-    overflow: hidden;
-    transition: transform 1.5s;
-    transform: translate(-50%,-50%) rotate(0deg);
-    color: transparent;
-
-    img {
-        width: 100%;
-    }
-
-    &:hover {
-        color: rgba(0,0,0,.75);
-        transition: transform 1.5s;
-        transform: translate(-50%,-50%) rotate(360deg);
-    }
-}
-
-#wheee {
-    font-size: 32px;
-    font-family: 'Amatic SC', cursive;
-    font-weight: 700;
-    text-align: center;
-    position: absolute;
-    bottom: 2px;
-    left: 0;
-    width: 100%;
-    transition: color 1.5s;
-}
-
-a {
-    color: #eee;
-}
-
-h1 {
-    font-family: 'Amatic SC', cursive;
-    font-size: 4.5em;
-    color: #fb9171;
-    margin: 0;
-}
-
-h3 {
-    font-family: 'Indie Flower', cursive;
-    font-weight: lighter;
-    font-size: 1.8em;
-    color: lightgray;
-    margin: 0;
-}
-
 #content {
     display: block;
+
     position: absolute;
-    width: 100%;
-    min-width: 630px;
-    height: auto;
-    min-height: 560px;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    margin: 5px 0 55px 0;
+
+    width: 100%;
+    min-width: 630px;
+    min-height: 560px;
+
+    margin: 5px 0 50px 0;
+
+    &.page-view.loaded {
+        #page-wrapper {
+            opacity: 1;
+            pointer-events: all;
+            transition-delay: @fadeDelay;
+        }
+        #headshot, .btn:not(.selected) {
+            opacity: 0;
+            transition-delay: 0s;
+        }
+    }
 }
 
 #page-wrapper {
     z-index: 6;
+
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
     max-width: 575px;
     min-width: 500px;
     width: 75%;
+
     min-height: 330px;
     max-height: 400px;
     height: 66%;
+
     overflow-y: scroll;
     overflow-x: hidden;
-    display: none;
-    opacity: 0;
-}
 
-#page {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    height: auto;
-    color: white;
-    font-family: 'Pacifico', cursive;
-    font-size: 22px;
-    text-shadow: 2px 1px 0 rgba(0,0,0,.4);
+    pointer-events: none;
+
+    opacity: 0;
+
+    #page {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+
+        height: auto;
+
+        font-family: 'Chakra Petch', sans-serif;
+        font-size: 20px;
+        line-height: 30px;
+
+        color: white;
+        text-shadow: 0px 1px 0 black;
+
+        hr {
+            margin: 0 30px;
+        }
+    }
 }
 
 .fullscreen {
@@ -145,28 +103,23 @@ h3 {
     height: 100%;
 }
 
-#hexes {
-    z-index: 3;
-}
-#background {
-    z-index: 1;
-}
-
 #svg-hexes {
     z-index: 3;
-}
-#fillers {
-    opacity: 0;
-    transition: opacity 3s;
 
-    &.show {
-        opacity: .5;
+    #fillers {
+        opacity: 0;
+        transition: opacity 3s;
+
+        &.show {
+            opacity: .5;
+        }
     }
 }
 
 .hex {
-    transition: transform 2s, stroke-width .8s, stroke .6s, fill .6s;
-    transition-delay: 0s, .3s, .5s, .5s;
+    transition: transform 1.25s, stroke-width .6s, stroke .4s, fill .4s;
+    transition-delay: 0s, .25s, .45s, .45s;
+    transition-timing-function: linear;
 
     &.spin {
         transform: rotate3d(0, 1, 0, 180deg) scale(1.15)!important;
@@ -174,11 +127,13 @@ h3 {
     }
     &.moving {
         transition: transform .35s!important;
-        transition-timing-function: linear;
     }
     &.filler {
         fill: transparent;
         stroke: transparent;
+        transition: unset;
+    }
+    &.no-animation {
         transition: unset;
     }
 }
@@ -214,32 +169,81 @@ h3 {
     .color-class(@purple);
 }
 
-#name {
-    position: absolute;
-    bottom: 17px;
-    left: 17px;
-    font-family: 'Pacifico', cursive;
-    font-size: 1.3em;
-    color: @purple;
-    text-shadow: 1px 1px 0 white;
-    opacity: .8;
-    user-select: none;
+.btn-pos(@isTop, @isLeft, @dx: 170px, @dy: 110px) {
+    top: calc(50% - (@dy * @isTop));
+    left: calc(50% - (@dx * @isLeft));
+}
 
-    div {
-        display: inline-block;
-        position: relative;
-        top: 4px;
+#content.loaded {
+    // Prevent Chrome glitch with CSS transitions on page load by not adding transition until after load
+    #headshot {
+        transition: transform 1.5s, opacity @fadeDuration;
+        transition-delay: 0s, @fadeDelay;
+    }
+    #wheee {
+        transition: color 1.5s;
+    }
+    #page-wrapper {
+        transition: opacity @fadeDuration;
+        transition-delay: 0s;
+    }
+
+    .btn {
+        // Animate buttons out from center on page load
+        &:nth-child(1) {
+            animation-delay: 0s;
+            .btn-pos(1, 1);
+        }
+        &:nth-child(3) {
+            animation-delay: .4s;
+            .btn-pos(1, -1);
+        }
+        &:nth-child(4) {
+            animation-delay: .8s;
+            .btn-pos(-1, -1);
+        }
+        &:nth-child(2) {
+            animation-delay: 1.2s;
+            .btn-pos(-1, 1);
+        }
+
+        // Include these styles inside #content.loaded to ensure they'll have greater specificity than the rules above
+        &.selected {
+            z-index: 7;
+
+            top: 55px;
+            left: 50%;
+
+            width: 250px;
+            height: 100px;
+
+            font-size: 64px;
+
+            .btn-border {
+                opacity: 0;
+            }
+            .btn-background {
+                opacity: .75;
+            }
+        }
+        &:not(.selected):hover {
+            animation: none;
+
+            font-size: 38px;
+            width: 132px;
+            height: 132px;
+        }
     }
 }
 
 .btn {
+    z-index: 4;
     cursor: pointer;
 
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 4;
 
     animation-name: jiggle;
     animation-duration: 1.2s;
@@ -249,64 +253,102 @@ h3 {
     padding: 10px;
     overflow: visible;
 
-    &.selected {
+    width: 116px;
+    height: 116px;
+    font-size: 30px;
+
+    transition: opacity @fadeDuration, top 1.5s, left 1.5s;
+    transition-delay: @fadeDelay, 0s, 0s; // Allow page text time to fade out first
+
+    &.moving {
         animation: none;
-        z-index: 7;
+        transition: all 1.75s;
+        transition-delay: 0s;
     }
-    &:not(.selected):hover {
-        animation: none;
-        font-size: 38px!important;
-        width: 132px!important;
-        height: 132px!important;
+
+    .label {
+        z-index: 1;
+
+        position: absolute;
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-50%, -50%);
+        transform-origin: 50% 50%;
+
+        width: 100%;
+        color: white;
+
+        text-align: center;
+        font-family: 'Amatic SC', cursive;
+        font-weight: 600;
+        text-shadow: 2px 1px 0 #222;
+
+        user-select: none;
+    }
+
+    .btn-border, .btn-background {
+        border-radius: 300px;
+        transition: opacity @fadeDuration;
+    }
+    .btn-border {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        right: 0px;
+    }
+    .btn-background {
+        width: 100%;
+        height: 100%;
     }
 }
-.btn-border {
-    position: absolute;
-    top: 0;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
-    border-radius: 300px;
-}
-.btn-background {
-    width: 100%;
-    height: 100%;
-    border-radius: 300px;
-}
 
-#about {
-    animation-delay: 0s;
-}
-#portfolio {
-    animation-delay: .4s;
-}
-#contact {
-    animation-delay: .8s;
-}
-#resume {
-    animation-delay: 1.2s;
-}
-
-.label {
-    z-index: 1;
+#headshot {
+    z-index: 5;
 
     position: absolute;
-    left: 50%;
     top: 50%;
+    left: 50%;
 
-    transform: translate(-50%, -50%);
-    transform-origin: 50% 50%;
+    height: 180px;
+    width: 180px;
 
-    width: 100%;
-    color: white;
+    transform: rotate(0deg) translate(-50%, -50%);
+    transform-origin: 0 0;
 
-    text-align: center;
-    font-family: 'Amatic SC';
-    font-weight: 600;
-    text-shadow: 2px 1px 0 #222;
+    border-radius: 300px;
+    border: 9px solid @red;
 
-    user-select: none;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+    }
+
+    &:hover {
+        transform: rotate(360deg) translate(-50%, -50%);
+        #wheee {
+            color: fade(black, 50%);
+        }
+    }
+
+    #wheee {
+        position: absolute;
+        bottom: 6px;
+        left: 0;
+        width: 100%;
+
+        color: transparent;
+
+        font-size: 26px;
+        font-family: 'Amatic SC', cursive;
+        font-weight: 600;
+
+        text-align: center;
+    }
 }
+
 
 #footer {
     width: 100%;
@@ -314,33 +356,48 @@ h3 {
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 66px;
+    height: 56px;
     z-index: 6;
 
-    a:nth-child(1):hover path {
-        color: @green;
-    }
-    a:nth-child(2):hover path {
-        color: @purple;
-    }
-    a:nth-child(3):hover path {
-        color: @red;
-    }
-}
+    #links {
+        padding-top: 8px;
+        width: 168px;
 
-#links {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 45px;
-    width: 128px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 0 15px 0 15px;
-    background-color: rgba(0,0,0,.3);
-    border-radius: 30px;
+        display: block;
+        margin: 0 auto;
+
+        font-size: 18px;
+
+        a {
+            color: #eee;
+            text-decoration: none;
+            margin: 0 4px;
+
+            &:nth-child(1):hover path {
+                color: @green;
+            }
+            &:nth-child(2):hover path {
+                color: @purple;
+            }
+            &:nth-child(3):hover path {
+                color: @red;
+            }
+        }
+    }
+
+    #name {
+        float: left;
+        line-height: 56px;
+        margin-left: 28px;
+
+        font-family: 'Chakra Petch';
+        font-size: 1.2em;
+        letter-spacing: 0.5px;
+
+        color: white;
+        opacity: .4;
+        user-select: none;
+    }
 }
 
 @keyframes jiggle {

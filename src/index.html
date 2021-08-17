@@ -4,7 +4,13 @@
 <head>
     <meta charset="utf-8">
     <title>Elana Bell Bogdan - Engineer & Game Designer</title>
-    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Chakra+Petch:wght@300&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 </head>
 
@@ -13,41 +19,39 @@
         <div id="page-wrapper">
             <div id="page"></div>
         </div>
-        <canvas width=500 height=500 id="hexes" class="fullscreen"></canvas>
-        <canvas width=500 height=500 id="background" class="fullscreen"></canvas>
         <svg id="svg-hexes" class="fullscreen"></svg>
         <div id="headshot">
-            <div id="wheee">Wheee!</div>
+            <div id="wheee">wheee!</div>
             <img src="../img/elana.jpg"></img>
         </div>
-        <div id="about" class="btn green">
-            <div class="label">About me</div>
-            <div class="btn-background"></div>
-            <div class="btn-border"></div>
-        </div>
-        <div id="resume" class="btn blue">
-            <div class="label">Résumé</div>
-            <div class="btn-background"></div>
-            <div class="btn-border"></div>
-        </div>
-        <div id="portfolio" class="btn purple">
-            <div class="label">Portfolio</div>
-            <div class="btn-background"></div>
-            <div class="btn-border"></div>
-        </div>
-        <div id="contact" class="btn yellow">
-            <div class="label">Contact</div>
-            <div class="btn-background"></div>
-            <div class="btn-border"></div>
+        <div id="btn-group">
+            <div id="about" class="btn green">
+                <div class="label">About me</div>
+                <div class="btn-background"></div>
+                <div class="btn-border"></div>
+            </div>
+            <div id="blog" class="btn blue">
+                <div class="label">Blog</div>
+                <div class="btn-background"></div>
+                <div class="btn-border"></div>
+            </div>
+            <div id="portfolio" class="btn purple">
+                <div class="label">Portfolio</div>
+                <div class="btn-background"></div>
+                <div class="btn-border"></div>
+            </div>
+            <div id="resume" class="btn yellow">
+                <div class="label">Résumé</div>
+                <div class="btn-background"></div>
+                <div class="btn-border"></div>
+            </div>
         </div>
     </div>
 
     <div id="footer">
-        <div id="name">
-            <div>©</div> Elana Bell Bogdan
-        </div>
+        <span id="name">© Elana Bell Bogdan, 2021</span>
 
-        <div id="links">
+        <span id="links">
             <a target="_blank" href="https://www.linkedin.com/in/elana-bogdan-647601126/">
                 <i class="fab fa-linkedin fa-2x fa-fw"></i>
             </a>
@@ -57,7 +61,7 @@
             <a target="_blank" href="mailto:e.bell.bogdan@gmail.com">
                 <i class="fas fa-envelope-square fa-2x fa-fw"></i>
             </a>
-        </div>
+        </span>
     </div>
 </body>
 
