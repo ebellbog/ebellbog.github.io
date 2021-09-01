@@ -1,8 +1,3 @@
-@import (reference) 'index.less';
-
-@mobileDx: 30%;
-@mobileDy: 25%;
-
 html {
     -webkit-text-size-adjust: 100%;
 }
@@ -11,94 +6,10 @@ body.mobile {
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
 
-    #content {
-        height: 100vh;
-        height: calc(var(--vh, 1vh) * 100);
-
-        min-height: 0;
-        min-width: 0;
-
-        margin: 0;
-        overflow: hidden;
-    }
-
-    #page-wrapper {
-        transform: none;
-
-        left: 0;
-        right: 0;
-    }
-
     #svg-hexes {
         opacity: 0.7;
         .hex {
             stroke: none;
-        }
-    }
-
-    .btn {
-        padding: 20px;
-
-        .btn-border {
-            display: none;
-        }
-        .btn-background {
-            box-shadow: 0px 0px 35px 5px black;
-        }
-    }
-
-    #content.loaded #btn-group .btn {
-        &:nth-child(1) {
-            .btn-pos(1, 1, @mobileDx, @mobileDy);
-
-            .btn-background {
-                background: radial-gradient(
-                    #d2ff69,
-                    mediumaquamarine 70%
-                );
-            }
-        }
-        &:nth-child(2) {
-            .btn-pos(-1, 1, @mobileDx, @mobileDy);
-
-            .btn-background {
-                background: radial-gradient(
-                    #4cf3c6,
-                    mediumslateblue 80%
-                );
-            }
-        }
-        &:nth-child(3) {
-            .btn-pos(1, -1, @mobileDx, @mobileDy);
-
-            .btn-background {
-                background: radial-gradient(
-                    #b927f3,
-                    magenta 65%
-                );
-            }
-        }
-        &:nth-child(4) {
-            .btn-pos(-1, -1, @mobileDx, @mobileDy);
-
-            .btn-background {
-                background: radial-gradient(
-                    #f99f74,
-                    #ee5 70%
-                );
-            }
-        }
-
-        &.selected {
-            left: 50%;
-
-            padding: 0;
-            width: 100%;
-
-            .btn-background {
-                border-radius: 0;
-                opacity: 1;
-            }
         }
     }
 
@@ -116,48 +27,6 @@ body.mobile {
     }
 
     &.portrait {
-        #headshot {
-            width: 45vw;
-            height: 45vw;
-            border: 20px tomato solid;
-            box-shadow: 0px 0px 55px 5px black;
-
-            #wheee {
-                font-size: 4.5vh;
-            }
-        }
-
-        #page-wrapper {
-            top: 9vh;
-            bottom: 10vh;
-
-            #page {
-                font-size: 2.8em;
-                line-height: 1.5em;
-                padding-top: 50px;
-            }
-        }
-
-        .btn, #content.loaded .btn:hover {
-            width: 30vw;
-            height: 30vw;
-
-            font-size: 7.75vw;
-
-            animation-name: jiggle-mobile-portrait;
-        }
-        #content.loaded #btn-group {
-            .btn.selected {
-                font-size: 7.5vh;
-                height: 9vh;
-                top: 4.5vh;
-            }
-
-            .label {
-                text-shadow: 4px 2px 0 #222;
-            }
-        }
-
         #footer {
             height: 18vw;
 
@@ -175,43 +44,6 @@ body.mobile {
     }
 
     &.landscape {
-        #headshot {
-            width: 45vh;
-            height: 45vh;
-            border: 10px tomato solid;
-            box-shadow: 0px 0px 40px 3px black;
-
-            #wheee {
-                font-size: 4.5vw;
-            }
-        }
-
-        #page-wrapper {
-            top: 14vh;
-            bottom: 17vh;
-
-            padding: 25px 35px;
-
-            #page {
-                font-size: 1.4em;
-                line-height: 1.3em;
-            }
-        }
-
-        .btn, #content.loaded .btn:hover {
-            width: 28vh;
-            height: 28vh;
-
-            font-size: 7vh;
-
-            animation-name: jiggle-mobile-landscape;
-        }
-        #content.loaded #btn-group .btn.selected {
-            font-size: 11vh;
-            height: 13vh;
-            top: 6.5vh;
-        }
-
         #footer {
             height: 16vh;
 
@@ -226,33 +58,5 @@ body.mobile {
                 }
             }
         }
-    }
-}
-
-@keyframes jiggle-mobile-portrait {
-    to {
-        font-size: 7.75vw;
-        width: 30vw;
-        height: 30vw;
-    }
-
-    from {
-        font-size: 9vw;
-        width: 32vw;
-        height: 32vw;
-    }
-}
-
-@keyframes jiggle-mobile-landscape {
-    to {
-        font-size: 7vh;
-        width: 28vh;
-        height: 28vh;
-    }
-
-    from {
-        font-size: 8.3vh;
-        width: 30vh;
-        height: 30vh;
     }
 }

@@ -4,9 +4,7 @@
 @blue: mediumslateblue;
 @purple: magenta;
 
-// Params for cross-dissolving buttons & page content
-@fadeDuration: 1.75s;
-@fadeDelay: 1.5s;
+@bgColor: #2b1a4f;
 
 html {
     overflow: hidden;
@@ -14,7 +12,7 @@ html {
 }
 
 body {
-    background-color: #2b1a4f;
+    background-color: @bgColor;
 
     height: 100vh;
 
@@ -28,65 +26,6 @@ body {
     margin: 0;
 }
 
-#content {
-    display: block;
-
-    position: absolute;
-    top: 0;
-    bottom: 0;
-
-    width: 100%;
-    min-height: 560px;
-
-    margin: 5px 0 50px 0;
-
-    &.page-view.loaded {
-        #page-wrapper {
-            opacity: 1;
-            pointer-events: all;
-            transition-delay: @fadeDelay;
-        }
-        #headshot, .btn:not(.selected) {
-            opacity: 0;
-            transition-delay: 0s;
-        }
-    }
-}
-
-#page-wrapper {
-    z-index: 6;
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    box-sizing: border-box;
-    padding: 25px 65px;
-
-    overflow-y: scroll;
-    overflow-x: hidden;
-
-    pointer-events: none;
-
-    opacity: 0;
-
-    #page {
-        padding-top: 6px;
-
-        font-family: 'Chakra Petch', sans-serif;
-        font-size: 20px;
-        line-height: 30px;
-
-        color: white;
-        text-shadow: 0px 1px 0 black;
-
-        hr {
-            margin: 0 30px;
-        }
-    }
-}
-
 .fullscreen {
     position: absolute;
     left: 0;
@@ -95,35 +34,42 @@ body {
     height: 100%;
 }
 
-#svg-hexes {
-    z-index: 3;
+#page-container {
+    z-index: 2;
 
-    #fillers {
-        opacity: 0;
-        transition: opacity 3s;
+    overflow-y: scroll;
 
-        &.show {
-            opacity: .5;
-        }
+    .page {
+        width: 100%;
+        height: 65vh;
+        position: relative;
+    }
+
+    img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 300px;
     }
 }
 
+#svg-hexes {
+    z-index: 1;
+}
+
 .hex {
-    transition: transform 1.25s, stroke-width .6s, stroke .4s, fill .4s;
-    transition-delay: 0s, .25s, .45s, .45s;
+    transition: transform .4s, stroke .13s, fill .13s;
+    transition-delay: 0s, .15s, .15s;
     transition-timing-function: linear;
 
-    &.spin {
-        transform: rotate3d(0, 1, 0, 180deg) scale(1.15)!important;
-        stroke-width: 0!important;
-    }
+    stroke-width: 4px;
+    stroke-linejoin: round;
+    fill: transparent;
+
     &.moving {
         transition: transform .35s!important;
-    }
-    &.filler {
-        fill: transparent;
-        stroke: transparent;
-        transition: unset;
     }
     &.no-animation {
         transition: unset;
@@ -132,17 +78,16 @@ body {
 
 .color-class(@color) {
     fill: @color;
-    stroke: desaturate(darken(@color, 15%), 25%);
+    stroke: @color;
 
-    .btn-background {
-        background-color: @color;
+    @darkenedColor: desaturate(darken(@color, 15%), 25%);
+    &.outlined {
+        fill: transparent;
+        stroke: @darkenedColor;
     }
-    .btn-border {
-        border: @color 2px solid;
-    }
-    &.filler {
-        fill: @color;
-        stroke: @color;
+    &.hole {
+        fill: @darkenedColor;
+        stroke: @darkenedColor;
     }
 }
 .red {
@@ -160,187 +105,6 @@ body {
 .purple {
     .color-class(@purple);
 }
-
-.btn-pos(@isTop, @isLeft, @dx: 170px, @dy: 110px) {
-    top: calc(50% - (@dy * @isTop));
-    left: calc(50% - (@dx * @isLeft));
-}
-
-#content.loaded {
-    // Prevent Chrome glitch with CSS transitions on page load by not adding transition until after load
-    #headshot {
-        transition: transform 1.5s, opacity @fadeDuration;
-        transition-delay: 0s, @fadeDelay;
-    }
-    #wheee {
-        transition: color 1.5s;
-    }
-    #page-wrapper {
-        transition: opacity @fadeDuration;
-        transition-delay: 0s;
-    }
-
-    .btn {
-        // Animate buttons out from center on page load
-        &:nth-child(1) {
-            animation-delay: 0s;
-            .btn-pos(1, 1);
-        }
-        &:nth-child(3) {
-            animation-delay: .4s;
-            .btn-pos(1, -1);
-        }
-        &:nth-child(4) {
-            animation-delay: .8s;
-            .btn-pos(-1, -1);
-        }
-        &:nth-child(2) {
-            animation-delay: 1.2s;
-            .btn-pos(-1, 1);
-        }
-
-        // Include these styles inside #content.loaded to ensure they'll have greater specificity than the rules above
-        &.selected {
-            z-index: 7;
-
-            top: 55px;
-            left: 50%;
-
-            width: 250px;
-            height: 100px;
-
-            font-size: 64px;
-
-            .btn-border {
-                opacity: 0;
-            }
-            .btn-background {
-                opacity: .75;
-            }
-        }
-        &:not(.selected):hover {
-            animation: none;
-
-            font-size: 38px;
-            width: 132px;
-            height: 132px;
-        }
-    }
-}
-
-.btn {
-    z-index: 4;
-    cursor: pointer;
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    animation-name: jiggle;
-    animation-duration: 1.2s;
-    animation-iteration-count: infinite;
-    animation-direction: alternate-reverse;
-
-    padding: 10px;
-    overflow: visible;
-
-    width: 116px;
-    height: 116px;
-    font-size: 30px;
-
-    transition: opacity @fadeDuration, top 1.5s, left 1.5s;
-    transition-delay: @fadeDelay, 0s, 0s; // Allow page text time to fade out first
-
-    &.moving {
-        animation: none;
-        transition: all 1.75s;
-        transition-delay: 0s;
-    }
-
-    .label {
-        z-index: 1;
-
-        position: absolute;
-        left: 50%;
-        top: 50%;
-
-        transform: translate(-50%, -50%);
-        transform-origin: 50% 50%;
-
-        width: 100%;
-        color: white;
-
-        text-align: center;
-        font-family: 'Amatic SC', cursive;
-        font-weight: 600;
-        text-shadow: 2px 1px 0 #222;
-
-        user-select: none;
-    }
-
-    .btn-border, .btn-background {
-        border-radius: 300px;
-        transition: opacity @fadeDuration;
-    }
-    .btn-border {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        bottom: 0px;
-        right: 0px;
-    }
-    .btn-background {
-        width: 100%;
-        height: 100%;
-    }
-}
-
-#headshot {
-    z-index: 5;
-
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    height: 180px;
-    width: 180px;
-
-    transform: rotate(0deg) translate(-50%, -50%);
-    transform-origin: 0 0;
-
-    border-radius: 300px;
-    border: 9px solid @red;
-
-    overflow: hidden;
-
-    img {
-        width: 100%;
-    }
-
-    &:hover {
-        transform: rotate(360deg) translate(-50%, -50%);
-        #wheee {
-            color: fade(black, 50%);
-        }
-    }
-
-    #wheee {
-        position: absolute;
-        bottom: 6px;
-        left: 0;
-        width: 100%;
-
-        color: transparent;
-
-        font-size: 26px;
-        font-family: 'Amatic SC', cursive;
-        font-weight: 600;
-
-        text-align: center;
-    }
-}
-
 
 #footer {
     width: 100%;
@@ -389,18 +153,5 @@ body {
         color: white;
         opacity: .4;
         user-select: none;
-    }
-}
-
-@keyframes jiggle {
-    from {
-        font-size: 34px;
-        width: 124px;
-        height: 124px;
-    }
-    to {
-        font-size: 30px;
-        width: 116px;
-        height: 116px;
     }
 }
