@@ -8,9 +8,9 @@ import loremIpsum from './lorem.js';
 const COLOR_CLASSES = ['red', 'yellow', 'green', 'blue', 'purple'];
 
 const INNER_BORDER = 4; // Should always match stroke-width for .hex class
-const HEX_SIZE_DESKTOP = 38;
-const HEX_SIZE_MOBILE_LANDSCAPE = 34;
-const HEX_SIZE_MOBILE_PORTRAIT = 58;
+const HEX_SIZE_DESKTOP = 40;
+const HEX_SIZE_MOBILE_LANDSCAPE = 36;
+const HEX_SIZE_MOBILE_PORTRAIT = 60;
 
 /** global variables **/
 

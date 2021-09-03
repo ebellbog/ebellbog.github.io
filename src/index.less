@@ -28,30 +28,78 @@ body {
 
 .fullscreen {
     position: absolute;
-    left: 0;
     top: 0;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+
     height: 100%;
+    width: 100%;
+    max-width: 1800px;
 }
 
 #page-container {
     z-index: 2;
-
     overflow-y: scroll;
 
+    font-family: 'Chakra Petch', sans-serif;
+    color: white;
+
     .page {
+        position: relative;
         width: 100%;
         height: 65vh;
-        position: relative;
+        padding: 20px;
+
+        .separator {
+            display: inline-block;
+            padding: 0 16px;
+
+            text-shadow: none;
+            color: white;
+
+            font-weight: 300;
+            font-size: 24px;
+
+            position: relative;
+            bottom: 8px;
+            right: 2px;
+        }
+
+        .light {
+            font-weight: 300;
+            text-shadow: none;
+        }
     }
 
-    img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    #intro{
+        text-align: center;
+        height: auto;
 
-        width: 300px;
+        h1 {
+            display: table;
+            margin: 14px auto 60px auto;
+            padding: 4px 24px;
+
+            font-size: 3em;
+
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 40px;
+
+            text-shadow: 3px 2px 0 @purple;
+
+            font-weight: 500;
+        }
+        img {
+            padding: 24px 0;
+            width: 300px;
+        }
+        h1, img {
+            transition: transform 1s;
+            &:hover {
+                transform: scale(1.08);
+            }
+        }
     }
 }
 
