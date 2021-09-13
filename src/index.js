@@ -25,6 +25,8 @@ let offsetX, offsetY;
 let isMobile;
 let lastResize;
 
+let currentPage = 0;
+
 /** setup functions **/
 
 $(document).ready(() => {
@@ -341,21 +343,33 @@ function getDefaultScale({$hex}) {
 
 function scrollSvgHexes(doAnimate = true) {
     const windowHeight = window.innerHeight;
+    let maxVisible = 0, maxIdx = 0;
     $('.page').each((pageIdx, page) => {
         const $page = $(page);
+
         const height = $page.outerHeight();
         const top = $page.offset().top;
         const bottom = top + height;
-        const isVisible =
-            (top > 0 && top < windowHeight) ||
-            (bottom > 0 && bottom < windowHeight);
-        if (isVisible) {
+
+        const visibleAmount = constrainValue(bottom, 0, windowHeight) - constrainValue(top, 0, windowHeight);
+        if (visibleAmount > 0) {
             const color = getColorClass($page);
             rowHeights.forEach((rowHeight, rowIdx) => {
                 if (rowHeight < bottom && rowHeight > top) setRowColor(rowIdx, pageIdx, color, doAnimate);
             })
+
+            if (visibleAmount > maxVisible) {
+                maxVisible = visibleAmount;
+                maxIdx = pageIdx;
+            }
         }
     });
+
+    if (maxIdx !== currentPage) {
+        currentPage = maxIdx;
+        $('#sections a').removeClass('active');
+        if (currentPage > 0) $(`#sections a:nth-child(${currentPage})`).addClass('active');
+    }
 }
 
 function setRowColor(rowIdx, pageIdx, color, doAnimate) {
@@ -442,7 +456,7 @@ function scrollToPage(pageIdx) {
     const currentScroll = $pageContainer.scrollTop();
 
     const $page = $(`.page:nth-child(${pageIdx + 1})`);
-    const targetScroll = $page.position().top + currentScroll;
+    const targetScroll = $page.offset().top + currentScroll;
 
     const scrollDelta = Math.abs(currentScroll - targetScroll);
     $pageContainer.animate({scrollTop: targetScroll}, scrollDelta * 2.5); // ensure constant scroll speed, regardless of scroll amount
@@ -462,9 +476,9 @@ function isMobileDevice() {
 }
 
 function constrainValue(val, min, max) {
-    if (min) {
+    if (typeof min === 'number') {
         val = Math.max(val, min);
-    } if (max) {
+    } if (typeof max === 'number') {
         val = Math.min(val, max);
     }
     return val;

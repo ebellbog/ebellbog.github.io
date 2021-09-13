@@ -84,9 +84,14 @@ body {
         display: flex;
         justify-content: space-evenly;
 
-        a:hover {
+        a {
             cursor: pointer;
-            border-bottom: 1px solid white;
+            &.active {
+                border-bottom: 3px solid white;
+            }
+            &:not(.active):hover {
+                border-bottom: 1px solid white;
+            }
         }
     }
 
@@ -109,8 +114,10 @@ body {
 
 #page-container {
     z-index: 2;
-    overflow-y: scroll;
     position: relative;
+
+    overflow-y: scroll;
+    height: calc(100% - @navHeight);
 
     font-family: 'Chakra Petch', sans-serif;
     color: white;
