@@ -8,7 +8,7 @@ import loremIpsum from './lorem.js';
 const COLOR_CLASSES = ['red', 'yellow', 'green', 'blue', 'purple'];
 
 const INNER_BORDER = 4; // Should always match stroke-width for .hex class
-const HEX_SIZE_DESKTOP = 40;
+const HEX_SIZE_DESKTOP = 44;
 const HEX_SIZE_MOBILE_LANDSCAPE = 36;
 const HEX_SIZE_MOBILE_PORTRAIT = 60;
 
@@ -29,6 +29,7 @@ let lastResize;
 
 $(document).ready(() => {
     $svgHexes = $('#svg-hexes');
+    $('.section-content').html(loremIpsum);
 
     configDevice();
     generateGrid();
@@ -43,11 +44,12 @@ $(document).ready(() => {
 function hookEvents() {
     $('.page:nth-child(1)').on('mousemove', (e) => {
         // Find target for mousemove over obscured layer; equivalent to
-        // $('body').on('mousemove', 'polygon:not(.moving, .hole)',...)
+        // $('body').on('mousemove', 'polygon.outlined:not(.moving, .hole)',...)
         const hex = document
             .elementsFromPoint(e.clientX, e.clientY)
             .filter(({tagName, classList}) =>
                 tagName === 'polygon' &&
+                classList.contains('outlined') &&
                 !classList.contains('moving') &&
                 !classList.contains('hole')
             );
@@ -89,6 +91,14 @@ function hookEvents() {
                 resize();
             }, DEBOUNCE_DURATION);
         }
+    });
+
+    $('#name').on('click', () => {
+        scrollToPage(0);
+    });
+    $('#sections a').on('click', (e) => {
+        const idx = $(e.target).index();
+        scrollToPage(idx + 1); // (0th page is the intro, not a section)
     });
 }
 
@@ -425,6 +435,17 @@ function startSvgSequencing() {
         }
         if (hex && hole) moveSvgHex(hex, hole.coords);
     }, 500);
+}
+
+function scrollToPage(pageIdx) {
+    const $pageContainer = $('#page-container');
+    const currentScroll = $pageContainer.scrollTop();
+
+    const $page = $(`.page:nth-child(${pageIdx + 1})`);
+    const targetScroll = $page.position().top + currentScroll;
+
+    const scrollDelta = Math.abs(currentScroll - targetScroll);
+    $pageContainer.animate({scrollTop: targetScroll}, scrollDelta * 2.5); // ensure constant scroll speed, regardless of scroll amount
 }
 
 /**  helper functions **/
