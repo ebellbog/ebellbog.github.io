@@ -63,11 +63,28 @@ module.exports = (env, argv) => {
                     ]
                 },
                 {
-                    test: /\.svg/,
-                    type: 'asset/source'
+                    test: /\.handlebars$/,
+                    use: [
+                        {
+                            loader: 'handlebars-loader',
+                            options: {
+                                helperDirs: [
+                                    path.join(__dirname, 'src', 'templates', 'helpers')
+                                ],
+                                partialDirs: [
+                                    path.join(__dirname, 'src', 'templates', 'partials')
+                                ],
+                            }
+                        }
+                    ]
                 }
             ]
         },
-        plugins: getPlugins(argv.mode)
+        plugins: getPlugins(argv.mode),
+        resolve: {
+            alias: {
+                'handlebars': 'handlebars/dist/handlebars.js'
+            }
+        },
     };
 }

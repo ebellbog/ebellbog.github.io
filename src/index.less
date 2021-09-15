@@ -3,9 +3,11 @@
 @green: mediumaquamarine;
 @blue: mediumslateblue;
 @purple: magenta;
+@gray: #777;
 
 @bgColor: #2b1a4f;
 @navHeight: 3.2em;
+@maxWidth: 2000px;
 
 html {
     overflow: hidden;
@@ -18,7 +20,7 @@ body {
     height: 100vh;
 
     width: 100%;
-    min-width: 900px;
+    min-width: 1300px;
 
     overflow: hidden;
     position: relative;
@@ -35,7 +37,7 @@ body {
 
     height: 100%;
     width: 100%;
-    max-width: 1800px;
+    max-width: @maxWidth;
 }
 
 .bg-blur {
@@ -47,11 +49,18 @@ body {
     }
 }
 
+.small-text {
+    font-size: 0.7em;
+}
+
 #nav-bar {
-    width: 100%;
     position: sticky;
     top: 0;
     z-index: 4;
+
+    width: 100%;
+    max-width: @maxWidth;
+    margin: 0 auto;
 
     box-sizing: border-box;
     padding: 8px 10px;
@@ -69,13 +78,13 @@ body {
         cursor: pointer;
     }
 
-    #sections {
+    #page-links {
         position: absolute;
         top: 12px;
         left: 50%;
         transform: translateX(-50%);
 
-        width: 65%;
+        width: 60%;
 
         font-size: 1.2em;
         font-weight: 300;
@@ -127,15 +136,15 @@ body {
         padding: 4.75em 140px;
         box-sizing: border-box;
 
-        .section-header {
+        .page-header {
             display: inline-block;
-            font-size: 2em;
+            font-size: 2.3em;
             margin-bottom: 1em;
             padding: 2px 8px;
-            transform: skewX(-8deg);
+            transform: skewX(-10deg);
         }
 
-        .section-content {
+        .page-content {
             font-family: 'Nunito', sans-serif;
             font-weight: 300;
             font-size: 1.4em;
@@ -147,8 +156,8 @@ body {
     #intro{
         img {
             display: block;
-            width: 300px;
-            margin: 26px auto;
+            height: 375px;
+            margin: 0 auto 40px auto;
 
             transition: transform 1.2s;
             &:hover {
@@ -181,39 +190,41 @@ body {
     z-index: 1;
 }
 
-.hex {
-    transition: transform .4s, stroke .13s, fill .13s;
-    transition-delay: 0s, .15s, .15s;
-    transition-timing-function: linear;
-
-    stroke-width: 4px;
-    stroke-linejoin: round;
-    fill: transparent;
-
-    &.moving {
-        transition: transform .35s!important;
-    }
-    &.no-animation {
-        transition: unset;
-    }
-}
-
 .color-class(@color) {
+    @darkenedColor: desaturate(darken(@color, 15%), 25%);
+    @darkestColor: darken(@darkenedColor, 15%);
+
+    .page-header {
+        background-color: @darkestColor;
+    }
+
+    // Hex styles
+
     fill: @color;
     stroke: @color;
 
-    @darkenedColor: desaturate(darken(@color, 15%), 25%);
     &.outlined {
         fill: transparent;
         stroke: @darkenedColor;
     }
+
     &.hole {
         fill: @darkenedColor;
         stroke: @darkenedColor;
     }
 
-    .section-header {
-        background-color: darken(@darkenedColor, 15%);
+    // Timeline styles
+
+    &.skill {
+        background-color: @color;
+    }
+
+    .item-header {
+        background-color: fade(@darkestColor, 70%);
+    }
+
+    .item-body {
+        background-color: fade(@darkestColor, 45%);
     }
 }
 .red {
@@ -230,4 +241,7 @@ body {
 }
 .purple {
     .color-class(@purple);
+}
+.gray {
+    .color-class(@gray);
 }

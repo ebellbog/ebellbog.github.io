@@ -1,0 +1,26 @@
+<div class="timeline-item">
+    <div class="item-header">
+        {{#if endDate}}
+            <div class="daterange small-text">
+                {{#if startDate}}
+                    <strong>{{startDate}}</strong>
+                    &nbsp;&ndash;&nbsp;
+                {{/if}}
+                <strong>{{{endDate}}}</strong>
+            </div>
+        {{/if}}
+    </div>
+    <div class="item-body">
+        {{#if orgUrl }}
+            <a class="organization" href="{{orgUrl}}" target="_blank">{{organization}}</a>
+        {{else}}
+            <span class="organization">{{organization}}</span>
+        {{/if}}
+        <div class="title">{{title}}</div>
+        <div class="location small-text">{{location}}</div>
+        <div class="description">{{description}}</div>
+        <div class="skill-container">
+            {{#each skills}}<span class="skill small-text {{formatSkillColor this}}">{{this}}</span>{{/each}}
+        </div>
+    </div>
+</div>

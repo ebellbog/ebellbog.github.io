@@ -1,0 +1,20 @@
+<div class="timeline-container">
+    <div class="timeline-content timeline-left">
+        {{#each data}}
+            {{#ifEven @index}}
+                {{> timelineItem}}
+            {{/ifEven}}
+        {{/each}}
+    </div>
+    <svg class="timeline-svg">
+        <defs></defs>
+    </svg>
+    <div class="timeline-content timeline-right">
+        {{#each data}}
+            {{#ifEven @index}}
+            {{else}}
+                {{> timelineItem}}
+            {{/ifEven}}
+        {{/each}} 
+    </div>
+</div>

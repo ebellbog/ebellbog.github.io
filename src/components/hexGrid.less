@@ -1,0 +1,18 @@
+.hex {
+    transition: transform .4s, stroke .13s, fill .13s;
+    transition-delay: 0s, .15s, .15s;
+    transition-timing-function: linear;
+
+    stroke-width: 4px;
+    stroke-linejoin: round;
+
+    &.outlined {
+        fill: transparent;
+    }
+    &.moving {
+        transition: transform .35s!important;
+    }
+    &.no-animation {
+        transition: unset;
+    }
+}
