@@ -49,6 +49,24 @@ body {
     }
 }
 
+.shaded-blur {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.badge-container {
+    margin: -3px; // Cancel badge margins at outer borders
+    .badge {
+        display: inline-block;
+        color: white;
+
+        padding: 3px 10px;
+        margin: 3px;
+
+        border-radius: 14px;
+    }
+}
+
 .small-text {
     font-size: 0.7em;
 }
@@ -198,6 +216,18 @@ body {
         background-color: @darkestColor;
     }
 
+    .shaded-blur {
+        background-color: fade(@darkestColor, 45%);
+    }
+
+    .stroked-text {
+        text-shadow: 2px 2px 0 @darkestColor, 3px 2px 0 @darkestColor;
+    }
+
+    &.badge {
+        background-color: @color;
+    }
+
     // Hex styles
 
     fill: @color;
@@ -215,16 +245,8 @@ body {
 
     // Timeline styles
 
-    &.skill {
-        background-color: @color;
-    }
-
     .item-header {
         background-color: fade(@darkestColor, 70%);
-    }
-
-    .item-body {
-        background-color: fade(@darkestColor, 45%);
     }
 }
 .red {

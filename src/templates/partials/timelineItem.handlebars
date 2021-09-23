@@ -10,7 +10,7 @@
             </div>
         {{/if}}
     </div>
-    <div class="item-body">
+    <div class="item-body shaded-blur">
         {{#if orgUrl }}
             <a class="organization" href="{{orgUrl}}" target="_blank">{{organization}}</a>
         {{else}}
@@ -19,8 +19,8 @@
         <div class="title">{{title}}</div>
         <div class="location small-text">{{location}}</div>
         <div class="description">{{description}}</div>
-        <div class="skill-container">
-            {{#each skills}}<span class="skill small-text {{formatSkillColor this}}">{{this}}</span>{{/each}}
+        <div class="badge-container">
+            {{#each skills}}<span class="badge small-text {{formatSkillColor this}}">{{this}}</span>{{/each}}
         </div>
     </div>
 </div>

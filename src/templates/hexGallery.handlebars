@@ -1,0 +1,45 @@
+<div class="hex-gallery">
+    {{#each rows}}
+        <div class="hex-gallery-row">
+            {{#each this}}
+                <div class="hex-image-wrapper{{#if placeholder}} placeholder{{/if}}">
+                    <img class="hex-image" src="./img/{{fileName}}" {{#if caption}}data-caption="{{caption}}"{{/if}}>
+                </div>
+            {{/each}}
+        </div>
+    {{/each}}
+</div>
+<div class="gallery-title stroked-text"><i>{{title}}</i></div>
+<div class="hex-gallery-info shaded-blur">
+    <div class="info-panel panel-left">
+        <table class="info-table">
+            <colgroup>
+                <col width="35%">
+                <col>
+            </colgroup>
+            <tr>
+                <td>Released:</td>
+                <td>{{{year}}}</td>
+            </tr>
+            <tr>
+                <td>Platform:</td>
+                <td class="badge-container">
+                    {{#each platforms}}<span class="badge small-text red">{{this}}</span>{{/each}}
+                </td>
+            </tr>
+            <tr>
+                <td>Tools:</td>
+                <td class="badge-container">
+                    {{#each tools}}<span class="badge small-text red">{{this}}</span>{{/each}}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="separator"></div>
+    <div class="info-panel panel-right">
+        <div class="gallery-description">
+            {{{description}}}
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>

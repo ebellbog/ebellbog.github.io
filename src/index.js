@@ -3,24 +3,26 @@ import './mobile.less';
 
 import HexGrid from './components/hexGrid.js';
 import HexTimeline from './components/hexTimeline';
-
-import '../img/swat_logo.jpg';
-import '../img/scopely_logo.jpg';
-import '../img/techchange_logo.jpg';
-import '../img/liwwa_logo.jpg';
-import '../img/hiq_logo.jpg';
+import HexGallery from './components/hexGallery';
 
 import engTimelineData from './data/engineeringTimeline';
+import megaMazeGalleryData from './data/megaMazeGallery';
 import loremIpsum from './lorem.js';
+
+let hexGrid;
 
 $(document).ready(() => {
     $('.page-content').append(`<div>${loremIpsum}</div>`);
 
     new HexTimeline($('#eng-timeline'), engTimelineData);
-    new HexGrid($('#svg-hexes'));
+    new HexGallery($('#mega-maze-gallery'), megaMazeGalleryData);
+    hexGrid = new HexGrid($('#svg-hexes'));
 
     hookEvents();
-})
+
+    const {location: {hash}} = window;
+    if (hash) scrollToElement($(hash));
+});
 
 function hookEvents() {
     $('#name').on('click', () => {
@@ -30,15 +32,32 @@ function hookEvents() {
         const idx = $(e.target).index();
         scrollToPage(idx + 1); // (0th page is the intro, not a section)
     });
+    $('#modal-viewer').on('click', () => {
+        $('body').removeClass('show-modal');
+    })
 }
 
-function scrollToPage(pageIdx) {
+function scrollToPage(pageIdx, doAnimate) {
+    const $page = $(`.page:nth-child(${pageIdx + 1})`);
+    scrollToElement($page, doAnimate);
+}
+
+function scrollToElement($el, doAnimate) {
     const $pageContainer = $('#page-container');
     const currentScroll = $pageContainer.scrollTop();
 
-    const $page = $(`.page:nth-child(${pageIdx + 1})`);
-    const targetScroll = $page.offset().top + currentScroll;
+    const targetScroll = $el.offset().top + currentScroll;
 
-    const scrollDelta = Math.abs(currentScroll - targetScroll);
-    $pageContainer.animate({scrollTop: targetScroll}, scrollDelta * 2.5); // ensure constant scroll speed, regardless of scroll amount
+    if (doAnimate) {
+        const scrollDelta = Math.abs(currentScroll - targetScroll);
+        $pageContainer.animate({scrollTop: targetScroll}, scrollDelta * 2.5); // ensure constant scroll speed, regardless of scroll amount
+    } else {
+        $('#page-container').off('scroll');
+
+        $pageContainer.scrollTop(targetScroll);
+        hexGrid.scrollSvgHexes(false);
+
+        $('#page-container').on('scroll', () => hexGrid.scrollSvgHexes());
+    }
+
 }

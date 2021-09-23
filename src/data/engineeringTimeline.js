@@ -1,3 +1,9 @@
+import '../../img/swat_logo.jpg';
+import '../../img/scopely_logo.jpg';
+import '../../img/techchange_logo.jpg';
+import '../../img/liwwa_logo.jpg';
+import '../../img/hiq_logo.jpg';
+
 const engTimelineData = [
     {
         organization: 'Swarthmore College',

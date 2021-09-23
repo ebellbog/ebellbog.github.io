@@ -351,8 +351,14 @@ class HexGrid {
 
         if (maxIdx !== currentPage) {
             currentPage = maxIdx;
+
             $('#page-links a').removeClass('active');
-            if (currentPage > 0) $(`#page-links a:nth-child(${currentPage})`).addClass('active');
+            if (currentPage > 0) {
+                $(`#page-links a:nth-child(${currentPage})`).addClass('active');
+                history.replaceState(null, null, '#' + $(`.page:nth-child(${currentPage + 1})`).attr('id'));
+            } else {
+                history.replaceState(null, null, '/');
+            }
         }
     }
 
