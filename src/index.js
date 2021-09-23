@@ -18,11 +18,20 @@ $(document).ready(() => {
     new HexGallery($('#mega-maze-gallery'), megaMazeGalleryData);
     hexGrid = new HexGrid($('#svg-hexes'));
 
+    setupNavbar();
     hookEvents();
 
-    const {location: {hash}} = window;
-    if (hash) scrollToElement($(hash));
+    let {location: {hash}} = window, $el;
+    if (hash && ($el = $(hash)).length) scrollToElement($el);
 });
+
+function setupNavbar() {
+    const $pageLinks = $('#page-links');
+    $('.page-header').each((idx, header) => {
+        const $newLink = $('<a>').html($(header).html());
+        $pageLinks.append($newLink);
+    });
+}
 
 function hookEvents() {
     $('#name').on('click', () => {
