@@ -1,12 +1,14 @@
 import './index.less';
 import './mobile.less';
 
-import HexGrid from './components/hexGrid.js';
+import HexGrid from './components/hexGrid';
 import HexTimeline from './components/hexTimeline';
 import HexGallery from './components/hexGallery';
 
 import engTimelineData from './data/engineeringTimeline';
 import megaMazeGalleryData from './data/megaMazeGallery';
+import safeSpaceGalleryData from './data/safeSpaceGallery';
+
 import loremIpsum from './lorem.js';
 
 let hexGrid;
@@ -14,9 +16,11 @@ let hexGrid;
 $(document).ready(() => {
     $('.page-content').append(`<div>${loremIpsum}</div>`);
 
-    new HexTimeline($('#eng-timeline'), engTimelineData);
-    new HexGallery($('#mega-maze-gallery'), megaMazeGalleryData);
     hexGrid = new HexGrid($('#svg-hexes'));
+
+    new HexTimeline($('#eng-timeline'), engTimelineData);
+    new HexGallery($('#safe-space-gallery'), safeSpaceGalleryData);
+    new HexGallery($('#mega-maze-gallery'), megaMazeGalleryData);
 
     setupNavbar();
     hookEvents();

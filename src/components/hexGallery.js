@@ -5,7 +5,7 @@ class HexGallery {
     maxRowSize = 3;
 
     constructor($container, data, cfg) {
-        this.$container = $container;
+        this.$container = $container.addClass('hex-gallery');
 
         const rows = [], {images} = data;
         while (images.length) {
@@ -21,28 +21,36 @@ class HexGallery {
     }
 
     hookEvents() {
-        this.$container.on('click', '.hex-image', (e) => {
-            const $hexImage = $(e.target);
-            const $modalImage = $('#modal-image');
-    
-            $('#modal-caption').html($hexImage.data('caption') || '');
-    
-            $modalImage
-                .css({
-                    height: $hexImage.outerHeight(),
-                    width: $hexImage.outerWidth(),
-                    top: $hexImage.offset().top,
-                    left: $hexImage.offset().left,
-                    transition: 'none', // Don't animate initial placement
-                })
-                .attr({
-                    src: $hexImage.attr('src'),
-                })
-                .one('load', () => {
-                    $modalImage.css('transition', ''); // Animate scale-up effect
-                    $('body').addClass('show-modal');
-                });
-        });
+        this.$container.find('.hex-image')
+            .on('click', (e) => {
+                const $hexImage = $(e.target);
+                const $modalImage = $('#modal-image');
+
+                $('#modal-caption').html($hexImage.data('caption') || '');
+
+                $modalImage
+                    .css({
+                        height: $hexImage.outerHeight(),
+                        width: $hexImage.outerWidth(),
+                        top: $hexImage.offset().top,
+                        left: $hexImage.offset().left,
+                        transition: 'none', // Don't animate initial placement
+                    })
+                    .attr({
+                        src: $hexImage.attr('src'),
+                    })
+                    .one('load', () => {
+                        $modalImage.css('transition', ''); // Animate scale-up effect
+                        $('body').addClass('show-modal');
+                    });
+            })
+            .hover(({target}) => {
+                const {naturalHeight, naturalWidth} = target;
+                const aspectRatio = naturalHeight / naturalWidth;
+                $(target).css('width', 300 / aspectRatio);
+            }, ({target}) => {
+                $(target).css('width', 260);
+            });
     }
 }
 

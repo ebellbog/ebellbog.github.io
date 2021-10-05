@@ -34,6 +34,12 @@ const megaMazeGalleryData = {
             fileName: 'mega_maze4.jpg',
             caption: '',
         },
+    ],
+    links: [
+        {
+            name: 'Client website',
+            url: 'https://davismegamaze.com/mega-maze/'
+        }
     ]
 }
 

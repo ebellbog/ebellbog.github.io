@@ -71,6 +71,32 @@ body {
     font-size: 0.7em;
 }
 
+.btn {
+    position: relative;
+
+    text-decoration: none;
+
+    font-size: 1.1em;
+    color: white;
+
+    &, .btn-background {
+        padding: 6px 30px;
+    }
+    .btn-background {
+        clip-path: polygon(50% 0, 50% 0, 50% 100%, 50% 100%);
+        transition: clip-path .3s;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        background-color: white;
+    }
+    &:hover .btn-background {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+}
+
 #nav-bar {
     position: sticky;
     top: 0;
@@ -212,8 +238,12 @@ body {
     @darkenedColor: desaturate(darken(@color, 15%), 25%);
     @darkestColor: darken(@darkenedColor, 15%);
 
-    .page-header {
+    .dark-bg, .page-header {
         background-color: @darkestColor;
+    }
+
+    .dark-text {
+        color: @darkestColor;
     }
 
     .shaded-blur {
@@ -226,6 +256,10 @@ body {
 
     &.badge {
         background-color: @color;
+    }
+
+    .btn {
+        box-shadow: 0 0 4px @color;
     }
 
     // Hex styles

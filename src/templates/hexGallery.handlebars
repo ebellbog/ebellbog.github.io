@@ -1,4 +1,4 @@
-<div class="hex-gallery">
+<div>
     {{#each rows}}
         <div class="hex-gallery-row">
             {{#each this}}
@@ -9,8 +9,13 @@
         </div>
     {{/each}}
 </div>
-<div class="gallery-title stroked-text"><i>{{title}}</i></div>
-<div class="hex-gallery-info shaded-blur">
+<div class="gallery-header">
+    <i class="gallery-title stroked-text">{{title}}</i>
+    {{#each links}}
+        {{> button this}}
+    {{/each}}
+</div>
+<div class="gallery-info shaded-blur">
     <div class="info-panel panel-left">
         <table class="info-table">
             <colgroup>
@@ -24,13 +29,13 @@
             <tr>
                 <td>Platform:</td>
                 <td class="badge-container">
-                    {{#each platforms}}<span class="badge small-text red">{{this}}</span>{{/each}}
+                    {{#each platforms}}<span class="badge small-text purple">{{this}}</span>{{/each}}
                 </td>
             </tr>
             <tr>
                 <td>Tools:</td>
                 <td class="badge-container">
-                    {{#each tools}}<span class="badge small-text red">{{this}}</span>{{/each}}
+                    {{#each tools}}<span class="badge small-text {{formatSkillColor this}}">{{this}}</span>{{/each}}
                 </td>
             </tr>
         </table>

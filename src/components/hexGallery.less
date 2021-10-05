@@ -1,9 +1,16 @@
 @import (reference) '../index.less';
 
+.hex-gallery {
+    margin-top: 40px;
+    &:not(:last-child) {
+        margin-bottom: 140px;
+    }
+}
+
 .hex-gallery-row {
     position: relative;
-    height: 245px;
     overflow: visible;
+    white-space: nowrap;
 
     text-align: center;
     filter: drop-shadow(0 0 8px fade(@bgColor, 90%));
@@ -13,7 +20,7 @@
 
     .hex-image-wrapper {
         display: inline-block;
-        margin: 0 3px;
+        margin: 0 5px;
         background-color: white;
 
         cursor: zoom-in;
@@ -24,9 +31,6 @@
         &:hover {
             &, .hex-image {
                 clip-path: @boxClip;
-            }
-            .hex-image {
-                width: 400px;
             }
         }
 
@@ -45,6 +49,7 @@
         }
     }
 
+    height: 250px;
     &:last-child {
         height: auto;
     }
@@ -54,12 +59,20 @@
     }
 }
 
-.gallery-title {
-    font-size: 1.9em;
+.gallery-header {
     margin-bottom: 0.1em;
+
+    .gallery-title {
+        font-size: 1.9em;
+    }
+
+    .btn {
+        float: right;
+        margin-left: 10px;
+    }
 }
 
-.hex-gallery-info {
+.gallery-info {
     position: relative;
     display: flex;
     align-items: center;
@@ -107,7 +120,7 @@
 }
 
 #modal-viewer {
-    @modalImageWidth: 70%;
+    @modalImageWidth: 85%;
     @modalImageHeight: 70%;
 
     @modalImageTop: calc((100% - @modalImageHeight) / 2);
