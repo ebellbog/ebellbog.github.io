@@ -15,18 +15,16 @@ html {
 }
 
 body {
-    background-color: @bgColor;
-
+    position: relative;
     height: 100vh;
 
-    width: 100%;
     min-width: 1300px;
-
     overflow: hidden;
-    position: relative;
 
     padding: 0;
     margin: 0;
+
+    background-color: @bgColor;
 }
 
 .fullscreen {
@@ -55,15 +53,15 @@ body {
 }
 
 .badge-container {
-    margin: -3px; // Cancel badge margins at outer borders
+    margin: -.2em; // Cancel badge margins at outer borders
     .badge {
         display: inline-block;
         color: white;
 
-        padding: 3px 10px;
-        margin: 3px;
+        padding: .25em .8em;
+        margin: .2em;
 
-        border-radius: 14px;
+        border-radius: 2em;
     }
 }
 

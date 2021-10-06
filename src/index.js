@@ -9,6 +9,7 @@ import engTimelineData from './data/engineeringTimeline';
 import megaMazeGalleryData from './data/megaMazeGallery';
 import safeSpaceGalleryData from './data/safeSpaceGallery';
 
+import { isMobileDevice } from './util';
 import loremIpsum from './lorem.js';
 
 let hexGrid;
@@ -16,14 +17,14 @@ let hexGrid;
 $(document).ready(() => {
     $('.page-content').append(`<div>${loremIpsum}</div>`);
 
+    setupNavbar();
+    hookEvents();
+
     hexGrid = new HexGrid($('#svg-hexes'));
 
     new HexTimeline($('#eng-timeline'), engTimelineData);
     new HexGallery($('#safe-space-gallery'), safeSpaceGalleryData);
     new HexGallery($('#mega-maze-gallery'), megaMazeGalleryData);
-
-    setupNavbar();
-    hookEvents();
 
     let {location: {hash}} = window, $el;
     if (hash && ($el = $(hash)).length) scrollToElement($el);
@@ -45,9 +46,26 @@ function hookEvents() {
         const idx = $(e.target).index();
         scrollToPage(idx + 1); // (0th page is the intro, not a section)
     });
+
     $('#modal-viewer').on('click', () => {
         $('body').removeClass('show-modal');
-    })
+    });
+
+    const resize = () => {
+        // Trick for actual full-height layout on mobile
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+        const $body = $('body');
+        $body.removeClass('mobile landscape portrait');
+        if (isMobileDevice()) {
+            $body.addClass(`mobile ${window.innerWidth > window.innerHeight ? 'landscape' : 'portrait'}`);
+        }
+
+        $(window).trigger('resize-component'); // Optional event for components, to execute resize logic after main resize handler
+    }
+    $(window).on('resize', () => setTimeout(() => resize(), 0)); // For some reason, this timeout is necessary to ensure user agent has already updated
+    resize();
 }
 
 function scrollToPage(pageIdx, doAnimate) {
@@ -63,7 +81,7 @@ function scrollToElement($el, doAnimate) {
 
     if (doAnimate) {
         const scrollDelta = Math.abs(currentScroll - targetScroll);
-        $pageContainer.animate({scrollTop: targetScroll}, scrollDelta * 2.5); // ensure constant scroll speed, regardless of scroll amount
+        $pageContainer.animate({scrollTop: targetScroll}, scrollDelta * 2.5); // Ensure constant scroll speed, regardless of scroll amount
     } else {
         $('#page-container').off('scroll');
 

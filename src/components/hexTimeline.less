@@ -16,7 +16,7 @@
             transform: translateY(-50%);
             width: 100%;
 
-            border-radius: 10px;
+            border-radius: .5em;
             overflow: hidden;
 
             font-family: 'Nunito', sans-serif;
@@ -31,11 +31,11 @@
                 text-align: center;
 
                 .daterange {
-                    padding: 3px 0;
+                    padding: .3em 0;
                 }
             }
             .item-body {
-                padding: 12px 16px;
+                padding: .6em .8em;
             }
 
             .organization {
@@ -96,6 +96,34 @@
             &:hover {
                 transform: scale(1.15);
             }
+        }
+    }
+}
+
+.mobile {
+    .timeline-container {
+        display: block;
+
+        .timeline-content {
+            .timeline-item {
+                position: relative;
+                transform: none;
+
+                .description {
+                    max-height: unset;
+                }
+            }
+        }
+
+        .timeline-separator {
+            display: block;
+            margin: 0.7em auto;
+
+            width: 10px;
+            height: 110px;
+            border-radius: 5px;
+
+            background-color: white;
         }
     }
 }

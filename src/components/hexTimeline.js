@@ -17,6 +17,8 @@ class HexTimeline {
     // Data
     data = null;
 
+    displayingMobile = null;
+
     constructor($container, data, cfg) {
         if (data.length < 2) {
             throw 'Timeline must have at least two items';
@@ -26,13 +28,22 @@ class HexTimeline {
         this.$container = $container;
         Object.assign(this, cfg);
 
+        $(window).on('resize-component', () => this.setupTimeline());
         this.setupTimeline();
     }
 
     setupTimeline() {
-        this.$container.html(HexTimelineTemplate({data: this.data}));
-        this.$svg = this.$container.find('svg');
-        this.drawHexTimeline();   
+        const isMobile = $('body').hasClass('mobile');
+        if (this.displayingMobile !== isMobile) {
+            this.$container.html(HexTimelineTemplate({data: this.data, isMobile}));
+            if (!isMobile) {
+                this.$svg = this.$container.find('svg');
+                this.drawHexTimeline();
+            } else {
+                this.$container.css({'margin-bottom': 0, 'margin-top': '1em'});
+            }
+            this.displayingMobile = isMobile;
+        }
     }
 
     drawHexTimeline() {
@@ -98,7 +109,6 @@ class HexTimeline {
         });
 
         // Adjust vertical placement of timeline items
-
 
         const $leftItems = $('.timeline-left .timeline-item');
         const $rightItems = $('.timeline-right .timeline-item');

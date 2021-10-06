@@ -3,24 +3,21 @@ import { constrainValue, createSvg, isMobileDevice, randItem } from '../util';
 
 /** constants **/
 
-const INNER_BORDER = 4; // Should always match stroke-width for .hex class
 const HEX_SIZE_DESKTOP = 44;
-const HEX_SIZE_MOBILE_LANDSCAPE = 36;
-const HEX_SIZE_MOBILE_PORTRAIT = 60;
+const HEX_SIZE_MOBILE_LANDSCAPE = 50;
+const HEX_SIZE_MOBILE_PORTRAIT = 85;
 
 const COLOR_CLASSES = ['red', 'yellow', 'green', 'blue', 'purple'];
 
 /** global variables **/
-
-let svgWidth, svgHeight;
 
 let hexRadius, hexWidth, hexHeight;
 
 let grid, rowHeights;
 let offsetX, offsetY;
 
-let isMobile;
 let lastResize;
+let wasMobile = isMobileDevice();
 
 let currentPage = 0;
 
@@ -93,53 +90,43 @@ class HexGrid {
 
         $('#page-container').on('scroll', () => this.scrollSvgHexes());
 
-        $(window).on('resize', () => {
-            const DEBOUNCE_DURATION = 500;
-
-            const resize = () => {
-                this.configDevice();
-                this.generateGrid();
-
-                this.clearHexes();
-                this.setupSvg();
-                this.scrollSvgHexes(false);
-            }
-
-            const wasMobile = isMobile;
-            if (wasMobile || isMobileDevice()) {
-                // Don't debounce when rotating mobile device
-                setTimeout(resize, 0);
-            } else {
-                lastResize = Date.now();
-                setTimeout(() => {
-                    if (Date.now() - lastResize < DEBOUNCE_DURATION) return;
-                    resize();
-                }, DEBOUNCE_DURATION);
-            }
-        });
+        $(window).on('resize-component', () => this.resizeGrid());
     }
 
     /** resize functions */
 
-    configDevice() {
-        isMobile = isMobileDevice();
+    resizeGrid() {
+        const DEBOUNCE_DURATION = 500;
 
-        // Trick for actual full-height layout on mobile
-        const vh = window.innerHeight * 0.01
-        document.documentElement.style.setProperty('--vh', `${vh}px`)
+        const resize = () => {
+            this.configDevice();
+            this.generateGrid();
 
-        svgWidth = this.$svgHexes.innerWidth()
-        svgHeight = this.$svgHexes.innerHeight()
-        const aspect = svgWidth / svgHeight
+            this.clearHexes();
+            this.setupSvg();
+            this.scrollSvgHexes(false);
+        }
 
-        const $body = $('body');
-        $body.removeClass('mobile landscape portrait');
-
-        if (!isMobile) {
-            this.setHexSize(HEX_SIZE_DESKTOP);
+        if (wasMobile || isMobileDevice()) {
+            // Don't debounce when rotating mobile device
+            setTimeout(resize, 0);
         } else {
-            this.setHexSize(aspect < 1 ? HEX_SIZE_MOBILE_PORTRAIT : HEX_SIZE_MOBILE_LANDSCAPE);
-            $body.addClass(`mobile ${aspect < 1 ? 'portrait' : 'landscape'}`);
+            lastResize = Date.now();
+            setTimeout(() => {
+                if (Date.now() - lastResize < DEBOUNCE_DURATION) return;
+                resize();
+            }, DEBOUNCE_DURATION);
+        }
+
+        wasMobile = isMobileDevice();
+    }
+
+    configDevice() {
+        const $body = $('body');
+        if ($body.hasClass('mobile')) {
+            this.setHexSize($body.hasClass('portrait') ? HEX_SIZE_MOBILE_PORTRAIT : HEX_SIZE_MOBILE_LANDSCAPE);
+        } else {
+            this.setHexSize(HEX_SIZE_DESKTOP);
         }
     }
 
@@ -152,8 +139,12 @@ class HexGrid {
     /** grid functions **/
 
     generateGrid() {
-        const width = Math.floor((svgWidth - hexWidth / 4) / hexWidth);
-        const height = Math.floor((svgHeight - hexHeight / 4) / hexHeight);
+        const svgWidth = this.$svgHexes.innerWidth();
+        const svgHeight = this.$svgHexes.innerHeight();
+
+        const mathFunc = (wasMobile) ? Math.round : Math.floor;
+        let width = mathFunc((svgWidth - (wasMobile ? 0 : hexWidth / 4)) / hexWidth);
+        let height = Math.floor((svgHeight - (wasMobile ? 0 : hexHeight / 4)) / hexHeight);
 
         const HOLES_PERCENT = .2;
 
@@ -317,7 +308,7 @@ class HexGrid {
 
     getDefaultScale({$hex}) {
         if ($hex.hasClass('outlined')) return .8;
-        return hexWidth / (INNER_BORDER - 1 + hexWidth);
+        return hexWidth / (parseInt($hex.css('stroke-width')) * .75 + hexWidth);
     }
 
     /** actions **/
