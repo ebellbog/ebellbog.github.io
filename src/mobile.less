@@ -1,3 +1,5 @@
+@import (reference) 'index.less';
+
 html {
     -webkit-text-size-adjust: 100%;
 }
@@ -5,6 +7,83 @@ html {
 body.mobile {
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
+
+    .mobile-only {
+        display: block;
+    }
+    .desktop-only {
+        display: none;
+    }
+
+    #mobile-nav-btn {
+        z-index: 5;
+
+        position: absolute;
+        top: .2em;
+        left: 0em;
+
+        font-size: 1.75em;
+        color: white;
+
+        filter: drop-shadow(.11em .08em 0 @bgColor);
+
+        padding: .3em .45em .2em .45em;
+        border-radius: @borderRadius;
+
+        transition: opacity .4s;
+        transition-delay: .4s;
+    }
+    #mobile-nav-bar {
+        z-index: 6;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        transition: transform .5s;
+        transform: translateX(-100%);
+
+        border-bottom-right-radius: @borderRadius;
+
+        a {
+            display: block;
+            color: white;
+
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.3em;
+            font-weight: 100;
+            text-transform: uppercase;
+
+            padding: .65em 2em .65em 1em;
+            &:not(.active) {
+                padding-left: 2.2em;
+            }
+            &.active::before {
+                content: '⬢ ';
+                opacity: .8;
+
+                font-size: .75em;
+
+                position: relative;
+                bottom: .2em;
+
+                padding-right: .4em;
+            }
+
+            &:not(:last-child) {
+                border-bottom: 1px solid fade(white, 30%);
+            }
+        }
+    }
+    &.show-mobile-nav {
+        #mobile-nav-btn {
+            opacity: 0;
+            transition-delay: 0s;
+        }
+        #mobile-nav-bar {
+            transform: none;
+        }
+    }
 
     #page-container {
         height: 100%;
@@ -16,12 +95,12 @@ body.mobile {
         }
     }
 
-    #nav-bar {
-        display: none;
-    }
-
     &.portrait {
         font-size: 2.5em;
+
+        #mobile-nav-bar {
+            min-width: 60%;
+        }
 
         #page-container {
             .page {
@@ -39,6 +118,10 @@ body.mobile {
 
     &.landscape {
         font-size: 1.5em;
+
+        #mobile-nav-bar {
+            min-width: 40%;
+        }
 
         #page-container {
             #intro {

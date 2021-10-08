@@ -81,7 +81,7 @@
     display: flex;
     align-items: center;
 
-    border-radius: .5em;
+    border-radius: @borderRadius;
     overflow: hidden;
     
     box-sizing: border-box;
@@ -130,7 +130,7 @@
     @modalImageTop: calc((100% - @modalImageHeight) / 2);
     @modalImageLeft: calc((100% - @modalImageWidth) / 2);
 
-    z-index: 5;
+    z-index: 6;
     background-color: transparent;
     pointer-events: none;
 
@@ -254,6 +254,12 @@
     }
 
     &.landscape {
+        .hex-gallery {
+            &:not(:last-child) {
+                margin-bottom: 7em;
+            }
+        }
+
         .hex-gallery-row {
             // Negate margins on parent .page; keep consistent with index.less
             margin-left: -140px;

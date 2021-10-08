@@ -9,6 +9,8 @@
 @navHeight: 3.2em;
 @maxWidth: 2000px;
 
+@borderRadius: .5em;
+
 html {
     overflow: hidden;
     position: relative;
@@ -25,6 +27,13 @@ body {
     margin: 0;
 
     background-color: @bgColor;
+}
+
+.mobile-only {
+    display: none;
+}
+.desktop-only {
+    display: block;
 }
 
 .fullscreen {
@@ -50,6 +59,7 @@ body {
 .shaded-blur {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
+    background-color: fade(@bgColor, 70%);
 }
 
 .badge-container {
@@ -114,7 +124,7 @@ body {
     overflow: auto;
 
     color: white;
-    text-shadow: 1px 1px 1px @bgColor;
+    text-shadow: 1.5px 1px 1px @bgColor;
     font-family: 'Chakra Petch', sans-serif;
 
     #name {
@@ -283,7 +293,7 @@ body {
     // Timeline styles
 
     .item-header {
-        background-color: fade(@darkestColor, 70%);
+        background-color: fade(@darkestColor, 50%);
     }
 }
 .red {

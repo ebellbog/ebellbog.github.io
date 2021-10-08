@@ -32,9 +32,12 @@ $(document).ready(() => {
 
 function setupNavbar() {
     const $pageLinks = $('#page-links');
+    const $mobileNavBar = $('#mobile-nav-bar');
+
     $('.page-header').each((idx, header) => {
-        const $newLink = $('<a>').html($(header).html());
+        const $newLink = $('<a>').addClass('nav-link').html($(header).html());
         $pageLinks.append($newLink);
+        $mobileNavBar.append($newLink.clone());
     });
 }
 
@@ -42,13 +45,23 @@ function hookEvents() {
     $('#name').on('click', () => {
         scrollToPage(0);
     });
-    $('#page-links a').on('click', (e) => {
+    $('.nav-link').on('click', (e) => {
         const idx = $(e.target).index();
         scrollToPage(idx + 1); // (0th page is the intro, not a section)
     });
 
+    const $body = $('body');
+
     $('#modal-viewer').on('click', () => {
-        $('body').removeClass('show-modal');
+        $body.removeClass('show-modal');
+    });
+
+    $('#mobile-nav-btn').on('click', (e) => {
+        e.stopPropagation();
+        $body.addClass('show-mobile-nav');
+    });
+    $body.on('click', (e) => {
+        $body.removeClass('show-mobile-nav');
     });
 
     const resize = () => {
