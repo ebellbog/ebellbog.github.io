@@ -16,11 +16,13 @@
 
 <body>
     <div id="nav-bar" class="bg-blur desktop-only">
-        <span id="name">Elana Bell Bogdan</span>
+        <span id="name" class="home-link">Elana Bell Bogdan</span>
 
-        <div id="page-links"></div>
+        <div id="page-links">
+            <span></span> <!-- placeholder for home link; don't remove -->
+        </div>
 
-        <span id="links">
+        <span class="social-links">
             <a target="_blank" href="https://www.linkedin.com/in/elana-bogdan-647601126/">
                 <i class="fab fa-linkedin fa-2x fa-fw"></i>
             </a>
@@ -35,7 +37,9 @@
     <div id="mobile-nav-btn" class="mobile-only">
         <i class="fa fa-bars"></i>
     </div>
-    <div id="mobile-nav-bar" class="shaded-blur mobile-only"></div>
+    <div id="mobile-nav-menu" class="shaded-blur mobile-only">
+        <a class="home-link active">About Elana</a>
+    </div>
 
     <div id="modal-viewer" class="fullscreen">
         <img id="modal-image">

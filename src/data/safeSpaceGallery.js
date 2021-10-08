@@ -27,6 +27,10 @@ const safeSpaceGalleryData = {
     ],
     links: [
         {
+            name: 'News',
+            url: 'https://gothamist.com/arts-entertainment/step-inside-the-dreamhouse-where-diy-arcade-games-meet-queer-culture',
+        },
+        {
             name: 'Code',
             url: 'https://github.com/ebellbog/safe-space',
         },

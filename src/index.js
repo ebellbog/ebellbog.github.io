@@ -32,22 +32,25 @@ $(document).ready(() => {
 
 function setupNavbar() {
     const $pageLinks = $('#page-links');
-    const $mobileNavBar = $('#mobile-nav-bar');
+    const $mobileNav = $('#mobile-nav-menu');
 
     $('.page-header').each((idx, header) => {
         const $newLink = $('<a>').addClass('nav-link').html($(header).html());
         $pageLinks.append($newLink);
-        $mobileNavBar.append($newLink.clone());
+        $mobileNav.append($newLink.clone());
     });
+
+    $('<div class="social-links">').html($('#nav-bar .social-links').html()).appendTo($mobileNav);
+    $('<div class="copyright">').html('&copy; Elana Bell Bogdan, 2021').appendTo($mobileNav);
 }
 
 function hookEvents() {
-    $('#name').on('click', () => {
+    $('.home-link').on('click', () => {
         scrollToPage(0);
     });
     $('.nav-link').on('click', (e) => {
         const idx = $(e.target).index();
-        scrollToPage(idx + 1); // (0th page is the intro, not a section)
+        scrollToPage(idx); // (0th page is the intro, not a section)
     });
 
     const $body = $('body');

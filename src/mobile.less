@@ -33,7 +33,7 @@ body.mobile {
         transition: opacity .4s;
         transition-delay: .4s;
     }
-    #mobile-nav-bar {
+    #mobile-nav-menu {
         z-index: 6;
 
         position: absolute;
@@ -45,18 +45,18 @@ body.mobile {
 
         border-bottom-right-radius: @borderRadius;
 
-        a {
+        .nav-link, .home-link {
             display: block;
             color: white;
 
             font-family: 'Chakra Petch', sans-serif;
             font-size: 1.3em;
-            font-weight: 100;
-            text-transform: uppercase;
+                font-weight: 100;
+                text-transform: uppercase;
 
             padding: .65em 2em .65em 1em;
             &:not(.active) {
-                padding-left: 2.2em;
+                padding-left: 2.15em;
             }
             &.active::before {
                 content: '⬢ ';
@@ -74,13 +74,31 @@ body.mobile {
                 border-bottom: 1px solid fade(white, 30%);
             }
         }
+
+        .social-links {
+            font-size: 1.1em;
+            text-align: center;
+
+            padding-top: .65em;
+            padding-bottom: .25em;
+            a {
+                padding: 0 .25em;
+            }
+        }
+
+        .copyright {
+            color: fade(white, 50%);
+            font-family: 'Nunito', sans-serif;
+            text-align: center;
+            padding-bottom: .45em;
+        }
     }
     &.show-mobile-nav {
         #mobile-nav-btn {
             opacity: 0;
             transition-delay: 0s;
         }
-        #mobile-nav-bar {
+        #mobile-nav-menu {
             transform: none;
         }
     }
@@ -98,7 +116,7 @@ body.mobile {
     &.portrait {
         font-size: 2.5em;
 
-        #mobile-nav-bar {
+        #mobile-nav-menu {
             min-width: 60%;
         }
 
@@ -119,7 +137,7 @@ body.mobile {
     &.landscape {
         font-size: 1.5em;
 
-        #mobile-nav-bar {
+        #mobile-nav-menu {
             min-width: 40%;
         }
 

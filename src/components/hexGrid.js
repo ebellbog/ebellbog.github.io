@@ -343,11 +343,12 @@ class HexGrid {
         if (maxIdx !== currentPage) {
             currentPage = maxIdx;
 
-            $('.nav-link').removeClass('active');
+            $('.nav-link, .home-link').removeClass('active');
             if (currentPage > 0) {
-                $(`.nav-link:nth-child(${currentPage})`).addClass('active');
+                $(`.nav-link:nth-child(${currentPage + 1})`).addClass('active');
                 history.replaceState(null, null, '#' + $(`.page:nth-child(${currentPage + 1})`).attr('id'));
             } else {
+                $('.home-link').addClass('active');
                 history.replaceState(null, null, '/');
             }
         }
