@@ -1,9 +1,10 @@
 @import (reference) '../index.less';
+@hexAspectRatio: cos((pi() / 6));
 
 .hex-gallery {
-    margin-top: 40px;
+    margin-top: 2.5em;
     &:not(:last-child) {
-        margin-bottom: 140px;
+        margin-bottom: 8.75em;
     }
 }
 
@@ -37,8 +38,8 @@
         .hex-image {
             display: block;
             height: 300px;
-            width: 260px;
-    
+            width: (300px * @hexAspectRatio);
+
             margin: 7px;
             object-fit: cover;
         }
@@ -64,11 +65,14 @@
 
     .gallery-title {
         font-size: 1.9em;
+        float: left;
     }
 
-    .btn {
+    .gallery-links {
         float: right;
-        margin-left: 10px;
+        .btn {
+            margin-left: .4em;
+        }
     }
 }
 
@@ -177,5 +181,92 @@
 
         text-align: center;
         text-shadow: 0 0 1px black, 0 0 4px black;
+    }
+}
+
+.mobile {
+    .gallery-header {
+        margin-bottom: .45em;
+    }
+    .gallery-title, .gallery-links {
+        float: none;
+    }
+    .gallery-links {
+        width: 100%;
+        margin-top: .5em;
+
+        font-size: 1.2em;
+        text-align: center;
+
+        .btn {
+            margin: 0 .2em;
+            padding: .15em 1.5em;
+        }
+
+        .btn-background {
+            display: none;
+        }
+    }
+
+    .separator {
+        margin: 1.4em auto;
+        width: 15%;
+        height: .12em;
+        border-radius: .6em;
+    }
+
+    .gallery-info {
+        display: block;
+        .info-panel {
+            width: 100%;
+        }
+    }
+
+    .hex-gallery-row {
+        overflow-x: scroll;
+
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        &:last-child {
+            margin-bottom: .75em;
+        }
+    }
+
+    &.portrait {
+        .hex-gallery-row {
+            // Negate margins on parent .page; keep consistent with mobile.less
+            margin-left: -2em;
+            margin-right: -2em;
+            padding: 0 2em;
+
+            .hex-image-wrapper {
+                .hex-image {
+                    height: 800px;
+                    width: (800px * @hexAspectRatio);
+                    margin: 16px;
+                }
+            }
+        }
+    }
+
+    &.landscape {
+        .hex-gallery-row {
+            // Negate margins on parent .page; keep consistent with index.less
+            margin-left: -140px;
+            margin-right: -140px;
+            padding: 0 140px;
+
+            .hex-image-wrapper {
+                .hex-image {
+                    height: 400px;
+                    width: (400px * @hexAspectRatio);
+                    margin: 9px;
+                }
+            }
+        }
     }
 }

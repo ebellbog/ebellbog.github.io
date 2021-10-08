@@ -3,26 +3,43 @@ import HexGalleryTemplate from '../templates/hexGallery.handlebars';
 
 class HexGallery {
     maxRowSize = 3;
+    displayingMobile = null;
 
-    constructor($container, data, cfg) {
+    constructor($container, data) {
         this.$container = $container.addClass('hex-gallery');
+        this.data = data;
 
-        const rows = [], {images} = data;
-        while (images.length) {
-            const newRowSize = (rows.length % 2) ? this.maxRowSize - 1 : this.maxRowSize; // Alternate odd/even row sizes so hexes nest
-            const newRow = new Array(newRowSize).fill({placeholder: true}); // Fill row with empty placeholders by default, to ensure proper alignment
-            images.splice(0, newRowSize).forEach((img, idx) => newRow[idx] = img);
-            rows.push(newRow);
-        }
-        data.rows = rows;
-        $container.html(HexGalleryTemplate(data));
+        $(window).on('resize-component', () => this.setupGallery());
+        this.setupGallery();
 
         this.hookEvents();
     }
 
+    setupGallery() {
+        const isMobile = $('body').hasClass('mobile');
+        if (this.displayingMobile === isMobile) return; // Only set up when device type has changed
+
+        if (isMobile) {
+            this.data.rows = [this.data.images]; // Single horizontal scroll for mobile
+        } else {
+            const rows = [];
+            const images = [...this.data.images];
+            while (images.length) {
+                const newRowSize = (rows.length % 2) ? this.maxRowSize - 1 : this.maxRowSize; // Alternate odd/even row sizes so hexes nest
+                const newRow = new Array(newRowSize).fill({placeholder: true}); // Fill row with empty placeholders by default, to ensure proper alignment
+                images.splice(0, newRowSize).forEach((img, idx) => newRow[idx] = img);
+                rows.push(newRow);
+            }
+            this.data.rows = rows;
+        }
+        this.$container.html(HexGalleryTemplate(Object.assign(this.data, {isMobile})));
+
+        this.displayingMobile = isMobile;
+    }
+
     hookEvents() {
-        this.$container.find('.hex-image')
-            .on('click', (e) => {
+        this.$container
+            .on('click', '.hex-image', (e) => {
                 const $hexImage = $(e.target);
                 const $modalImage = $('#modal-image');
 
@@ -44,12 +61,17 @@ class HexGallery {
                         $('body').addClass('show-modal');
                     });
             })
-            .hover(({target}) => {
+            .on('mouseover', '.hex-image', ({target}) => {
+                if ($('body').hasClass('portrait')) return;
+
                 const {naturalHeight, naturalWidth} = target;
                 const aspectRatio = naturalHeight / naturalWidth;
-                $(target).css('width', 300 / aspectRatio);
-            }, ({target}) => {
-                $(target).css('width', 260);
+
+                const $target = $(target);
+                $(target).css('width', $target.innerHeight() / aspectRatio);
+            })
+            .on('mouseout', '.hex-image', ({target}) => {
+                $(target).css('width', '');
             });
     }
 }

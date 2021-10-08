@@ -71,11 +71,16 @@ body {
 
 .btn {
     position: relative;
+    display: inline-block;
 
     text-decoration: none;
 
     font-size: 1.1em;
-    color: white;
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
 
     &, .btn-background {
         padding: 6px 30px;
@@ -182,7 +187,7 @@ body {
             display: inline-block;
             font-size: 2.3em;
             margin-bottom: 1em;
-            padding: 2px 8px;
+            padding: .07em .22em;
             transform: skewX(-10deg);
         }
 
@@ -249,7 +254,7 @@ body {
     }
 
     .stroked-text {
-        text-shadow: 2px 2px 0 @darkestColor, 3px 2px 0 @darkestColor;
+        text-shadow: .07em .07em 0 @darkestColor, .1em .07em 0 @darkestColor;
     }
 
     &.badge {

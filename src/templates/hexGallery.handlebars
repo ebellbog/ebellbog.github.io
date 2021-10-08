@@ -10,13 +10,22 @@
     {{/each}}
 </div>
 <div class="gallery-header">
-    <i class="gallery-title stroked-text">{{title}}</i>
-    {{#each links}}
-        {{> button this}}
-    {{/each}}
+    <div class="gallery-title stroked-text">
+        <i>{{title}}</i>
+    </div>
+
+    {{#if isMobile}}
+    {{else}}
+        <div class="gallery-links">
+            {{#each links}}
+                {{> button this}}
+            {{/each}}
+        </div>
+    {{/if}}
+    <div style="clear:both;"></div>
 </div>
 <div class="gallery-info shaded-blur">
-    <div class="info-panel panel-left">
+    <div class="info-panel">
         <table class="info-table">
             <colgroup>
                 <col width="35%">
@@ -41,10 +50,16 @@
         </table>
     </div>
     <div class="separator"></div>
-    <div class="info-panel panel-right">
+    <div class="info-panel">
         <div class="gallery-description">
             {{{description}}}
         </div>
     </div>
-    <div style="clear: both;"></div>
 </div>
+{{#if isMobile}}
+    <div class="gallery-links">
+        {{#each links}}
+            {{> button this}}
+        {{/each}}
+    </div>
+{{/if}}

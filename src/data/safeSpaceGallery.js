@@ -27,12 +27,12 @@ const safeSpaceGalleryData = {
     ],
     links: [
         {
-            name: 'Play',
-            url: 'https://elanabellbogdan.com/safe-space',
-        },
-        {
             name: 'Code',
             url: 'https://github.com/ebellbog/safe-space',
+        },
+        {
+            name: 'Play',
+            url: 'https://elanabellbogdan.com/safe-space',
         },
     ]
 }
