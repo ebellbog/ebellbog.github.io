@@ -319,3 +319,69 @@ body {
 .gray {
     .color-class(@gray);
 }
+
+.external-project {
+    display: block;
+    margin: 0 auto;
+
+    border: none;
+
+    width: 80%;
+    height: 35em;
+
+    border-radius: @borderRadius;
+    box-shadow: 0 0 1em fade(black, 40%);
+}
+
+.decal-gallery {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+
+    margin-top: 2em;
+
+    .decal-wrapper {
+        position: relative;
+
+        .decal-info {
+            opacity: 0;
+            transition: .5s opacity;
+
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+
+            padding: 2.3em 1.5em;
+            border-radius: @borderRadius;
+
+            margin: 0 -2em;
+
+            .decal-title {
+                font-size: 1.5em;
+                font-weight: 600;
+                margin-bottom: .7em;
+            }
+
+            .decal-description {
+                font-family: 'Nunito', sans-serif;
+                font-size: 1.15em;
+                line-height: 1.5em;
+                text-shadow: .03em .03em .1em fade(black, 60%);
+            }
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            .decal {
+                filter: contrast(0) sepia(1) hue-rotate(-342deg) saturate(2) brightness(0.6); // Manually adjust based on page color; currently configured for yellow
+                // [Alternative option: purple / @bgColor overlay] contrast(0) sepia(1) hue-rotate(-150deg) saturate(8) brightness(.35);
+            }
+
+            .decal-info {
+                opacity: 1;
+            }
+        }
+    }
+}
