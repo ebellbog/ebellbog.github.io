@@ -59,7 +59,7 @@ body {
 .shaded-blur {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    background-color: fade(@bgColor, 70%);
+    background-color: fade(@bgColor, 75%);
 }
 
 .badge-container {
@@ -321,16 +321,14 @@ body {
 }
 
 .external-project {
+    pointer-events: none;
     display: block;
-    margin: 0 auto;
 
+    margin: 1.5em auto;
     border: none;
 
     width: 80%;
     height: 35em;
-
-    border-radius: @borderRadius;
-    box-shadow: 0 0 1em fade(black, 40%);
 }
 
 .decal-gallery {
@@ -339,7 +337,7 @@ body {
     align-items: center;
     flex-wrap: wrap;
 
-    margin-top: 2em;
+    margin-top: 1em;
 
     .decal-wrapper {
         position: relative;

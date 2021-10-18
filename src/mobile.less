@@ -44,6 +44,8 @@ body.mobile {
         transform: translateX(-100%);
 
         border-bottom-right-radius: @borderRadius;
+        border-right: 2px solid fade(white, 60%);
+        border-bottom: 2px solid fade(white, 60%);
 
         .nav-link, .home-link {
             display: block;
@@ -51,8 +53,8 @@ body.mobile {
 
             font-family: 'Chakra Petch', sans-serif;
             font-size: 1.3em;
-                font-weight: 100;
-                text-transform: uppercase;
+            font-weight: 100;
+            text-transform: uppercase;
 
             padding: .65em 2em .65em 1em;
             &:not(.active) {
@@ -111,6 +113,30 @@ body.mobile {
                 width: 100%;
             }
         }
+
+        .external-project {
+            width: 100%;
+        }
+
+        .decal-gallery {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+
+            width: 80%;
+
+            .decal {
+                margin: 5em 0;
+
+                &:first-child {
+                    margin-top: 0;
+                }
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
     }
 
     &.portrait {
@@ -125,10 +151,21 @@ body.mobile {
                 padding-left: 2em;
                 padding-right: 2em;
             }
+
             #intro {
                 img {
                     height: auto;
                     width: 75vw;
+                }
+            }
+
+            .external-project {
+                height: 25em;
+            }
+
+            .decal-gallery {
+                .decal {
+                    width: 100%;
                 }
             }
         }
@@ -142,9 +179,24 @@ body.mobile {
         }
 
         #page-container {
+            .page {
+                padding-left: 3.5em;
+                padding-right: 3.5em;
+            }
+
             #intro {
                 img {
                     height: 80vh;
+                }
+            }
+
+            .external-project {
+                height: 60vh;
+            }
+
+            .decal-gallery {
+                .decal {
+                    width: 65%;
                 }
             }
         }

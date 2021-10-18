@@ -308,7 +308,7 @@ class HexGrid {
 
     getDefaultScale({$hex}) {
         if ($hex.hasClass('outlined')) return .8;
-        return hexWidth / (parseInt($hex.css('stroke-width')) * .75 + hexWidth);
+        return hexWidth / (parseInt($hex.css('stroke-width')) * .7 + hexWidth);
     }
 
     /** actions **/
