@@ -7,7 +7,7 @@ const HEX_SIZE_DESKTOP = 44;
 const HEX_SIZE_MOBILE_LANDSCAPE = 50;
 const HEX_SIZE_MOBILE_PORTRAIT = 85;
 
-const COLOR_CLASSES = ['red', 'yellow', 'green', 'blue', 'purple'];
+const COLOR_CLASSES = ['red', 'yellow', 'green', 'blue', 'purple', 'gray'];
 
 /** global variables **/
 
@@ -22,7 +22,7 @@ let wasMobile = isMobileDevice();
 let currentPage = 0;
 
 function randColorClass() {
-    return randItem(COLOR_CLASSES);
+    return randItem(COLOR_CLASSES.slice(0, -1)); // exclude gray
 }
 
 function getColorClass($el) {

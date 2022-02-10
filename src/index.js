@@ -9,13 +9,13 @@ import engTimelineData from './data/engineeringTimeline';
 import megaMazeGalleryData from './data/megaMazeGallery';
 import safeSpaceGalleryData from './data/safeSpaceGallery';
 
-import { isMobileDevice } from './util';
+import {isMobileDevice} from './util';
 import loremIpsum from './lorem.js';
 
 let hexGrid;
 
 $(document).ready(() => {
-    $('.page-content').append(`<div>${loremIpsum}</div>`);
+    $('.page-content:empty').append(`<div>${loremIpsum}</div>`);
 
     setupNavbar();
     hookEvents();
@@ -41,16 +41,16 @@ function setupNavbar() {
     });
 
     $('<div class="social-links">').html($('#nav-bar .social-links').html()).appendTo($mobileNav);
-    $('<div class="copyright">').html('&copy; Elana Bell Bogdan, 2021').appendTo($mobileNav);
+    $('<div class="copyright">').html('&copy; Elana Bell Bogdan, 2022').appendTo($mobileNav);
 }
 
 function hookEvents() {
     $('.home-link').on('click', () => {
-        scrollToPage(0);
+        scrollToPage(0, !isMobileDevice());
     });
     $('.nav-link').on('click', (e) => {
-        const idx = $(e.target).index();
-        scrollToPage(idx); // (0th page is the intro, not a section)
+        const idx = $(e.target).index(); // (0th page is the intro, not a section)
+        scrollToPage(idx, !isMobileDevice());
     });
 
     const $body = $('body');
