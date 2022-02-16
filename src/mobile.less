@@ -114,10 +114,6 @@ body.mobile {
             box-sizing: border-box;
         }
 
-        .external-project {
-            width: 100%;
-        }
-
         .decal-gallery {
             display: block;
             margin-left: auto;
@@ -134,6 +130,18 @@ body.mobile {
                 }
                 &:last-child {
                     margin-bottom: 0;
+                }
+            }
+        }
+
+        #projects {
+            .project-row {
+                display: block;
+                margin-top: 0;
+
+                .project-wrapper {
+                    display: block;
+                    margin-bottom: 1em;
                 }
             }
         }
@@ -156,6 +164,12 @@ body.mobile {
                 img {
                     height: auto;
                     width: 75vw;
+                }
+            }
+
+            #projects {
+                .external-project {
+                    height: 30em;
                 }
             }
 
@@ -186,15 +200,12 @@ body.mobile {
                 }
             }
 
-
-            .external-project {
-                height: 60vh;
-
-                &#mx-pac-man {
-                    height: 85vh;
+            #projects {
+                #maze-maker {
+                    height: 60vh;
                 }
-                &#tree-climber {
-                    height: 75vh;
+                #mx-pac-man, #tree-climber {
+                    height: 85vh;
                 }
             }
 

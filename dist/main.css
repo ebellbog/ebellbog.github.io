@@ -96,7 +96,7 @@ body a {
   font-weight: 300;
   font-size: 1.4em;
   line-height: 1.4em;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+  text-shadow: 0.06em 0.05em 0.05em rgba(0, 0, 0, 0.6);
 }
 #page-container #intro img {
   display: block;
@@ -115,21 +115,34 @@ body a {
   letter-spacing: 0.5px;
   text-shadow: 0 0 3px rgba(255, 255, 255, 0.65), 1px 1px 1px #2b1a4f;
 }
-#page-container #projects .project-wrapper {
-  display: block;
-  text-align: center;
-  margin-bottom: 2em;
-  margin-top: 6em;
+#page-container #projects .project-row {
+  display: flex;
+  align-items: center;
+  margin-top: 2em;
+  margin-bottom: 5em;
 }
-#page-container #projects .project-wrapper:first-of-type {
-  margin-top: 0;
+#page-container #projects .project-row:nth-child(odd) {
+  flex-direction: row-reverse;
 }
-#page-container #projects #tree-climber {
+#page-container #projects .project-row > * {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+#page-container #projects .project-row:last-child {
+  margin-bottom: 0;
+}
+#page-container #projects .project-row .page-content {
+  padding: 0 1.5em;
+}
+#page-container #projects .project-row .external-project {
+  pointer-events: none;
+  border: none;
+  width: 100%;
+  height: 25em;
+}
+#page-container #projects .project-row .external-project#tree-climber {
   filter: drop-shadow(0 0 0.5em rgba(0, 0, 0, 0.4));
   object-fit: contain;
-}
-#page-container #projects #maze-maker {
-  margin-bottom: -1.5em;
 }
 #page-container #conclusion {
   padding-top: 3em;
@@ -168,12 +181,6 @@ body a {
 }
 .btn:hover .btn-background {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-}
-.external-project {
-  pointer-events: none;
-  border: none;
-  width: 80%;
-  height: 30em;
 }
 .decal-gallery {
   display: flex;
@@ -614,9 +621,6 @@ body.mobile #page-container .padded-title {
   width: 100%;
   box-sizing: border-box;
 }
-body.mobile #page-container .external-project {
-  width: 100%;
-}
 body.mobile #page-container .decal-gallery {
   display: block;
   margin-left: auto;
@@ -633,6 +637,14 @@ body.mobile #page-container .decal-gallery .decal:first-child {
 body.mobile #page-container .decal-gallery .decal:last-child {
   margin-bottom: 0;
 }
+body.mobile #page-container #projects .project-row {
+  display: block;
+  margin-top: 0;
+}
+body.mobile #page-container #projects .project-row .project-wrapper {
+  display: block;
+  margin-bottom: 1em;
+}
 body.mobile.portrait {
   font-size: 2.5em;
 }
@@ -646,6 +658,9 @@ body.mobile.portrait #page-container .page {
 body.mobile.portrait #page-container #intro img {
   height: auto;
   width: 75vw;
+}
+body.mobile.portrait #page-container #projects .external-project {
+  height: 30em;
 }
 body.mobile.portrait #page-container .decal-gallery .decal {
   width: 100%;
@@ -663,14 +678,12 @@ body.mobile.landscape #page-container .page {
 body.mobile.landscape #page-container #intro img {
   height: 80vh;
 }
-body.mobile.landscape #page-container .external-project {
+body.mobile.landscape #page-container #projects #maze-maker {
   height: 60vh;
 }
-body.mobile.landscape #page-container .external-project#mx-pac-man {
+body.mobile.landscape #page-container #projects #mx-pac-man,
+body.mobile.landscape #page-container #projects #tree-climber {
   height: 85vh;
-}
-body.mobile.landscape #page-container .external-project#tree-climber {
-  height: 75vh;
 }
 body.mobile.landscape #page-container .decal-gallery .decal {
   width: 65%;
