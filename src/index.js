@@ -9,6 +9,9 @@ import engTimelineData from './data/engineeringTimeline';
 import megaMazeGalleryData from './data/megaMazeGallery';
 import safeSpaceGalleryData from './data/safeSpaceGallery';
 
+import './data/hobbyDecals';
+import '../img/tree_climber.png';
+
 import {isMobileDevice} from './util';
 import loremIpsum from './lorem.js';
 
@@ -20,11 +23,19 @@ $(document).ready(() => {
     setupNavbar();
     hookEvents();
 
+    // All links open new tabs by default
+
+    $('a:not(.nav-link)').attr('target', '_blank');
+
+    // Initialize components
+
     hexGrid = new HexGrid($('#svg-hexes'));
 
     new HexTimeline($('#eng-timeline'), engTimelineData);
     new HexGallery($('#safe-space-gallery'), safeSpaceGalleryData);
     new HexGallery($('#mega-maze-gallery'), megaMazeGalleryData);
+
+    // Auto-scroll to URL target
 
     let {location: {hash}} = window, $el;
     if (hash && ($el = $(hash)).length) scrollToElement($el);

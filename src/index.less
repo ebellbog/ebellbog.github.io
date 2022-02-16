@@ -165,12 +165,34 @@ body {
         }
     }
 
+    #projects {
+        .project-wrapper {
+            display: block;
+            text-align: center;
+
+            margin-bottom: 2em;
+            margin-top: 6em;
+            &:first-of-type {
+                margin-top: 0;
+            }
+        }
+
+        #tree-climber {
+            filter: drop-shadow(0 0 .5em fade(black, 40%));
+            object-fit: contain;
+        }
+
+        #maze-maker {
+            margin-bottom: -1.5em;
+        }
+    }
+
     #conclusion {
         padding-top: 3em;
         padding-bottom: 3.5em;
 
         .page-content {
-            font-size: 1.6em;
+            font-size: 1.4em;
             letter-spacing: .01em;
             line-height: 1.5em;
 
@@ -217,13 +239,10 @@ body {
 
 .external-project {
     pointer-events: none;
-    display: block;
-
-    margin: 1.5em auto;
     border: none;
 
     width: 80%;
-    height: 35em;
+    height: 30em;
 }
 
 .decal-gallery {
@@ -269,8 +288,6 @@ body {
         }
 
         &:hover {
-            cursor: pointer;
-
             .decal {
                  // Manually adjust based on page color; currently configured for yellow
                 filter: contrast(0) sepia(1) hue-rotate(-342deg) saturate(2) brightness(0.6);
