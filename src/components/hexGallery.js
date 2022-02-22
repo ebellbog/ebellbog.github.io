@@ -2,12 +2,14 @@ import './hexGallery.less';
 import HexGalleryTemplate from '../templates/hexGallery.handlebars';
 
 class HexGallery {
+    isDigital = true;
     maxRowSize = 3;
     displayingMobile = null;
 
-    constructor($container, data) {
+    constructor($container, data, cfg) {
         this.$container = $container.addClass('hex-gallery');
         this.data = data;
+        Object.assign(this, cfg);
 
         $(window).on('resize-component', () => this.setupGallery());
         this.setupGallery();
@@ -32,7 +34,7 @@ class HexGallery {
             }
             this.data.rows = rows;
         }
-        this.$container.html(HexGalleryTemplate(Object.assign(this.data, {isMobile})));
+        this.$container.html(HexGalleryTemplate(Object.assign(this.data, {isMobile, isDigital: this.isDigital})));
 
         this.displayingMobile = isMobile;
     }

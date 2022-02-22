@@ -36,13 +36,13 @@
                 <td>{{{year}}}</td>
             </tr>
             <tr>
-                <td>Platform:</td>
+                <td>{{#if isDigital}}Platform{{else}}Genre{{/if}}:</td>
                 <td class="badge-container">
                     {{#each platforms}}<span class="badge small-text purple">{{this}}</span>{{/each}}
                 </td>
             </tr>
             <tr>
-                <td>Tools:</td>
+                <td>{{#if isDigital}}Tools{{else}}Components{{/if}}:</td>
                 <td class="badge-container">
                     {{#each tools}}<span class="badge small-text {{formatSkillColor this}}">{{this}}</span>{{/each}}
                 </td>

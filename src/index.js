@@ -9,6 +9,9 @@ import engTimelineData from './data/engineeringTimeline';
 import megaMazeGalleryData from './data/megaMazeGallery';
 import safeSpaceGalleryData from './data/safeSpaceGallery';
 
+import sanctumGalleryData from './data/sanctumGallery';
+import mudfishGalleryData from './data/mudfishGallery';
+
 import './data/hobbyDecals';
 import '../img/tree_climber.png';
 
@@ -32,8 +35,12 @@ $(document).ready(() => {
     hexGrid = new HexGrid($('#svg-hexes'));
 
     new HexTimeline($('#eng-timeline'), engTimelineData);
+
     new HexGallery($('#safe-space-gallery'), safeSpaceGalleryData);
     new HexGallery($('#mega-maze-gallery'), megaMazeGalleryData);
+
+    new HexGallery($('#sanctum-gallery'), sanctumGalleryData, {isDigital: false});
+    new HexGallery($('#mudfish-gallery'), mudfishGalleryData, {isDigital: false});
 
     // Auto-scroll to URL target
 
