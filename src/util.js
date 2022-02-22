@@ -35,6 +35,10 @@ function isMobileDevice() {
     ) ? true : false
 }
 
+function isSafari() {
+    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+}
+
 function randItem(list, remove) {
     if (!list.length) return false
 
@@ -50,5 +54,6 @@ export {
     constrainValue,
     createSvg,
     isMobileDevice,
+    isSafari,
     randItem
 };

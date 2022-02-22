@@ -141,7 +141,6 @@ body a {
   height: 25em;
 }
 #page-container #projects .project-row .external-project#tree-climber {
-  filter: drop-shadow(0 0 0.5em rgba(0, 0, 0, 0.4));
   object-fit: contain;
 }
 #page-container #conclusion {
@@ -221,6 +220,9 @@ body a {
 }
 .decal-gallery .decal-wrapper:hover .decal-info {
   opacity: 1;
+}
+.no-shadow .decal-gallery .decal {
+  filter: none;
 }
 /* Color classes */
 .red {
@@ -683,7 +685,7 @@ body.mobile.landscape #page-container #projects #maze-maker {
 }
 body.mobile.landscape #page-container #projects #mx-pac-man,
 body.mobile.landscape #page-container #projects #tree-climber {
-  height: 85vh;
+  height: 88vh;
 }
 body.mobile.landscape #page-container .decal-gallery .decal {
   width: 65%;
@@ -859,6 +861,9 @@ body.mobile.landscape #page-container .decal-gallery .decal {
 }
 .hex-gallery-row:hover {
   z-index: 2;
+}
+.no-shadow .hex-gallery-row {
+  filter: none;
 }
 .gallery-header {
   margin-bottom: 0.1em;

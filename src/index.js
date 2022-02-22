@@ -15,16 +15,17 @@ import mudfishGalleryData from './data/mudfishGallery';
 import './data/hobbyDecals';
 import '../img/tree_climber.png';
 
-import {isMobileDevice} from './util';
-import loremIpsum from './lorem.js';
+import {isMobileDevice, isSafari} from './util';
 
 let hexGrid;
 
 $(document).ready(() => {
-    $('.page-content:empty').append(`<div>${loremIpsum}</div>`);
-
     setupNavbar();
     hookEvents();
+
+    // Remove drop shadows on Safari, since they hurt performance of SVG animation on scroll
+
+    if (isSafari()) $('body').addClass('no-shadow');
 
     // All links open new tabs by default
 
