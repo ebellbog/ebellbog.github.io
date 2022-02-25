@@ -8,7 +8,7 @@ const sanctumGalleryData = {
     title: "The Artist's Sanctum",
     year: '2017',
     platforms: ['Escape room'],
-    tools: ['Blender'],
+    tools: ['Blender renders', 'Design document', 'Copywriting'],
     description: `Here is some descriptive text, for you to read. Here is some descriptive text,
         for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
         for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
@@ -20,7 +20,7 @@ const sanctumGalleryData = {
         },
         {
             fileName: 'sanctum_3.jpg',
-            caption: 'This is a test caption! Not all photos have it, so it must be special.',
+            caption: '',
         },
         {
             fileName: 'sanctum_8.jpg',
@@ -35,7 +35,12 @@ const sanctumGalleryData = {
             caption: '',
         },
     ],
-    links: []
+    links: [
+        {
+            name: 'TripAdvisor',
+            url: 'https://www.tripadvisor.com/Attraction_Review-g53158-d11096795-Reviews-Xscape_the_Room_Media_Pa-Media_Pennsylvania.html',
+        }
+    ]
 }
 
 export default sanctumGalleryData;

@@ -14,7 +14,7 @@ const safeSpaceGalleryData = {
     images: [
         {
             fileName: 'safe_space1.jpg',
-            caption: 'This is a test caption! Not all photos have it, so it must be special.',
+            caption: '',
         },
         {
             fileName: 'safe_space2.jpg',
@@ -22,7 +22,7 @@ const safeSpaceGalleryData = {
         },
         {
             fileName: 'safe_space3.jpg',
-            caption: '',
+            caption: 'You can watch footage from launch night at The Dreamhouse <a href="https://vimeo.com/276498823" target="_blank">here</a>!',
         },
     ],
     links: [

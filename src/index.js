@@ -6,8 +6,11 @@ import HexTimeline from './components/hexTimeline';
 import HexGallery from './components/hexGallery';
 
 import engTimelineData from './data/engineeringTimeline';
+
 import megaMazeGalleryData from './data/megaMazeGallery';
 import safeSpaceGalleryData from './data/safeSpaceGallery';
+import paintByGenderGalleryData from './data/paintByGenderGallery';
+import justFiveGalleryData from './data/justFiveGallery';
 
 import sanctumGalleryData from './data/sanctumGallery';
 import mudfishGalleryData from './data/mudfishGallery';
@@ -27,21 +30,23 @@ $(document).ready(() => {
 
     if (isSafari()) $('body').addClass('no-shadow');
 
-    // All links open new tabs by default
-
-    $('a:not(.nav-link)').attr('target', '_blank');
-
     // Initialize components
 
     hexGrid = new HexGrid($('#svg-hexes'));
 
     new HexTimeline($('#eng-timeline'), engTimelineData);
 
-    new HexGallery($('#safe-space-gallery'), safeSpaceGalleryData);
-    new HexGallery($('#mega-maze-gallery'), megaMazeGalleryData);
+    new HexGallery($('#safe-space'), safeSpaceGalleryData);
+    new HexGallery($('#mega-maze'), megaMazeGalleryData);
+    new HexGallery($('#paint-by-gender'), paintByGenderGalleryData);
+    new HexGallery($('#just-five-lights'), justFiveGalleryData);
 
-    new HexGallery($('#sanctum-gallery'), sanctumGalleryData, {isDigital: false});
-    new HexGallery($('#mudfish-gallery'), mudfishGalleryData, {isDigital: false});
+    new HexGallery($('#sanctum'), sanctumGalleryData, {isDigital: false});
+    new HexGallery($('#mudfish'), mudfishGalleryData, {isDigital: false});
+
+    // All links open new tabs by default
+
+    $('a:not(.nav-link)').attr('target', '_blank');
 
     // Auto-scroll to URL target
 

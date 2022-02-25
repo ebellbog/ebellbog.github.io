@@ -8,7 +8,7 @@ const megaMazeGalleryData = {
     title: "Davis' Virtual Mega Maze",
     year: '2006 &ndash; 2010',
     platforms: ['Mac', 'PC'],
-    tools: ['Blender', 'Python', 'Photoshop'],
+    tools: ['Python', 'Blender', 'Photoshop'],
     description: `Here is some descriptive text, for you to read. Here is some descriptive text,
         for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
         for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
@@ -16,7 +16,7 @@ const megaMazeGalleryData = {
     images: [
         {
             fileName: 'mega_maze1.jpg',
-            caption: 'This is a test caption! Not all photos have it, so it must be special.',
+            caption: '',
         },
         {
             fileName: 'mega_maze2.jpg',

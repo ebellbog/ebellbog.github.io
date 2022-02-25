@@ -213,7 +213,7 @@ body a {
   font-family: 'Nunito', sans-serif;
   font-size: 1.15em;
   line-height: 1.5em;
-  text-shadow: 0.03em 0.03em 0.1em rgba(0, 0, 0, 0.6);
+  text-shadow: 0.03em 0.03em 0.1em rgba(0, 0, 0, 0.7);
 }
 .decal-gallery .decal-wrapper:hover .decal {
   filter: contrast(0) sepia(1) hue-rotate(-342deg) saturate(2) brightness(0.6);
@@ -625,19 +625,23 @@ body.mobile #page-container .padded-title {
 }
 body.mobile #page-container .decal-gallery {
   display: block;
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
-  text-align: center;
-  width: 80%;
+  font-size: 1.2em;
 }
-body.mobile #page-container .decal-gallery .decal {
-  margin: 5em 0;
+body.mobile #page-container .decal-gallery .decal-wrapper {
+  margin: 6em 0;
 }
-body.mobile #page-container .decal-gallery .decal:first-child {
+body.mobile #page-container .decal-gallery .decal-wrapper:first-child {
   margin-top: 0;
 }
-body.mobile #page-container .decal-gallery .decal:last-child {
+body.mobile #page-container .decal-gallery .decal-wrapper:last-child {
   margin-bottom: 0;
+}
+body.mobile #page-container .decal-gallery .decal-wrapper .decal {
+  display: block;
+  margin: 0 auto;
 }
 body.mobile #page-container #projects .project-row {
   display: block;
@@ -666,6 +670,8 @@ body.mobile.portrait #page-container #projects .external-project {
 }
 body.mobile.portrait #page-container .decal-gallery .decal {
   width: 100%;
+  max-height: 100vh;
+  object-fit: contain;
 }
 body.mobile.landscape {
   font-size: 1.5em;
@@ -689,6 +695,8 @@ body.mobile.landscape #page-container #projects #tree-climber {
 }
 body.mobile.landscape #page-container .decal-gallery .decal {
   width: 65%;
+  max-height: 160vh;
+  object-fit: contain;
 }
 
 .hex {
@@ -897,14 +905,18 @@ body.mobile.landscape #page-container .decal-gallery .decal {
   width: 100%;
   font-size: 1.2em;
 }
+.gallery-info .info-panel .info-table td {
+  vertical-align: top;
+}
 .gallery-info .info-panel .info-table td:nth-child(1) {
   font-weight: 600;
   text-align: right;
-  padding-right: 12px;
+  padding-top: 0.1em;
 }
 .gallery-info .info-panel .info-table td:nth-child(2) {
   font-weight: 300;
   text-align: left;
+  padding-left: 0.3em;
 }
 .gallery-info .info-panel .gallery-description {
   font-size: 1.1em;

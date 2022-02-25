@@ -8,7 +8,7 @@ const mudfishGalleryData = {
     title: "MSV Mudfish",
     year: '2019',
     platforms: ['Parlor LARP'],
-    tools: ['Writing', 'Jigsaw puzzles'],
+    tools: ['Design document', 'Character writing', 'Puzzle design', 'Graphic design'],
     description: `Here is some descriptive text, for you to read. Here is some descriptive text,
         for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
         for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
@@ -16,7 +16,7 @@ const mudfishGalleryData = {
     images: [
         {
             fileName: 'mudfish_2.jpg',
-            caption: 'This is a test caption! Not all photos have it, so it must be special.',
+            caption: '',
         },
         {
             fileName: 'mudfish_1.jpg',
@@ -35,7 +35,12 @@ const mudfishGalleryData = {
             caption: '',
         },
     ],
-    links: []
+    links: [
+        {
+            name: 'Character sheet #1',
+            url: 'https://docs.google.com/document/d/1DiYT74joBDLnJWWWICr4yHUdgetF82XYgP7XHMvEoY4/edit?usp=sharing'
+        }
+    ]
 }
 
 export default mudfishGalleryData;

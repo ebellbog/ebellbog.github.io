@@ -2,21 +2,26 @@ module.exports = function (data, options) {
     const skillToColor = {
         JavaScript: 'red',
         Handlebars: 'red',
-        webpack: 'purple',
-        Babel: 'purple',
-        Node: 'red',
         Less: 'red',
+        CSS: 'red',
+        canvas: 'red',
+        Node: 'green',
         Python: 'green',
         'C++': 'green',
         Django: 'green',
         Flask: 'green',
-        'Objective-C': 'blue',
-        iOS: 'blue',
         MySQL: 'green',
+        iOS: 'blue',
+        webpack: 'purple',
+        Babel: 'purple',
         Chef: 'purple',
+        Blender: 'blue',
+        'Blender renders': 'blue',
+        Photoshop: 'blue',
+        'Objective-C': 'blue',
         AI: 'gray',
         Bioinformatics: 'gray',
         Gamification: 'gray'
     }
-	return skillToColor[data] || 'green';
+	return skillToColor[data] || 'gray';
 };
