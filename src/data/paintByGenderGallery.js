@@ -4,17 +4,16 @@ import '../../img/paint_by_gender3.jpg';
 
 const paintByGenderGalleryData = {
     title: "Paint by Gender",
-    year: '2018',
+    year: '2018 <i>(work in progress)</i>',
     platforms: ['Browser'],
     tools: ['JavaScript', 'canvas'],
-    description: `Here is some descriptive text, for you to read. Here is some descriptive text,
-        for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
-        for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
-        for you to read.`,
+    description: `This digital coloring book challenges players to paint inside the lines, while using an assortment of brushes and
+        tools that don't always suit the task at hand. By presenting a tactile, visual metaphor for the narrow constraints of gender
+        norms, <i>Paint by Gender</i> promotes empathy for those whose bodies, identities, and dreams don't quite fit the mold.`,
     images: [
         {
             fileName: 'paint_by_gender1.jpg',
-            caption: '',
+            caption: ' ',
         },
         {
             fileName: 'paint_by_gender2.jpg',

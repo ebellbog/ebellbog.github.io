@@ -28,7 +28,7 @@ $(document).ready(() => {
 
     // Remove drop shadows on Safari, since they hurt performance of SVG animation on scroll
 
-    if (isSafari()) $('body').addClass('no-shadow');
+    if (isSafari() && !isMobileDevice()) $('body').addClass('no-shadow');
 
     // Initialize components
 
@@ -118,15 +118,20 @@ function scrollToElement($el, doAnimate) {
     const currentScroll = $pageContainer.scrollTop();
 
     const targetScroll = $el.offset().top + currentScroll;
+    history.locked = true; // Don't update history until after scroll complete
 
     if (doAnimate) {
         const scrollDelta = Math.abs(currentScroll - targetScroll);
-        $pageContainer.animate({scrollTop: targetScroll}, scrollDelta * 2.5); // Ensure constant scroll speed, regardless of scroll amount
+        $pageContainer.animate(
+            {scrollTop: targetScroll},
+            scrollDelta * 2.5, // Ensure constant scroll speed, regardless of scroll amount
+            () => history.locked = false);
     } else {
         $('#page-container').off('scroll');
 
         $pageContainer.scrollTop(targetScroll);
         hexGrid.scrollSvgHexes(false);
+        history.locked = false;
 
         $('#page-container').on('scroll', () => hexGrid.scrollSvgHexes());
     }

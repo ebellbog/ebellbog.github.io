@@ -20,12 +20,13 @@ body {
     position: relative;
     height: 100vh;
 
-    min-width: 1300px;
+    min-width: 1400px;
     overflow: hidden;
 
     padding: 0;
     margin: 0;
 
+    font-family: 'Nunito', sans-serif;
     background-color: @bgColor;
 
     a {
@@ -50,7 +51,7 @@ body {
 
     color: white;
     text-shadow: 1.5px 1px 1px @bgColor;
-    font-family: 'Chakra Petch', sans-serif;
+    font-family: 'Chakra Petch', serif;
 
     #name {
         opacity: 0.9;
@@ -116,7 +117,6 @@ body {
     overflow-y: scroll;
     height: calc(100% - @navHeight);
 
-    font-family: 'Chakra Petch', sans-serif;
     color: white;
 
     .page {
@@ -126,14 +126,12 @@ body {
 
         .page-header {
             display: inline-block;
+            font-family: 'Chakra Petch', serif;
             font-size: 2.3em;
             margin-bottom: 1em;
-            padding: .07em .22em;
-            transform: skewX(-10deg);
         }
 
         .page-content {
-            font-family: 'Nunito', sans-serif;
             font-weight: 300;
             font-size: 1.4em;
             line-height: 1.4em;
@@ -154,12 +152,12 @@ body {
         }
 
         #short-bio {
-
             font-family: 'Nunito', sans-serif;
             font-size: 1.8em;
             font-weight: 300;
-            line-height: 1.4em;
+
             letter-spacing: .5px;
+            line-height: 1.4em;
 
             text-shadow: 0 0 3px fade(white, 65%), 1px 1px 1px @bgColor;
         }
@@ -200,15 +198,22 @@ body {
     }
 
     #conclusion {
+        font-size: 1.4em;
+        letter-spacing: .01em;
+
         padding-top: 3em;
-        padding-bottom: 3.5em;
+        padding-bottom: 3em;
 
-        .page-content {
-            font-size: 1.4em;
-            letter-spacing: .01em;
-            line-height: 1.5em;
+        .skewed-text {
+            display: table;
+            margin: 0 auto;
+            font-family: 'Chakra Petch', serif;
+        }
 
-            text-shadow: 0 0 .2em fade(black, 70%), 0 0 .85em white;
+        .copyright {
+            opacity: .6;
+            margin-top: 2em;
+            margin-bottom: -1em;
         }
     }
 }
@@ -223,9 +228,9 @@ body {
     position: relative;
     display: inline-block;
 
-    text-decoration: none;
-
+    font-family: 'Chakra Petch', serif;
     font-size: 1.1em;
+    text-decoration: none;
 
     a {
         text-decoration: none;
@@ -316,7 +321,7 @@ body {
     @darkenedColor: desaturate(darken(@color, 15%), 25%);
     @darkestColor: darken(@darkenedColor, 15%);
 
-    .dark-bg, .page-header {
+    .dark-bg, .skewed-text {
         background-color: @darkestColor;
     }
 
@@ -438,10 +443,18 @@ body {
     font-size: 0.7em;
 }
 
+.skewed-text {
+    padding: .07em .22em;
+    transform: skewX(-10deg);
+}
+
 .padded-title {
     width: 65%;
     margin: 0 auto;
     padding: .4em .7em;
     border-radius: 1em;
+}
+
+.text-center {
     text-align: center;
 }

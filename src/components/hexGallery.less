@@ -14,7 +14,7 @@
     white-space: nowrap;
 
     text-align: center;
-    filter: drop-shadow(0 0 8px fade(@bgColor, 90%));
+    filter: drop-shadow(0 0 .5em fade(@bgColor, 90%));
 
     @hexClip: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     @boxClip: polygon(50% 0, 100% 0, 100% 100%, 50% 100%, 0 100%, 0 0);
@@ -70,8 +70,29 @@
     margin-bottom: 0.1em;
 
     .gallery-title {
+        font-family: 'Chakra Petch', serif;
         font-size: 1.9em;
         float: left;
+
+        padding-right: .2em;
+
+        max-width: 60%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .title-link {
+            opacity: 0;
+            cursor: pointer;
+
+            margin-left: .2em;
+            margin-bottom: .1em;
+
+            font-size: .65em;
+        }
+        &:hover .title-link {
+            opacity: 1;
+        }
     }
 
     .gallery-links {
@@ -104,6 +125,10 @@
             width: 100%;
             font-size: 1.2em;
 
+            tr {
+                min-height: 1.75em;
+            }
+
             td {
                 vertical-align: top;
             }
@@ -126,7 +151,7 @@
 
     .separator {
         align-self: stretch;
-        margin: .8em 0;
+        margin: 1em 0;
         width: 2px;
         border-radius: 2px;
         background-color: white;
@@ -207,6 +232,14 @@
     .gallery-title, .gallery-links {
         float: none;
     }
+    .gallery-title {
+        max-width: unset;
+        white-space: normal;
+
+        .title-link {
+            display: none;
+        }
+    }
     .gallery-links {
         width: 100%;
         margin-top: .5em;
@@ -215,8 +248,11 @@
         text-align: center;
 
         .btn {
-            margin: 0 .2em;
+            margin: 0 .2em .3em .2em;
             padding: .15em 1.5em;
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
 
         .btn-background {
@@ -226,7 +262,7 @@
 
     .separator {
         margin: 1.4em auto;
-        width: 15%;
+        width: 30%;
         height: .12em;
         border-radius: .6em;
     }
@@ -253,6 +289,9 @@
     }
 
     &.portrait {
+        .hex-gallery {
+            font-size: 1.2em;
+        }
         .hex-gallery-row {
             // Negate margins on parent .page; keep consistent with mobile.less
             margin-left: -2em;
@@ -271,6 +310,7 @@
 
     &.landscape {
         .hex-gallery {
+            font-size: 1.1em;
             &:not(:last-child) {
                 margin-bottom: 7em;
             }

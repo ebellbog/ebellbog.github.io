@@ -63,6 +63,9 @@ class HexGallery {
                         $('body').addClass('show-modal');
                     });
             })
+            .on('click', '.title-link', (e) => {
+                history.replaceState(null, null, `#${this.$container.attr('id')}`);
+            })
             .on('mouseover', '.hex-image', ({target}) => {
                 if ($('body').hasClass('portrait')) return;
 

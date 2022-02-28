@@ -7,10 +7,9 @@ const justFiveGalleryData = {
     year: '2018',
     platforms: ['Browser', 'Philips Hue'],
     tools: ['JavaScript', 'CSS'],
-    description: `Here is some descriptive text, for you to read. Here is some descriptive text,
-        for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
-        for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
-        for you to read.`,
+    description: `An experiment in minimalist game design and "weird I/O." What kind of gameplay is possible when there is only
+        one spatial dimension and five "pixels" to control? The simplicity of this game makes it possible to play either in a
+        browser or using physical light bulbs! Debuted at <a href="https://recurse.com">The Recurse Center</a> in NYC.`,
     images: [
         {
             fileName: 'just_five1.jpg',
@@ -22,7 +21,7 @@ const justFiveGalleryData = {
         },
         {
             fileName: 'just_five3.jpg',
-            caption: 'You can watch gameplay on Phlips Hue bulbs (installed at the Recurse Center in NYC) <a href="https://vimeo.com/265251092" target="_blank">here</a>!',
+            caption: 'You can watch gameplay on Phlips Hue bulbs (installed at The Recurse Center in NYC) <a href="https://vimeo.com/265251092" target="_blank">here</a>!',
         },
     ],
     links: [

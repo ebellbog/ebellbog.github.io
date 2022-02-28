@@ -9,10 +9,10 @@ const megaMazeGalleryData = {
     year: '2006 &ndash; 2010',
     platforms: ['Mac', 'PC'],
     tools: ['Python', 'Blender', 'Photoshop'],
-    description: `Here is some descriptive text, for you to read. Here is some descriptive text,
-        for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
-        for you to read. Here is some descriptive text, for you to read. Here is some descriptive text,
-        for you to read.`,
+    description: `Davis' Mega Maze is a world record-holding corn maze in western Massachusetts. For over 25 years, they've been carving designs by renowned
+        maze architect <a href="https://www.mazemaker.com/">Adrian Fisher</a> into their corn field - a totally new theme each year. For five of those years,
+        I developed a companion video game, perfectly matching that year's maze, which was sold as official merchandise at the farmland. These games included
+        several difficulty settings, a variety of environmental options (day, night, rain), and loads of hidden, unlockable content!`,
     images: [
         {
             fileName: 'mega_maze1.jpg',
