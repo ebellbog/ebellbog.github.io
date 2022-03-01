@@ -72,9 +72,11 @@
     .gallery-title {
         font-family: 'Chakra Petch', serif;
         font-size: 1.9em;
-        float: left;
+        font-weight: 500;
 
+        float: left;
         padding-right: .2em;
+        margin: 0;
 
         max-width: 60%;
         white-space: nowrap;
@@ -164,13 +166,13 @@
     margin-right: auto;
 }
 
+@modalImageWidth: 85%;
+@modalImageHeight: 70%;
+
+@modalImageTop: calc((100% - @modalImageHeight) / 2);
+@modalImageLeft: calc((100% - @modalImageWidth) / 2);
+
 #modal-viewer {
-    @modalImageWidth: 85%;
-    @modalImageHeight: 70%;
-
-    @modalImageTop: calc((100% - @modalImageHeight) / 2);
-    @modalImageLeft: calc((100% - @modalImageWidth) / 2);
-
     z-index: 6;
     background-color: transparent;
     pointer-events: none;
@@ -213,7 +215,7 @@
         position: absolute;
         width: @modalImageWidth;
         left: @modalImageLeft;
-        top: calc(@modalImageHeight + @modalImageTop + 16px);
+        top: calc(@modalImageHeight + @modalImageTop + 1em);
 
         font-family: 'Nunito', sans-serif;
         color: white;
@@ -329,6 +331,10 @@
                     margin: 9px;
                 }
             }
+        }
+
+        #modal-viewer #modal-caption {
+            top: calc(@modalImageHeight + @modalImageTop + .5em);
         }
     }
 }

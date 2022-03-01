@@ -88,6 +88,8 @@ body a {
   display: inline-block;
   font-family: 'Chakra Petch', serif;
   font-size: 2.3em;
+  font-weight: 500;
+  margin-top: 0;
   margin-bottom: 1em;
 }
 #page-container .page .page-content {
@@ -116,8 +118,7 @@ body a {
 #page-container #projects .project-row {
   display: flex;
   align-items: center;
-  margin-top: 2em;
-  margin-bottom: 5em;
+  margin: 2em 0 5em 0;
 }
 #page-container #projects .project-row:nth-child(odd) {
   flex-direction: row-reverse;
@@ -167,6 +168,7 @@ body a {
   font-family: 'Chakra Petch', serif;
   font-size: 1.1em;
   text-decoration: none;
+  border: none;
 }
 .btn a {
   text-decoration: none;
@@ -195,6 +197,7 @@ body a {
 }
 .decal-gallery .decal-wrapper {
   position: relative;
+  margin: 0;
 }
 .decal-gallery .decal-wrapper .decal {
   filter: drop-shadow(0 0 0.4em rgba(43, 26, 79, 0.5));
@@ -212,6 +215,7 @@ body a {
 .decal-gallery .decal-wrapper .decal-info .decal-title {
   font-size: 1.5em;
   font-weight: 600;
+  margin-top: 0;
   margin-bottom: 0.7em;
 }
 .decal-gallery .decal-wrapper .decal-info .decal-description {
@@ -497,6 +501,7 @@ body a {
   height: 100%;
   width: 100%;
   max-width: 2000px;
+  margin: 0;
 }
 .bg-blur {
   background-color: rgba(43, 26, 79, 0.7);
@@ -662,6 +667,9 @@ body.mobile #page-container #projects .project-row .project-wrapper {
   display: block;
   margin-bottom: 1em;
 }
+body.mobile #page-container #projects .project-row .page-content {
+  padding: 0 0.75em;
+}
 body.mobile.portrait {
   font-size: 2.5em;
 }
@@ -781,15 +789,17 @@ body.mobile.landscape #page-container .decal-gallery .decal {
 }
 .timeline-container .timeline-content .timeline-item .organization {
   float: left;
+  margin: 0;
+  max-width: 50%;
+  font-size: inherit;
   font-weight: 600;
   text-shadow: 0 0 1px white;
-  max-width: 50%;
 }
-.timeline-container .timeline-content .timeline-item a.organization {
+.timeline-container .timeline-content .timeline-item .organization a {
   color: white;
   text-decoration: none;
 }
-.timeline-container .timeline-content .timeline-item a.organization:hover {
+.timeline-container .timeline-content .timeline-item .organization a:hover {
   text-decoration: underline;
 }
 .timeline-container .timeline-content .timeline-item .title {
@@ -906,8 +916,10 @@ body.mobile.landscape #page-container .decal-gallery .decal {
 .gallery-header .gallery-title {
   font-family: 'Chakra Petch', serif;
   font-size: 1.9em;
+  font-weight: 500;
   float: left;
   padding-right: 0.2em;
+  margin: 0;
   max-width: 60%;
   white-space: nowrap;
   overflow: hidden;
@@ -1014,7 +1026,7 @@ body.show-modal #modal-viewer #modal-caption {
   position: absolute;
   width: 85%;
   left: calc((100% - 85%) / 2);
-  top: calc(70% + calc((100% - 70%) / 2) + 16px);
+  top: calc(70% + calc((100% - 70%) / 2) + 1em);
   font-family: 'Nunito', sans-serif;
   color: white;
   font-size: 1.3em;
@@ -1103,5 +1115,8 @@ body.show-modal #modal-viewer #modal-caption {
   height: 400px;
   width: 346.41016151px;
   margin: 9px;
+}
+.mobile.landscape #modal-viewer #modal-caption {
+  top: calc(70% + calc((100% - 70%) / 2) + 0.5em);
 }
 

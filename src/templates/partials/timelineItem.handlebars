@@ -10,17 +10,21 @@
             </div>
         {{/if}}
     </div>
-    <div class="item-body">
-        {{#if orgUrl }}
-            <a class="organization" href="{{orgUrl}}" target="_blank">{{organization}}</a>
-        {{else}}
-            <span class="organization">{{organization}}</span>
-        {{/if}}
-        <div class="title">{{title}}</div>
-        <div class="location small-text">{{location}}</div>
-        <div class="description">{{{description}}}</div>
-        <div class="badge-container">
+    <article class="item-body">
+        <header>
+            <h3 class="organization">
+                {{#if orgUrl }}
+                    <a href="{{orgUrl}}" target="_blank">{{organization}}</a>
+                {{else}}
+                    <span>{{organization}}</span>
+                {{/if}}
+            </h3>
+            <div class="title">{{title}}</div>
+            <div class="location small-text">{{location}}</div>
+        </header>
+        <p class="description">{{{description}}}</p>
+        <footer class="badge-container">
             {{#each skills}}<span class="badge small-text {{formatSkillColor this}}">{{this}}</span>{{/each}}
-        </div>
-    </div>
+        </footer>
+    </article>
 </div>

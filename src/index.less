@@ -126,8 +126,12 @@ body {
 
         .page-header {
             display: inline-block;
+
             font-family: 'Chakra Petch', serif;
             font-size: 2.3em;
+            font-weight: 500;
+
+            margin-top: 0;
             margin-bottom: 1em;
         }
 
@@ -175,8 +179,7 @@ body {
                 flex-basis: 0;
             }
 
-            margin-top: 2em;
-            margin-bottom: 5em;
+            margin: 2em 0 5em 0;
             &:last-child {
                 margin-bottom: 0;
             }
@@ -230,7 +233,9 @@ body {
 
     font-family: 'Chakra Petch', serif;
     font-size: 1.1em;
+
     text-decoration: none;
+    border: none;
 
     a {
         text-decoration: none;
@@ -264,6 +269,7 @@ body {
 
     .decal-wrapper {
         position: relative;
+        margin: 0;
 
         .decal {
             filter: drop-shadow(0 0 .4em fade(@bgColor, 50%));
@@ -285,6 +291,7 @@ body {
             .decal-title {
                 font-size: 1.5em;
                 font-weight: 600;
+                margin-top: 0;
                 margin-bottom: .7em;
             }
 
@@ -409,6 +416,7 @@ body {
     height: 100%;
     width: 100%;
     max-width: @maxWidth;
+    margin: 0;
 }
 
 .bg-blur {
