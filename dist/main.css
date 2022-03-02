@@ -263,7 +263,7 @@ body a {
   background-color: tomato;
 }
 .red .btn {
-  box-shadow: 0 0 4px tomato;
+  box-shadow: 0 0 0.4em rgba(255, 99, 71, 0.6);
 }
 .red.outlined {
   fill: transparent;
@@ -305,7 +305,7 @@ body a {
   background-color: #ee5;
 }
 .yellow .btn {
-  box-shadow: 0 0 4px #ee5;
+  box-shadow: 0 0 0.4em rgba(238, 238, 85, 0.6);
 }
 .yellow.outlined {
   fill: transparent;
@@ -347,7 +347,7 @@ body a {
   background-color: mediumaquamarine;
 }
 .green .btn {
-  box-shadow: 0 0 4px mediumaquamarine;
+  box-shadow: 0 0 0.4em rgba(102, 205, 170, 0.6);
 }
 .green.outlined {
   fill: transparent;
@@ -389,7 +389,7 @@ body a {
   background-color: mediumslateblue;
 }
 .blue .btn {
-  box-shadow: 0 0 4px mediumslateblue;
+  box-shadow: 0 0 0.4em rgba(123, 104, 238, 0.6);
 }
 .blue.outlined {
   fill: transparent;
@@ -431,7 +431,7 @@ body a {
   background-color: magenta;
 }
 .purple .btn {
-  box-shadow: 0 0 4px magenta;
+  box-shadow: 0 0 0.4em rgba(255, 0, 255, 0.6);
 }
 .purple.outlined {
   fill: transparent;
@@ -473,7 +473,7 @@ body a {
   background-color: #777;
 }
 .gray .btn {
-  box-shadow: 0 0 4px #777;
+  box-shadow: 0 0 0.4em rgba(119, 119, 119, 0.6);
 }
 .gray.outlined {
   fill: transparent;
@@ -536,7 +536,6 @@ body a {
   transform: skewX(-10deg);
 }
 .padded-title {
-  width: 65%;
   margin: 0 auto;
   padding: 0.4em 0.7em;
   border-radius: 1em;
@@ -915,7 +914,7 @@ body.mobile.landscape #page-container .decal-gallery .decal {
 }
 .gallery-header .gallery-title {
   font-family: 'Chakra Petch', serif;
-  font-size: 1.9em;
+  font-size: 1.85em;
   font-weight: 500;
   float: left;
   padding-right: 0.2em;
@@ -963,13 +962,15 @@ body.mobile.landscape #page-container .decal-gallery .decal {
 .gallery-info .info-panel .info-table tr {
   min-height: 1.75em;
 }
+.gallery-info .info-panel .info-table tr:not(:nth-child(1)) td:nth-child(1) {
+  padding-top: 0.1em;
+}
 .gallery-info .info-panel .info-table td {
   vertical-align: top;
 }
 .gallery-info .info-panel .info-table td:nth-child(1) {
   font-weight: 600;
   text-align: right;
-  padding-top: 0.1em;
 }
 .gallery-info .info-panel .info-table td:nth-child(2) {
   font-weight: 300;

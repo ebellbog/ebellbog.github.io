@@ -17,6 +17,8 @@ import mudfishGalleryData from './data/mudfishGallery';
 
 import './data/hobbyDecals';
 import '../img/tree_climber.png';
+import '../img/hex_elana.png';
+import '../img/og_image.jpg';
 
 import {isMobileDevice, isSafari} from './util';
 
