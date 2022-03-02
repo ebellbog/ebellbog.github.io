@@ -2,11 +2,13 @@
 
 html {
     -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body.mobile {
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
+    min-width: 0;
 
     .mobile-only {
         display: block;
@@ -22,7 +24,7 @@ body.mobile {
         top: .2em;
         left: 0em;
 
-        font-size: 1.75em;
+        font-size: 2em;
         color: white;
 
         filter: drop-shadow(.11em .08em 0 @bgColor);
@@ -157,7 +159,7 @@ body.mobile {
     }
 
     &.portrait {
-        font-size: 2.5em;
+        font-size: 1.85em;
 
         #mobile-nav-menu {
             min-width: 60%;
@@ -214,7 +216,7 @@ body.mobile {
     }
 
     &.landscape {
-        font-size: 1.5em;
+        font-size: 1.1em;
 
         #mobile-nav-menu {
             min-width: 40%;

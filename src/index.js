@@ -28,10 +28,6 @@ $(document).ready(() => {
     setupNavbar();
     hookEvents();
 
-    // Remove drop shadows on Safari, since they hurt performance of SVG animation on scroll
-
-    if (isSafari() && !isMobileDevice()) $('body').addClass('no-shadow');
-
     // Initialize components
 
     hexGrid = new HexGrid($('#svg-hexes'));
@@ -103,6 +99,9 @@ function hookEvents() {
         if (isMobileDevice()) {
             $body.addClass(`mobile ${window.innerWidth > window.innerHeight ? 'landscape' : 'portrait'}`);
         }
+
+        // Remove drop shadows on Safari & mobile, since they hurt performance of SVG animation on scroll
+        $('body').toggleClass('no-shadow', isSafari() || isMobileDevice());
 
         $(window).trigger('resize-component'); // Optional event for components, to execute resize logic after main resize handler
     }

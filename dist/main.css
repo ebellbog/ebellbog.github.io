@@ -76,6 +76,7 @@ body a {
   z-index: 2;
   position: relative;
   overflow-y: scroll;
+  overflow-x: hidden;
   height: calc(100% - 3.2em);
   color: white;
 }
@@ -536,6 +537,7 @@ body a {
   transform: skewX(-10deg);
 }
 .padded-title {
+  display: table;
   margin: 0 auto;
   padding: 0.4em 0.7em;
   border-radius: 1em;
@@ -546,10 +548,12 @@ body a {
 
 html {
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 body.mobile {
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
+  min-width: 0;
 }
 body.mobile .mobile-only {
   display: block;
@@ -562,7 +566,7 @@ body.mobile #mobile-nav-btn {
   position: absolute;
   top: 0.2em;
   left: 0em;
-  font-size: 1.75em;
+  font-size: 2em;
   color: white;
   filter: drop-shadow(0.11em 0.08em 0 #2b1a4f);
   padding: 0.3em 0.45em 0.2em 0.45em;
@@ -670,7 +674,7 @@ body.mobile #page-container #projects .project-row .page-content {
   padding: 0 0.75em;
 }
 body.mobile.portrait {
-  font-size: 2.5em;
+  font-size: 1.85em;
 }
 body.mobile.portrait #mobile-nav-menu {
   min-width: 60%;
@@ -707,7 +711,7 @@ body.mobile.portrait #page-container .decal-gallery .decal {
   object-fit: contain;
 }
 body.mobile.landscape {
-  font-size: 1.5em;
+  font-size: 1.1em;
 }
 body.mobile.landscape #mobile-nav-menu {
   min-width: 40%;
