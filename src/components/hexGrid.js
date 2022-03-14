@@ -60,7 +60,6 @@ class HexGrid {
                 Object.assign(hex, {$hex});
             });
         });
-
     }
 
     hookEvents() {
@@ -88,8 +87,7 @@ class HexGrid {
             }
         });
 
-        $('#page-container').on('scroll', () => this.scrollSvgHexes());
-
+        $(window).add('#page-container').on('scroll', () => this.scrollSvgHexes());
         $(window).on('resize-component', () => this.resizeGrid());
     }
 
@@ -314,17 +312,14 @@ class HexGrid {
     /** actions **/
 
     scrollSvgHexes(doAnimate = true) {
-        const windowHeight = window.innerHeight;
+        const {innerHeight: windowHeight, scrollY} = window;
         let maxVisible = 0, maxIdx = 0;
         $('.page').each((pageIdx, page) => {
             const $page = $(page);
 
             const height = $page.outerHeight();
-            let top = $page.offset().top;
+            let top = $page.offset().top - scrollY;
             const bottom = top + height;
-
-            // Account for height of navbar above first page, on initial page load
-            if (pageIdx === 0) top -= 50;
 
             const visibleAmount = constrainValue(bottom, 0, windowHeight) - constrainValue(top, 0, windowHeight);
             if (visibleAmount > 0) {

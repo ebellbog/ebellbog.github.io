@@ -1,10 +1,13 @@
 @import (reference) '../index.less';
+
 @hexAspectRatio: cos((pi() / 6));
+@hexClip: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+@boxClip: polygon(50% 0, 100% 0, 100% 100%, 50% 100%, 0 100%, 0 0);
 
 .hex-gallery {
     margin-top: 2.5em;
     &:not(:last-child) {
-        margin-bottom: 8.75em;
+        margin-bottom: 9em;
     }
 }
 
@@ -16,12 +19,9 @@
     text-align: center;
     filter: drop-shadow(0 0 .5em fade(@bgColor, 90%));
 
-    @hexClip: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    @boxClip: polygon(50% 0, 100% 0, 100% 100%, 50% 100%, 0 100%, 0 0);
-
     .hex-image-wrapper {
         display: inline-block;
-        margin: 0 5px;
+        margin: 0 .4em;
         background-color: white;
 
         cursor: zoom-in;
@@ -40,7 +40,7 @@
             height: 300px;
             width: (300px * @hexAspectRatio);
 
-            margin: 7px;
+            margin: .45em;
             object-fit: cover;
         }
 
@@ -233,6 +233,10 @@
 }
 
 .mobile {
+    .hex-gallery-text {
+        font-size: 1.2em;
+    }
+
     .gallery-header {
         margin-bottom: .45em;
     }
@@ -242,6 +246,7 @@
     .gallery-title {
         max-width: unset;
         white-space: normal;
+        font-size: 1.6em;
 
         .title-link {
             display: none;
@@ -251,7 +256,7 @@
         width: 100%;
         margin-top: .5em;
 
-        font-size: 1.2em;
+        font-size: 1.1em;
         text-align: center;
 
         .btn {
@@ -290,15 +295,31 @@
             display: none;
         }
 
+        .hex-image-wrapper:hover {
+            &, .hex-image {
+                clip-path: @hexClip;
+            }
+        }
+
         &:last-child {
             margin-bottom: .75em;
         }
     }
 
+    #modal-viewer #modal-caption {
+        width: 100%;
+        left: 0;
+        top: unset;
+        bottom: 0;
+
+        padding: .5em .8em;
+        box-sizing: border-box;
+
+        font-size: 1.4em;
+        background-color: fade(lighten(@bgColor, 20%), 75%);
+    }
+
     &.portrait {
-        .hex-gallery {
-            font-size: 1.2em;
-        }
         .hex-gallery-row {
             // Negate margins on parent .page; keep consistent with mobile.less
             margin-left: -2em;
@@ -307,9 +328,8 @@
 
             .hex-image-wrapper {
                 .hex-image {
-                    height: 800px;
-                    width: (800px * @hexAspectRatio);
-                    margin: 16px;
+                    height: calc(65vw / @hexAspectRatio);
+                    width: 65vw;
                 }
             }
         }
@@ -317,7 +337,6 @@
 
     &.landscape {
         .hex-gallery {
-            font-size: 1.1em;
             &:not(:last-child) {
                 margin-bottom: 7em;
             }
@@ -331,15 +350,10 @@
 
             .hex-image-wrapper {
                 .hex-image {
-                    height: 400px;
-                    width: (400px * @hexAspectRatio);
-                    margin: 9px;
+                    height: 65vh;
+                    width: (65vh * @hexAspectRatio);
                 }
             }
-        }
-
-        #modal-viewer #modal-caption {
-            top: calc(@modalImageHeight + @modalImageTop + .5em);
         }
     }
 }

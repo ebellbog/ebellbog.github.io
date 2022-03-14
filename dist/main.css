@@ -1,30 +1,34 @@
-html {
-  overflow: hidden;
-  position: relative;
-}
 body {
   position: relative;
-  height: 100vh;
+  overflow-x: hidden;
+  max-width: 2000px;
   min-width: 1400px;
-  overflow: hidden;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
   font-family: 'Nunito', sans-serif;
   background-color: #2b1a4f;
 }
 body a {
   color: white;
 }
+body.scroll-container {
+  overflow-y: hidden;
+}
+body.scroll-container #page-container {
+  height: 100vh;
+  overflow-y: scroll;
+}
 /* Navigation */
 #nav-bar {
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 4;
   width: 100%;
   max-width: 2000px;
+  min-width: 1400px;
   margin: 0 auto;
   box-sizing: border-box;
-  padding: 8px 10px;
+  padding: 6px 10px;
   overflow: auto;
   color: white;
   text-shadow: 1.5px 1px 1px #2b1a4f;
@@ -32,13 +36,12 @@ body a {
 }
 #nav-bar #name {
   opacity: 0.9;
-  float: left;
   font-size: 1.4em;
   cursor: pointer;
 }
 #nav-bar #page-links {
   position: absolute;
-  top: 12px;
+  top: 9px;
   left: 50%;
   transform: translateX(-50%);
   width: 60%;
@@ -74,10 +77,6 @@ body a {
 /* Page layout */
 #page-container {
   z-index: 2;
-  position: relative;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  height: calc(100% - 3.2em);
   color: white;
 }
 #page-container .page {
@@ -102,7 +101,7 @@ body a {
 #page-container #intro img {
   display: block;
   height: 375px;
-  margin: 0 auto 40px auto;
+  margin: 1.75em auto 2.75em auto;
   transition: transform 1.2s;
 }
 #page-container #intro img:hover {
@@ -152,6 +151,7 @@ body a {
 #page-container #conclusion .skewed-text {
   display: table;
   margin: 0 auto;
+  white-space: nowrap;
   font-family: 'Chakra Petch', serif;
 }
 #page-container #conclusion .copyright {
@@ -160,7 +160,13 @@ body a {
   margin-bottom: -1em;
 }
 #svg-hexes {
-  z-index: 1;
+  z-index: -1;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  min-width: 1400px;
+  max-width: 2000px;
+  height: 100%;
 }
 /* Assorted small components */
 .btn {
@@ -223,16 +229,13 @@ body a {
   font-family: 'Nunito', sans-serif;
   font-size: 1.15em;
   line-height: 1.5em;
-  text-shadow: 0.03em 0.03em 0.1em rgba(0, 0, 0, 0.7);
+  text-shadow: 0.03em 0.03em 0.15em rgba(0, 0, 0, 0.7);
 }
 .decal-gallery .decal-wrapper:hover .decal {
   filter: contrast(0) sepia(1) hue-rotate(-342deg) saturate(2) brightness(0.6);
 }
 .decal-gallery .decal-wrapper:hover .decal-info {
   opacity: 1;
-}
-.no-shadow .decal-gallery .decal {
-  filter: none;
 }
 /* Color classes */
 .red {
@@ -249,7 +252,7 @@ body a {
 .red .shaded-blur {
   background-color: rgba(151, 41, 22, 0.6);
 }
-@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+@supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
   .red .shaded-blur {
     background-color: rgba(151, 41, 22, 0.45);
   }
@@ -291,7 +294,7 @@ body a {
 .yellow .shaded-blur {
   background-color: rgba(133, 133, 37, 0.6);
 }
-@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+@supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
   .yellow .shaded-blur {
     background-color: rgba(133, 133, 37, 0.45);
   }
@@ -333,7 +336,7 @@ body a {
 .green .shaded-blur {
   background-color: rgba(57, 97, 83, 0.6);
 }
-@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+@supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
   .green .shaded-blur {
     background-color: rgba(57, 97, 83, 0.45);
   }
@@ -375,7 +378,7 @@ body a {
 .blue .shaded-blur {
   background-color: rgba(57, 43, 146, 0.6);
 }
-@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+@supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
   .blue .shaded-blur {
     background-color: rgba(57, 43, 146, 0.45);
   }
@@ -417,7 +420,7 @@ body a {
 .purple .shaded-blur {
   background-color: rgba(89, 13, 89, 0.6);
 }
-@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+@supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
   .purple .shaded-blur {
     background-color: rgba(89, 13, 89, 0.45);
   }
@@ -459,7 +462,7 @@ body a {
 .gray .shaded-blur {
   background-color: rgba(43, 43, 43, 0.6);
 }
-@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+@supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
   .gray .shaded-blur {
     background-color: rgba(43, 43, 43, 0.45);
   }
@@ -495,10 +498,8 @@ body a {
   display: block;
 }
 .fullscreen {
-  position: absolute;
+  position: fixed;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
   height: 100%;
   width: 100%;
   max-width: 2000px;
@@ -507,7 +508,7 @@ body a {
 .bg-blur {
   background-color: rgba(43, 26, 79, 0.7);
 }
-@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+@supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
   .bg-blur {
     background-color: transparent;
     backdrop-filter: blur(0.14em);
@@ -517,7 +518,12 @@ body a {
 .shaded-blur {
   backdrop-filter: blur(0.22em);
   -webkit-backdrop-filter: blur(0.22em);
-  background-color: rgba(43, 26, 79, 0.75);
+  background-color: rgba(43, 26, 79, 0.6);
+}
+@supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
+  .shaded-blur {
+    background-color: rgba(43, 26, 79, 0.45);
+  }
 }
 .badge-container {
   margin: -0.2em;
@@ -549,11 +555,12 @@ body a {
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  overflow-x: hidden;
 }
-body.mobile {
-  height: 100vh;
-  height: calc(var(--vh, 1vh) * 100);
-  min-width: 0;
+body.mobile,
+body.mobile #svg-hexes {
+  max-width: unset;
+  min-width: unset;
 }
 body.mobile .mobile-only {
   display: block;
@@ -563,11 +570,12 @@ body.mobile .desktop-only {
 }
 body.mobile #mobile-nav-btn {
   z-index: 5;
-  position: absolute;
+  position: fixed;
   top: 0.2em;
   left: 0em;
   font-size: 2em;
   color: white;
+  background-color: transparent;
   filter: drop-shadow(0.11em 0.08em 0 #2b1a4f);
   padding: 0.3em 0.45em 0.2em 0.45em;
   border-radius: 0.5em;
@@ -576,11 +584,12 @@ body.mobile #mobile-nav-btn {
 }
 body.mobile #mobile-nav-menu {
   z-index: 6;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   transition: transform 0.5s;
   transform: translateX(-100%);
+  background-color: rgba(43, 26, 79, 0.8);
   border-bottom-right-radius: 0.5em;
   border-right: 2px solid rgba(255, 255, 255, 0.6);
   border-bottom: 2px solid rgba(255, 255, 255, 0.6);
@@ -588,25 +597,24 @@ body.mobile #mobile-nav-menu {
 body.mobile #mobile-nav-menu .nav-link,
 body.mobile #mobile-nav-menu .home-link {
   display: block;
+  position: relative;
   color: white;
   font-family: 'Chakra Petch', serif;
   font-size: 1.3em;
   font-weight: 100;
   text-transform: uppercase;
-  padding: 0.65em 2em 0.65em 1em;
-}
-body.mobile #mobile-nav-menu .nav-link:not(.active),
-body.mobile #mobile-nav-menu .home-link:not(.active) {
-  padding-left: 2.15em;
+  padding: 0.65em 2em 0.65em 2.15em;
 }
 body.mobile #mobile-nav-menu .nav-link.active::before,
 body.mobile #mobile-nav-menu .home-link.active::before {
-  content: '⬢ ';
+  content: '\2B22 ';
   opacity: 0.8;
-  font-size: 0.75em;
-  position: relative;
-  bottom: 0.2em;
-  padding-right: 0.4em;
+  font-family: 'Noto Sans Symbols 2', sans-serif;
+  font-size: 0.8em;
+  position: absolute;
+  top: 54%;
+  left: 1.2em;
+  transform: translateY(-50%);
 }
 body.mobile #mobile-nav-menu .nav-link:not(:last-child),
 body.mobile #mobile-nav-menu .home-link:not(:last-child) {
@@ -662,6 +670,15 @@ body.mobile #page-container .decal-gallery .decal-wrapper .decal {
   display: block;
   margin: 0 auto;
 }
+body.mobile #page-container .decal-gallery .decal-wrapper .decal-info {
+  display: none;
+}
+body.mobile #page-container .decal-gallery .decal-wrapper .decal-info .decal-description {
+  text-shadow: 0.04em 0.04em 0.1em rgba(0, 0, 0, 0.9);
+}
+body.mobile #page-container .decal-gallery .decal-wrapper:hover .decal-info {
+  display: block;
+}
 body.mobile #page-container #projects .project-row {
   display: block;
   margin-top: 0;
@@ -672,6 +689,9 @@ body.mobile #page-container #projects .project-row .project-wrapper {
 }
 body.mobile #page-container #projects .project-row .page-content {
   padding: 0 0.75em;
+}
+body.mobile #page-container #conclusion .copyright {
+  margin-bottom: 0;
 }
 body.mobile.portrait {
   font-size: 1.85em;
@@ -715,12 +735,19 @@ body.mobile.landscape {
 }
 body.mobile.landscape #mobile-nav-menu {
   min-width: 40%;
+  font-size: 0.9em;
+}
+body.mobile.landscape #mobile-nav-menu .nav-link,
+body.mobile.landscape #mobile-nav-menu .social-links {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 body.mobile.landscape #page-container .page {
   padding-left: 3.5em;
   padding-right: 3.5em;
 }
 body.mobile.landscape #page-container #intro img {
+  margin-top: 0;
   height: 80vh;
 }
 body.mobile.landscape #page-container #projects #maze-maker {
@@ -868,7 +895,7 @@ body.mobile.landscape #page-container .decal-gallery .decal {
   margin-top: 2.5em;
 }
 .hex-gallery:not(:last-child) {
-  margin-bottom: 8.75em;
+  margin-bottom: 9em;
 }
 .hex-gallery-row {
   position: relative;
@@ -880,7 +907,7 @@ body.mobile.landscape #page-container .decal-gallery .decal {
 }
 .hex-gallery-row .hex-image-wrapper {
   display: inline-block;
-  margin: 0 5px;
+  margin: 0 0.4em;
   background-color: white;
   cursor: zoom-in;
 }
@@ -897,7 +924,7 @@ body.mobile.landscape #page-container .decal-gallery .decal {
   display: block;
   height: 300px;
   width: 259.80762114px;
-  margin: 7px;
+  margin: 0.45em;
   object-fit: cover;
 }
 .hex-gallery-row .hex-image-wrapper.placeholder {
@@ -1039,6 +1066,9 @@ body.show-modal #modal-viewer #modal-caption {
   text-align: center;
   text-shadow: 0 0 1px black, 0 0 4px black;
 }
+.mobile .hex-gallery-text {
+  font-size: 1.2em;
+}
 .mobile .gallery-header {
   margin-bottom: 0.45em;
 }
@@ -1049,6 +1079,7 @@ body.show-modal #modal-viewer #modal-caption {
 .mobile .gallery-title {
   max-width: unset;
   white-space: normal;
+  font-size: 1.6em;
 }
 .mobile .gallery-title .title-link {
   display: none;
@@ -1056,7 +1087,7 @@ body.show-modal #modal-viewer #modal-caption {
 .mobile .gallery-links {
   width: 100%;
   margin-top: 0.5em;
-  font-size: 1.2em;
+  font-size: 1.1em;
   text-align: center;
 }
 .mobile .gallery-links .btn {
@@ -1089,11 +1120,22 @@ body.show-modal #modal-viewer #modal-caption {
 .mobile .hex-gallery-row::-webkit-scrollbar {
   display: none;
 }
+.mobile .hex-gallery-row .hex-image-wrapper:hover,
+.mobile .hex-gallery-row .hex-image-wrapper:hover .hex-image {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
 .mobile .hex-gallery-row:last-child {
   margin-bottom: 0.75em;
 }
-.mobile.portrait .hex-gallery {
-  font-size: 1.2em;
+.mobile #modal-viewer #modal-caption {
+  width: 100%;
+  left: 0;
+  top: unset;
+  bottom: 0;
+  padding: 0.5em 0.8em;
+  box-sizing: border-box;
+  font-size: 1.4em;
+  background-color: rgba(85, 51, 156, 0.75);
 }
 .mobile.portrait .hex-gallery-row {
   margin-left: -2em;
@@ -1101,12 +1143,8 @@ body.show-modal #modal-viewer #modal-caption {
   padding: 0 2em;
 }
 .mobile.portrait .hex-gallery-row .hex-image-wrapper .hex-image {
-  height: 800px;
-  width: 692.82032303px;
-  margin: 16px;
-}
-.mobile.landscape .hex-gallery {
-  font-size: 1.1em;
+  height: calc(65vw / 0.8660254);
+  width: 65vw;
 }
 .mobile.landscape .hex-gallery:not(:last-child) {
   margin-bottom: 7em;
@@ -1117,11 +1155,7 @@ body.show-modal #modal-viewer #modal-caption {
   padding: 0 140px;
 }
 .mobile.landscape .hex-gallery-row .hex-image-wrapper .hex-image {
-  height: 400px;
-  width: 346.41016151px;
-  margin: 9px;
-}
-.mobile.landscape #modal-viewer #modal-caption {
-  top: calc(70% + calc((100% - 70%) / 2) + 0.5em);
+  height: 65vh;
+  width: 56.29165125vh;
 }
 

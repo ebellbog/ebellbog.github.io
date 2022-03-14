@@ -3,12 +3,14 @@
 html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    overflow-x: hidden;
 }
 
 body.mobile {
-    height: 100vh;
-    height: calc(var(--vh, 1vh) * 100);
-    min-width: 0;
+    &, #svg-hexes {
+        max-width: unset;
+        min-width: unset;
+    }
 
     .mobile-only {
         display: block;
@@ -20,12 +22,13 @@ body.mobile {
     #mobile-nav-btn {
         z-index: 5;
 
-        position: absolute;
+        position: fixed;
         top: .2em;
         left: 0em;
 
         font-size: 2em;
         color: white;
+        background-color: transparent;
 
         filter: drop-shadow(.11em .08em 0 @bgColor);
 
@@ -38,12 +41,14 @@ body.mobile {
     #mobile-nav-menu {
         z-index: 6;
 
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
 
         transition: transform .5s;
         transform: translateX(-100%);
+
+        background-color: fade(@bgColor, 80%);
 
         border-bottom-right-radius: @borderRadius;
         border-right: 2px solid fade(white, 60%);
@@ -51,6 +56,8 @@ body.mobile {
 
         .nav-link, .home-link {
             display: block;
+            position: relative;
+
             color: white;
 
             font-family: 'Chakra Petch', serif;
@@ -58,20 +65,19 @@ body.mobile {
             font-weight: 100;
             text-transform: uppercase;
 
-            padding: .65em 2em .65em 1em;
-            &:not(.active) {
-                padding-left: 2.15em;
-            }
+            padding: .65em 2em .65em 2.15em;
+
             &.active::before {
-                content: '⬢ ';
+                content: '\2B22 ';
                 opacity: .8;
 
-                font-size: .75em;
+                font-family: 'Noto Sans Symbols 2', sans-serif; // Needed to support hexagon unicode symbol on all devices
+                font-size: .8em;
 
-                position: relative;
-                bottom: .2em;
-
-                padding-right: .4em;
+                position: absolute;
+                top: 54%;
+                left: 1.2em;
+                transform: translateY(-50%);
             }
 
             &:not(:last-child) {
@@ -138,6 +144,18 @@ body.mobile {
                     display: block;
                     margin: 0 auto;
                 }
+
+                .decal-info {
+                    display: none; // Prevent accidental link clicks on mobile hover
+                    .decal-description {
+                        text-shadow: .04em .04em .1em fade(black, 90%);
+                    }
+                }
+                &:hover {
+                    .decal-info {
+                        display: block;
+                    }
+                }
             }
         }
 
@@ -154,6 +172,12 @@ body.mobile {
                 .page-content {
                     padding: 0 .75em;
                 }
+            }
+        }
+
+        #conclusion {
+            .copyright {
+                margin-bottom: 0;
             }
         }
     }
@@ -220,6 +244,11 @@ body.mobile {
 
         #mobile-nav-menu {
             min-width: 40%;
+            font-size: .9em;
+            .nav-link, .social-links {
+                padding-top: .5em;
+                padding-bottom: .5em;
+            }
         }
 
         #page-container {
@@ -230,6 +259,7 @@ body.mobile {
 
             #intro {
                 img {
+                    margin-top: 0;
                     height: 80vh;
                 }
             }

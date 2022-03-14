@@ -8,23 +8,19 @@
 @bgColor: #2b1a4f;
 @navHeight: 3.2em;
 @maxWidth: 2000px;
+@minWidth: 1400px;
 
 @borderRadius: .5em;
 
-html {
-    overflow: hidden;
-    position: relative;
-}
-
 body {
     position: relative;
-    height: 100vh;
+    overflow-x: hidden;
 
-    min-width: 1400px;
-    overflow: hidden;
+    max-width: @maxWidth;
+    min-width: @minWidth;
 
     padding: 0;
-    margin: 0;
+    margin: 0 auto;
 
     font-family: 'Nunito', sans-serif;
     background-color: @bgColor;
@@ -32,21 +28,31 @@ body {
     a {
         color: white;
     }
+
+    &.scroll-container {
+        overflow-y: hidden;
+        #page-container {
+            height: 100vh;
+            overflow-y: scroll;
+        }
+    }
 }
 
 /* Navigation */
 
 #nav-bar {
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 4;
 
     width: 100%;
     max-width: @maxWidth;
+    min-width: @minWidth;
+
     margin: 0 auto;
 
     box-sizing: border-box;
-    padding: 8px 10px;
+    padding: 6px 10px;
     overflow: auto;
 
     color: white;
@@ -55,15 +61,13 @@ body {
 
     #name {
         opacity: 0.9;
-        float: left;
         font-size: 1.4em;
-
         cursor: pointer;
     }
 
     #page-links {
         position: absolute;
-        top: 12px;
+        top: 9px;
         left: 50%;
         transform: translateX(-50%);
 
@@ -112,12 +116,6 @@ body {
 
 #page-container {
     z-index: 2;
-    position: relative;
-
-    overflow-y: scroll;
-    overflow-x: hidden;
-
-    height: calc(100% - @navHeight);
 
     color: white;
 
@@ -149,7 +147,7 @@ body {
         img {
             display: block;
             height: 375px;
-            margin: 0 auto 40px auto;
+            margin: 1.75em auto 2.75em auto;
 
             transition: transform 1.2s;
             &:hover {
@@ -212,6 +210,7 @@ body {
         .skewed-text {
             display: table;
             margin: 0 auto;
+            white-space: nowrap;
             font-family: 'Chakra Petch', serif;
         }
 
@@ -224,7 +223,16 @@ body {
 }
 
 #svg-hexes {
-    z-index: 1;
+    z-index: -1;
+
+    position: fixed;
+    top: 0;
+
+    width: 100%;
+    min-width: @minWidth;
+    max-width: @maxWidth;
+
+    height: 100%;
 }
 
 /* Assorted small components */
@@ -301,7 +309,7 @@ body {
                 font-family: 'Nunito', sans-serif;
                 font-size: 1.15em;
                 line-height: 1.5em;
-                text-shadow: .03em .03em .1em fade(black, 70%);
+                text-shadow: .03em .03em .15em fade(black, 70%);
             }
         }
 
@@ -315,12 +323,6 @@ body {
                 opacity: 1;
             }
         }
-    }
-}
-
-.no-shadow {
-    .decal-gallery .decal {
-        filter: none;
     }
 }
 
@@ -340,7 +342,7 @@ body {
 
     .shaded-blur {
         background-color: fade(@darkestColor, 60%);
-        @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+        @supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
             background-color: fade(@darkestColor, 45%);
         }
     }
@@ -410,20 +412,19 @@ body {
 }
 
 .fullscreen {
-    position: absolute;
+    position: fixed;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
 
     height: 100%;
     width: 100%;
     max-width: @maxWidth;
+
     margin: 0;
 }
 
 .bg-blur {
     background-color: fade(@bgColor, 70%);
-    @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+    @supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
         background-color: transparent;
         backdrop-filter: blur(.14em);
         -webkit-backdrop-filter: blur(.14em);
@@ -433,7 +434,12 @@ body {
 .shaded-blur {
     backdrop-filter: blur(.22em);
     -webkit-backdrop-filter: blur(.22em);
-    background-color: fade(@bgColor, 75%);
+
+    // Default to background color, if not inside colored container
+    background-color: fade(@bgColor, 60%);
+    @supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
+        background-color: fade(@bgColor, 45%);
+    }
 }
 
 .badge-container {

@@ -20,13 +20,18 @@ import '../img/tree_climber.png';
 import '../img/hex_elana.png';
 import '../img/og_image.jpg';
 
-import {isMobileDevice, isSafari} from './util';
+import {isMobileDevice, isChrome, isSafari} from './util';
 
 let hexGrid;
 
 $(document).ready(() => {
     setupNavbar();
     hookEvents();
+
+    // Improve performance on Chrome by scrolling inside container div
+
+    $('body').toggleClass('scroll-container', isChrome() && !isMobileDevice());
+    $('body').toggleClass('no-shadow', isSafari());
 
     // Initialize components
 
@@ -48,8 +53,14 @@ $(document).ready(() => {
 
     // Auto-scroll to URL target
 
+    history.scrollRestoration = 'manual'; // https://developer.mozilla.org/en-US/docs/Web/API/History/scrollRestoration
+
     let {location: {hash}} = window, $el;
-    if (hash && ($el = $(hash)).length) scrollToElement($el);
+    if (hash && ($el = $(hash)).length) {
+        history.locked = true; // Don't update history until after scroll complete
+        scrollToElement($el);
+        history.locked = false;
+    };
 });
 
 function setupNavbar() {
@@ -90,19 +101,11 @@ function hookEvents() {
     });
 
     const resize = () => {
-        // Trick for actual full-height layout on mobile
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-
         const $body = $('body');
         $body.removeClass('mobile landscape portrait');
         if (isMobileDevice()) {
             $body.addClass(`mobile ${window.innerWidth > window.innerHeight ? 'landscape' : 'portrait'}`);
         }
-
-        // Remove drop shadows on Safari & mobile, since they hurt performance of SVG animation on scroll
-        $('body').toggleClass('no-shadow', isSafari() || isMobileDevice());
-
         $(window).trigger('resize-component'); // Optional event for components, to execute resize logic after main resize handler
     }
     $(window).on('resize', () => setTimeout(() => resize(), 0)); // For some reason, this timeout is necessary to ensure user agent has already updated
@@ -115,26 +118,23 @@ function scrollToPage(pageIdx, doAnimate) {
 }
 
 function scrollToElement($el, doAnimate) {
-    const $pageContainer = $('#page-container');
-    const currentScroll = $pageContainer.scrollTop();
+    const usingScrollContainer = $('body').hasClass('scroll-container');
 
-    const targetScroll = $el.offset().top + currentScroll;
-    history.locked = true; // Don't update history until after scroll complete
+    const $scrollParent = usingScrollContainer  ? $('#page-container') : $('html, body');
+    const currentScroll = usingScrollContainer ? $scrollParent.scrollTop() : window.scrollY;
+    const targetScroll = $el.offset().top + (usingScrollContainer ? currentScroll : 0);
 
     if (doAnimate) {
         const scrollDelta = Math.abs(currentScroll - targetScroll);
-        $pageContainer.animate(
+        $scrollParent.animate(
             {scrollTop: targetScroll},
-            scrollDelta * 2.5, // Ensure constant scroll speed, regardless of scroll amount
-            () => history.locked = false);
+            scrollDelta * 2); // Ensure constant scroll speed, regardless of scroll amount
     } else {
-        $('#page-container').off('scroll');
+        $(window).off('scroll');
 
-        $pageContainer.scrollTop(targetScroll);
+        $scrollParent.scrollTop(targetScroll);
         hexGrid.scrollSvgHexes(false);
-        history.locked = false;
 
-        $('#page-container').on('scroll', () => hexGrid.scrollSvgHexes());
+        $(window).on('scroll', () => hexGrid.scrollSvgHexes());
     }
-
 }

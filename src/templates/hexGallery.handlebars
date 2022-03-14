@@ -1,4 +1,4 @@
-<div>
+<div class="hex-gallery-images">
     {{#each rows}}
         <div class="hex-gallery-row">
             {{#each this}}
@@ -9,58 +9,60 @@
         </div>
     {{/each}}
 </div>
-<div class="gallery-header">
-    <h3 class="gallery-title stroked-text">
-        <i>{{title}}</i>
-        <i class="fa fa-link title-link"></i>
-    </h3>
+<div class="hex-gallery-text">
+    <div class="gallery-header">
+        <h3 class="gallery-title stroked-text">
+            <i>{{title}}</i>
+            <i class="fa fa-link title-link"></i>
+        </h3>
 
+        {{#if isMobile}}
+        {{else}}
+            <div class="gallery-links">
+                {{#each links}}
+                    {{> button this}}
+                {{/each}}
+            </div>
+        {{/if}}
+        <div style="clear:both;"></div>
+    </div>
+    <div class="gallery-info shaded-blur">
+        <div class="info-panel">
+            <table class="info-table">
+                <colgroup>
+                    <col width="35%">
+                    <col>
+                </colgroup>
+                <tr>
+                    <td>Released:</td>
+                    <td>{{{year}}}</td>
+                </tr>
+                <tr>
+                    <td>{{#if isDigital}}Platform{{else}}Genre{{/if}}:</td>
+                    <td class="badge-container">
+                        {{#each platforms}}<span class="badge small-text purple">{{this}}</span>{{/each}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{#if isDigital}}Tools{{else}}Components{{/if}}:</td>
+                    <td class="badge-container">
+                        {{#each tools}}<span class="badge small-text {{formatSkillColor this}}">{{this}}</span>{{/each}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="separator"></div>
+        <div class="info-panel">
+            <article class="gallery-description">
+                {{{description}}}
+            </article>
+        </div>
+    </div>
     {{#if isMobile}}
-    {{else}}
         <div class="gallery-links">
             {{#each links}}
                 {{> button this}}
             {{/each}}
         </div>
     {{/if}}
-    <div style="clear:both;"></div>
 </div>
-<div class="gallery-info shaded-blur">
-    <div class="info-panel">
-        <table class="info-table">
-            <colgroup>
-                <col width="35%">
-                <col>
-            </colgroup>
-            <tr>
-                <td>Released:</td>
-                <td>{{{year}}}</td>
-            </tr>
-            <tr>
-                <td>{{#if isDigital}}Platform{{else}}Genre{{/if}}:</td>
-                <td class="badge-container">
-                    {{#each platforms}}<span class="badge small-text purple">{{this}}</span>{{/each}}
-                </td>
-            </tr>
-            <tr>
-                <td>{{#if isDigital}}Tools{{else}}Components{{/if}}:</td>
-                <td class="badge-container">
-                    {{#each tools}}<span class="badge small-text {{formatSkillColor this}}">{{this}}</span>{{/each}}
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div class="separator"></div>
-    <div class="info-panel">
-        <article class="gallery-description">
-            {{{description}}}
-        </article>
-    </div>
-</div>
-{{#if isMobile}}
-    <div class="gallery-links">
-        {{#each links}}
-            {{> button this}}
-        {{/each}}
-    </div>
-{{/if}}

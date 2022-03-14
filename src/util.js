@@ -28,11 +28,14 @@ function isMobileDevice() {
     return (navigator.userAgent.match(/Android/i)
         || navigator.userAgent.match(/webOS/i)
         || navigator.userAgent.match(/iPhone/i)
-        || navigator.userAgent.match(/iPad/i) // TODO: consider removing
         || navigator.userAgent.match(/iPod/i)
         || navigator.userAgent.match(/BlackBerry/i)
         || navigator.userAgent.match(/Windows Phone/i)
     ) ? true : false
+}
+
+function isChrome() {
+    return /(chrome|chromium)/i.test(navigator.userAgent);
 }
 
 function isSafari() {
@@ -54,6 +57,7 @@ export {
     constrainValue,
     createSvg,
     isMobileDevice,
+    isChrome,
     isSafari,
     randItem
 };

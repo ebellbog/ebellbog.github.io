@@ -22,7 +22,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;500&family=Nunito:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;500&family=Nunito:wght@300;600&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -44,7 +44,7 @@
 </head>
 
 <body>
-    <header id="nav-bar" class="bg-blur desktop-only">
+    <header id="nav-bar" class="shaded-blur desktop-only">
         <span id="name" class="home-link">Elana Bell Bogdan</span>
 
         <nav id="page-links">
@@ -64,10 +64,10 @@
         </span>
     </header>
 
-    <div id="mobile-nav-btn" class="mobile-only">
+    <button id="mobile-nav-btn" class="btn mobile-only">
         <i class="fa fa-bars"></i>
-    </div>
-    <nav id="mobile-nav-menu" class="shaded-blur mobile-only">
+    </button>
+    <nav id="mobile-nav-menu" class="bg-blur mobile-only">
         <a class="home-link active">About Elana</a>
     </nav>
 
@@ -76,7 +76,7 @@
         <figcaption id="modal-caption"></figcaption>
     </figure>
 
-    <main id="page-container" class="fullscreen">
+    <main id="page-container">
         <section id="intro" class="page">
             <img src="./dist/hex_elana.png">
             <p id="short-bio" class="bg-blur padded-title text-center">
@@ -86,7 +86,7 @@
             </p>
         </section>
 
-        <section id="Resume" class="page purple">
+        <section id="resume" class="page purple">
             <h2 class="page-header skewed-text">Resume</h2>
             <div id="eng-timeline"></div>
             <br>
@@ -219,7 +219,7 @@
         </footer>
     </main>
 
-    <svg id="svg-hexes" class="fullscreen"></svg>
+    <svg id="svg-hexes"></svg>
 </body>
 
 </html>

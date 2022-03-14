@@ -51,7 +51,7 @@ class HexGallery {
                     .css({
                         height: $hexImage.outerHeight(),
                         width: $hexImage.outerWidth(),
-                        top: $hexImage.offset().top,
+                        top: $hexImage.offset().top - ($('body').hasClass('scroll-container') ? 0 : window.scrollY),
                         left: $hexImage.offset().left,
                         transition: 'none', // Don't animate initial placement
                     })
@@ -67,7 +67,7 @@ class HexGallery {
                 history.replaceState(null, null, `#${this.$container.attr('id')}`);
             })
             .on('mouseover', '.hex-image', ({target}) => {
-                if ($('body').hasClass('portrait')) return;
+                if ($('body').hasClass('mobile')) return;
 
                 const {naturalHeight, naturalWidth} = target;
                 const aspectRatio = naturalHeight / naturalWidth;
