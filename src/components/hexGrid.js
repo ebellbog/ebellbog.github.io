@@ -87,7 +87,7 @@ class HexGrid {
             }
         });
 
-        $(window).add('#page-container').on('scroll', () => this.scrollSvgHexes());
+        $(window).add('#page-container').on('scroll orientationchange', () => this.scrollSvgHexes());
         $(window).on('resize-component', () => this.resizeGrid());
     }
 

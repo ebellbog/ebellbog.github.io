@@ -20,9 +20,13 @@ import '../img/tree_climber.png';
 import '../img/hex_elana.png';
 import '../img/og_image.jpg';
 
-import {isMobileDevice, isChrome, isSafari} from './util';
+import {isMobileDevice, isChrome, isSafari, isIE} from './util';
 
 let hexGrid;
+
+if (isIE()) {
+    alert('This browser made not be supported. Please try switching to a modern browser.');
+}
 
 $(document).ready(() => {
     setupNavbar();
@@ -34,8 +38,6 @@ $(document).ready(() => {
     $('body').toggleClass('no-shadow', isSafari());
 
     // Initialize components
-
-    hexGrid = new HexGrid($('#svg-hexes'));
 
     new HexTimeline($('#eng-timeline'), engTimelineData);
 
@@ -51,8 +53,15 @@ $(document).ready(() => {
 
     $('a:not(.nav-link)').attr('target', '_blank');
 
-    // Auto-scroll to URL target
+     // Give other components a chance to update layout before updating grid
 
+    setTimeout(() => {
+        hexGrid = new HexGrid($('#svg-hexes'));
+        setScroll(); // Auto-scroll to URL target
+    }, 0);
+});
+
+function setScroll() {
     history.scrollRestoration = 'manual'; // https://developer.mozilla.org/en-US/docs/Web/API/History/scrollRestoration
 
     let {location: {hash}} = window, $el;
@@ -61,7 +70,7 @@ $(document).ready(() => {
         scrollToElement($el);
         history.locked = false;
     };
-});
+}
 
 function setupNavbar() {
     const $pageLinks = $('#page-links');

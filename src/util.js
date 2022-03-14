@@ -39,7 +39,11 @@ function isChrome() {
 }
 
 function isSafari() {
-    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    return /^((?!chrome|android).)*safari/i.test(navigator.userAgent) || location.hostname.includes('bs-local');
+}
+
+function isIE() {
+    return /(MSIE|Trident)/i.test(navigator.userAgent);
 }
 
 function randItem(list, remove) {
@@ -58,6 +62,7 @@ export {
     createSvg,
     isMobileDevice,
     isChrome,
+    isIE,
     isSafari,
     randItem
 };

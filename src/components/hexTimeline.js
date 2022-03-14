@@ -3,26 +3,12 @@ import HexTimelineTemplate from  '../templates/hexTimeline.handlebars';
 import { createSvg } from '../util.js';
 
 class HexTimeline {
-    // Config values
-    branchLength = 40;
-    trunkLength = 215;
-
-    endpointRadius = 30;
-    strokeWidth = 4;
-
-    // jQuery
-    $container = null;
-    $svg = null;
-
-    // Data
-    data = null;
-
-    displayingMobile = null;
-
     constructor($container, data, cfg) {
         if (data.length < 2) {
             throw 'Timeline must have at least two items';
         }
+
+        this.declarePublicFields();
 
         this.data = data;
         this.$container = $container;
@@ -30,6 +16,25 @@ class HexTimeline {
 
         $(window).on('resize-component', () => this.setupTimeline());
         this.setupTimeline();
+    }
+
+    // For compatibility with older Safari versions, which don't support public class fields
+    declarePublicFields() {
+        // Config values
+        this.branchLength = 40;
+        this.trunkLength = 215;
+
+        this.endpointRadius = 30;
+        this.strokeWidth = 4;
+
+        // jQuery
+        this.$container = null;
+        this.$svg = null;
+
+        // Data
+        this.data = null;
+
+        this.displayingMobile = null;
     }
 
     setupTimeline() {

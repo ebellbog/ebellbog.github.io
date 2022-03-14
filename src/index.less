@@ -474,3 +474,11 @@ body {
 .text-center {
     text-align: center;
 }
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

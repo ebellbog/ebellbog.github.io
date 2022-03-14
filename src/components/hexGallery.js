@@ -2,11 +2,9 @@ import './hexGallery.less';
 import HexGalleryTemplate from '../templates/hexGallery.handlebars';
 
 class HexGallery {
-    isDigital = true;
-    maxRowSize = 3;
-    displayingMobile = null;
-
     constructor($container, data, cfg) {
+        this.declarePublicFields();
+
         this.$container = $container.addClass('hex-gallery');
         this.data = data;
         Object.assign(this, cfg);
@@ -15,6 +13,13 @@ class HexGallery {
         this.setupGallery();
 
         this.hookEvents();
+    }
+
+    // For compatibility with older Safari versions, which don't support public class fields
+    declarePublicFields() {
+        this.isDigital = true;
+        this.maxRowSize = 3;
+        this.displayingMobile = null;
     }
 
     setupGallery() {

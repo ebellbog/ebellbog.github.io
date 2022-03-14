@@ -28,10 +28,12 @@
         &, .hex-image {
             transition: all .6s;
             clip-path: @hexClip;
+            -webkit-clip-path: @hexClip;
         }
         &:hover {
             &, .hex-image {
                 clip-path: @boxClip;
+                -webkit-clip-path: @boxClip;
             }
         }
 
@@ -289,15 +291,10 @@
     .hex-gallery-row {
         overflow-x: scroll;
 
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
         .hex-image-wrapper:hover {
             &, .hex-image {
                 clip-path: @hexClip;
+                -webkit-clip-path: @hexClip;
             }
         }
 
