@@ -52,12 +52,15 @@ class HexGallery {
 
                 $('#modal-caption').html($hexImage.data('caption') || '');
 
+                const windowWidth = window.innerWidth;
+                const maxWidth = parseInt($('body').css('max-width'));
+
                 $modalImage
                     .css({
                         height: $hexImage.outerHeight(),
                         width: $hexImage.outerWidth(),
                         top: $hexImage.offset().top - ($('body').hasClass('scroll-container') ? 0 : window.scrollY),
-                        left: $hexImage.offset().left,
+                        left: $hexImage.offset().left - (windowWidth > maxWidth ? (windowWidth - maxWidth) / 2 : 0),
                         transition: 'none', // Don't animate initial placement
                     })
                     .attr({
