@@ -652,7 +652,7 @@ body.mobile #mobile-nav-menu .home-link {
   font-size: 1.3em;
   font-weight: 100;
   text-transform: uppercase;
-  padding: 0.65em 2em 0.65em 2.15em;
+  padding: 0.65em 3em 0.65em 2.15em;
 }
 body.mobile #mobile-nav-menu .nav-link.active::before,
 body.mobile #mobile-nav-menu .home-link.active::before {
@@ -745,9 +745,6 @@ body.mobile #page-container #conclusion .copyright {
 body.mobile.portrait {
   font-size: 1.85em;
 }
-body.mobile.portrait #mobile-nav-menu {
-  min-width: 60%;
-}
 body.mobile.portrait #page-container .page {
   padding-left: 2em;
   padding-right: 2em;
@@ -781,7 +778,6 @@ body.mobile.portrait #page-container .decal-gallery .decal {
   object-fit: contain;
 }
 body.mobile.landscape #mobile-nav-menu {
-  min-width: 40%;
   font-size: 0.9em;
 }
 body.mobile.landscape #mobile-nav-menu .nav-link,
