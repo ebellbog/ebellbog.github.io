@@ -13,15 +13,20 @@ const justFiveGalleryData = {
     images: [
         {
             fileName: 'just_five1.jpg',
-            caption: '',
+            caption: 'Five levels offer increasing difficulty. After each level is completed in order, it becomes available as a short cut from the main screen.',
+            altText: 'Five white dots on a minimalist main menu screen'
         },
         {
             fileName: 'just_five2.jpg',
-            caption: '',
+            caption: `By design, the gameplay is as minimalist as the visual aesthetic. Various numbers of blue and red dots chase the player,
+                a white dot, through a looping one-dimensional environment. Subtle symbols at the bottom of the screen offer clues about
+                what each level might involve.`,
+            altText: 'A game in action, with two red dots chasing the player on level 3',
         },
         {
             fileName: 'just_five3.jpg',
-            caption: 'You can watch gameplay on Phlips Hue bulbs (installed at The Recurse Center in NYC) <a href="https://vimeo.com/265251092" target="_blank">here</a>!',
+            caption: 'You can watch gameplay on five Philips Hue bulbs (installed at The Recurse Center in NYC) <a href="https://vimeo.com/265251092" target="_blank">here</a>!',
+            altText: 'Five physical light bulbs attached to a ceiling, with bright red and white colors'
         },
     ],
     links: [

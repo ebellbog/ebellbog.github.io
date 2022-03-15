@@ -3,7 +3,7 @@
         <div class="hex-gallery-row no-scrollbar">
             {{#each this}}
                 <div class="hex-image-wrapper{{#if placeholder}} placeholder{{/if}}">
-                    <img class="hex-image" src="./dist/{{fileName}}" {{#if caption}}data-caption="{{caption}}"{{/if}}>
+                    <img class="hex-image" src="./dist/{{fileName}}"{{#if caption}} data-caption="{{caption}}"{{/if}}{{#if altText}} alt="{{altText}}"{{/if}}>
                 </div>
             {{/each}}
         </div>

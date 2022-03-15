@@ -16,23 +16,33 @@ const mudfishGalleryData = {
     images: [
         {
             fileName: 'mudfish_2.jpg',
-            caption: '',
+            caption: `With the help of some friends, I crafted custom ID badges for every character. In addition to providing information essential for
+                fostering a safe play environment &mdash; such as pronouns and consent for physical touch &mdash; these badges also encoded secret plot clues.`,
+            altText: 'Black ID cards in plastic sleeves hang from lanyards. Each ID has a character name, pronouns, and various colored stickers, all stylized in a cyberpunk way.',
         },
         {
             fileName: 'mudfish_1.jpg',
-            caption: '',
+            caption: `These jigsaws puzzles were a collaborative activity, which players could use as a way to take a breather between dramatic scenes. Officially,
+                they were part of the "Collective Memory Recovery" (CMR) game mechanic, through which characters could "remember" forgotten facts about their adventure.`,
+            altText: 'Several homemade jigsaw puzzles, with drawings and clues, lie on top of pages of game notes.',
         },
         {
             fileName: 'mudfish_6.jpg',
-            caption: '',
+            caption: `This roleplay incorporated a variety of modern technology: a projector, a computer terminal &mdash; even this iPad! Strategic players could took
+                advantage of the device's fingerprint sensor to confirm the identity of a villain in their midst.`,
+            altText: 'An iPad displaying a fullscreen image that reads "Airlock Release," with a big red button.',
         },
         {
             fileName: 'mudfish_7.jpg',
-            caption: '',
+            caption: `This map, hanging in several places around the game space, helped blur the lines of reality. It features important in-game locations, marked on the
+                floor plan of a real apartment (where we played), melded with the blueprints for a fictional space ship (where the story took place).`,
+            altText: 'A black & white schematic, showing in-game locations overlaid on top of the floor plan for an apartment, which is styled to resemble a space ship.',
         },
         {
             fileName: 'mudfish_composite.jpg',
-            caption: '',
+            caption: `The first run of this game took place in Brooklyn, NY and included 14 players of mixed genders. The group didn't correctly identify the murderer,
+                but they still achieved other narrative goals (no spoilers here)! I received many positive reviews, along with some helpful insight for future iterations.`,
+            altText: 'A photo collage of players portraying their characters in various poses, standing around an apartment with space imagery projected on the wall.',
         },
     ],
     links: [

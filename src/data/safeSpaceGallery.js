@@ -15,15 +15,20 @@ const safeSpaceGalleryData = {
     images: [
         {
             fileName: 'safe_space1.jpg',
-            caption: '',
+            caption: 'From the landing screen, players can choose three difficulty levels and visit a training area. The UI supports either mouse or keyboard input and can also be configured to work in an arcade cabiniet.',
+            altText: 'A landing screen reads: "Safe Space, a game of cooperation and community in outer space." Two buttons are labeled "How to play" and "Start easy." Colored lines encircle the text, against a starry backdrop.'
         },
         {
             fileName: 'safe_space2.jpg',
-            caption: '',
+            caption: `Meteors may approach Earth in a straight line or a dangerous, spiraling orbit. The players have worked together
+                to create one protective barrier, but Earth has already taken a hit. For accessibility, satellites and meteors are
+                distinguished by both color and shape.`,
+            altText: 'A game in progress. Small shapes, with different colors and numbers of sides, orbit a cartoon Earth. Meteors are headed on a collison course for the planet.',
         },
         {
             fileName: 'safe_space3.jpg',
             caption: 'You can watch footage from launch night at The Dreamhouse <a href="https://vimeo.com/276498823" target="_blank">here</a>!',
+            altText: 'A photograph of an arcade cabinet at a night club, with two people playing Safe Space.'
         },
     ],
     links: [

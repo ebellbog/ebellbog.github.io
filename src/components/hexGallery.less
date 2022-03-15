@@ -174,7 +174,7 @@
     transition: background-color 1s;
 
     body.show-modal & {
-        background-color: fade(@bgColor, 80%);
+        background-color: fade(@bgColor, 85%);
         pointer-events: all;
 
         #modal-image {
@@ -207,9 +207,11 @@
         transition: opacity 1s;
 
         position: absolute;
-        width: @modalImageWidth;
-        left: @modalImageLeft;
+        width: calc(@modalImageWidth * 0.85);
+        left: 50%;
         top: calc(@modalImageHeight + @modalImageTop + 1em);
+
+        transform: translateX(-50%);
 
         font-family: 'Nunito', sans-serif;
         color: white;
@@ -296,11 +298,13 @@
         top: unset;
         bottom: 0;
 
+        transform: none;
+
         padding: .5em .8em;
         box-sizing: border-box;
 
         font-size: 1.4em;
-        background-color: fade(lighten(@bgColor, 20%), 75%);
+        background-color: fade(lighten(@bgColor, 20%), 70%);
     }
 
     &.portrait {

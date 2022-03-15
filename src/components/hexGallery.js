@@ -65,6 +65,7 @@ class HexGallery {
                     })
                     .attr({
                         src: $hexImage.attr('src'),
+                        alt: $hexImage.attr('alt') || '',
                     })
                     .one('load', () => {
                         $modalImage.css('transition', ''); // Animate scale-up effect
