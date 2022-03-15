@@ -770,6 +770,7 @@ body.mobile.portrait #page-container #conclusion #outro {
 body.mobile.portrait #page-container #conclusion .skewed-text {
   display: inline;
   font-style: italic;
+  white-space: normal;
   padding-left: 0;
   padding-right: 0;
   background-color: transparent;
