@@ -30,7 +30,6 @@ if (isIE()) {
 
 $(document).ready(() => {
     setupNavbar();
-    hookEvents();
 
     // Improve performance on Chrome by scrolling inside container div
 
@@ -53,12 +52,17 @@ $(document).ready(() => {
 
     $('a:not(.nav-link)').attr('target', '_blank');
 
+    // Set up event listeners & trigger initial resize
+
+    hookEvents();
+
      // Give other components a chance to update layout before updating grid
 
     setTimeout(() => {
         hexGrid = new HexGrid($('#svg-hexes'));
         setScroll(); // Auto-scroll to URL target
     }, 0);
+
 });
 
 function setScroll() {
@@ -77,7 +81,7 @@ function setupNavbar() {
     const $mobileNav = $('#mobile-nav-menu');
 
     $('.page-header').each((idx, header) => {
-        const $newLink = $('<a>').addClass('nav-link').html($(header).html());
+        const $newLink = $('<a>').addClass('nav-link').html($(header).text());
         $pageLinks.append($newLink);
         $mobileNav.append($newLink.clone());
     });
@@ -93,6 +97,10 @@ function hookEvents() {
     $('.nav-link').on('click', (e) => {
         const idx = $(e.target).index(); // (0th page is the intro, not a section)
         scrollToPage(idx, !isMobileDevice());
+    });
+    $('body').on('click', '.title-link', (e) => {
+        const parentId = $(e.target).closest('[id]').attr('id');
+        history.replaceState(null, '', `#${parentId}`);
     });
 
     const $body = $('body');

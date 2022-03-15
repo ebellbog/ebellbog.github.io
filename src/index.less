@@ -269,6 +269,33 @@ body {
     }
 }
 
+h2, h3 {
+    .title-link {
+        opacity: 0;
+        cursor: pointer;
+        font-size: .65em;
+    }
+    &:hover .title-link {
+        opacity: .9;
+    }
+}
+h2 { // Section titles
+    position: relative;
+    .title-link {
+        position: absolute;
+        right: -1.8em;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: .5em;
+    }
+}
+h3 { // Projec titles
+    .title-link {
+        margin-left: .2em;
+        margin-bottom: .1em;
+    }
+}
+
 .decal-gallery {
     display: flex;
     justify-content: space-around;
@@ -352,6 +379,10 @@ body {
 
     .stroked-text {
         text-shadow: .07em .07em 0 @darkestColor, .1em .07em 0 @darkestColor;
+    }
+
+    .title-link {
+        filter: drop-shadow(.07em .07em 0 @darkestColor);
     }
 
     &.badge {

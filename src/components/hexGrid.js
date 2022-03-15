@@ -341,10 +341,8 @@ class HexGrid {
             $('.nav-link, .home-link').removeClass('active');
             if (currentPage > 0) {
                 $(`.nav-link:nth-child(${currentPage + 1})`).addClass('active');
-                if (!history.locked) history.replaceState(null, null, '#' + $(`.page:nth-child(${currentPage + 1})`).attr('id'));
             } else {
                 $('.home-link').addClass('active');
-                if (!history.locked) history.replaceState(null, null, '/');
             }
         }
     }
