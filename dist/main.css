@@ -937,6 +937,10 @@ body.mobile.landscape #page-container .decal-gallery .decal {
   border-radius: 0.15em;
   background-color: white;
 }
+.mobile.landscape .timeline-container {
+  padding: 0 1.5em;
+  box-sizing: border-box;
+}
 
 .hex-gallery {
   margin-top: 2.5em;
@@ -988,6 +992,9 @@ body.mobile.landscape #page-container .decal-gallery .decal {
 }
 .no-shadow .hex-gallery-row {
   filter: none;
+}
+.no-shadow .hex-gallery-row .hex-image-wrapper {
+  margin: 0 0.3em;
 }
 .gallery-header {
   margin-bottom: 0.1em;
