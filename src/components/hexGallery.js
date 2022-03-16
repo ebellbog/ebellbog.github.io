@@ -49,8 +49,8 @@ class HexGallery {
             .on('click', '.hex-image', (e) => {
                 const $hexImage = $(e.target);
 
-                const $modalViewer = $('#modal-viewer').detach(); // Detach to help reset any previous animations
-                const $modalImage = $modalViewer.find('#modal-image');
+                const $modalViewer = $('#modal-viewer');
+                const $modalImage = $modalViewer.find('#modal-image').detach(); // Detach to help reset any previous animations
                 const $modalCaption = $modalViewer.find('#modal-caption');
 
                 $modalCaption.html($hexImage.data('caption') || '');
@@ -67,7 +67,7 @@ class HexGallery {
                     left: $hexImage.offset().left - (windowWidth > maxWidth ? (windowWidth - maxWidth) / 2 : 0),
                 });
 
-                $modalViewer.appendTo($body);
+                $modalImage.appendTo($modalViewer);
 
                 $modalImage
                     .attr({

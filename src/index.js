@@ -78,7 +78,9 @@ function setScroll() {
         history.locked = true; // Don't update history until after scroll complete
         scrollToElement($el);
         history.locked = false;
-    };
+    } else {
+        scrollToElement($('body')); // Ensure scrolled to top on default page load
+    }
 }
 
 function setupNavbar() {
