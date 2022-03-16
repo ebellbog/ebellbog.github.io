@@ -13,7 +13,7 @@ const justFiveGalleryData = {
     images: [
         {
             fileName: 'just_five1.jpg',
-            caption: 'Five levels offer increasing difficulty. After each level is completed in order, it becomes available as a short cut from the main screen.',
+            caption: 'Five levels offer increasing difficulty. After each level is completed in order, it becomes available as a shortcut from the main screen.',
             altText: 'Five white dots on a minimalist main menu screen'
         },
         {

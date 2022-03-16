@@ -723,7 +723,7 @@ body.mobile #page-container .decal-gallery .decal-wrapper .decal-info {
   display: none;
 }
 body.mobile #page-container .decal-gallery .decal-wrapper .decal-info .decal-description {
-  text-shadow: 0.05em 0.04em 0.1em black;
+  text-shadow: 0.06em 0.06em 0.1em black;
 }
 body.mobile #page-container .decal-gallery .decal-wrapper:hover .decal-info {
   display: block;

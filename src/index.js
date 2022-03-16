@@ -48,6 +48,11 @@ $(document).ready(() => {
     new HexGallery($('#sanctum'), sanctumGalleryData, {isDigital: false});
     new HexGallery($('#mudfish'), mudfishGalleryData, {isDigital: false});
 
+    $('iframe.external-project').each((idx, project) => {
+        const $project = $(project);
+        $project.attr('src', `https://elanabellbogdan.com/${$project.attr('id')}/`);
+    });
+
     // All links open new tabs by default
 
     $('a:not(.nav-link)').attr('target', '_blank');
