@@ -48,29 +48,33 @@ class HexGallery {
         this.$container
             .on('click', '.hex-image', (e) => {
                 const $hexImage = $(e.target);
-                const $modalImage = $('#modal-image');
 
-                $('#modal-caption').html($hexImage.data('caption') || '');
+                const $modalViewer = $('#modal-viewer').detach(); // Detach to help reset any previous animations
+                const $modalImage = $modalViewer.find('#modal-image');
+                const $modalCaption = $modalViewer.find('#modal-caption');
 
+                $modalCaption.html($hexImage.data('caption') || '');
+
+                const $body = $('body');
+                const maxWidth = parseInt($body.css('max-width'));
                 const windowWidth = window.innerWidth;
-                const maxWidth = parseInt($('body').css('max-width'));
+
+                // Set CSS while modal is detached, to ensure correct initial placement
+                $modalImage.css({
+                    height: $hexImage.outerHeight(),
+                    width: $hexImage.outerWidth(),
+                    top: $hexImage.offset().top - ($body.hasClass('scroll-container') ? 0 : window.scrollY),
+                    left: $hexImage.offset().left - (windowWidth > maxWidth ? (windowWidth - maxWidth) / 2 : 0),
+                });
+
+                $modalViewer.appendTo($body);
 
                 $modalImage
-                    .css({
-                        height: $hexImage.outerHeight(),
-                        width: $hexImage.outerWidth(),
-                        top: $hexImage.offset().top - ($('body').hasClass('scroll-container') ? 0 : window.scrollY),
-                        left: $hexImage.offset().left - (windowWidth > maxWidth ? (windowWidth - maxWidth) / 2 : 0),
-                        transition: 'none', // Don't animate initial placement
-                    })
                     .attr({
                         src: $hexImage.attr('src'),
                         alt: $hexImage.attr('alt') || '',
                     })
-                    .one('load', () => {
-                        $modalImage.css('transition', ''); // Animate scale-up effect
-                        $('body').addClass('show-modal');
-                    });
+                    .one('load', () => $body.addClass('show-modal'));
             })
             .on('mouseover', '.hex-image', ({target}) => {
                 if ($('body').hasClass('mobile')) return;
