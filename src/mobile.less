@@ -151,6 +151,7 @@ body.mobile {
 
                 .decal, .decal-info {
                     transition: 1s opacity;
+                    transition-delay: .3s;
                 }
 
                 &:hover, &.active {
@@ -185,6 +186,12 @@ body.mobile {
             .copyright {
                 margin-bottom: 0;
             }
+        }
+    }
+
+    &.no-shadow {
+        .decal-gallery .decal-wrapper .decal {
+            filter: none;
         }
     }
 

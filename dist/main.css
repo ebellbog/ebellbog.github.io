@@ -725,6 +725,7 @@ body.mobile #page-container .decal-gallery .decal-wrapper .decal-description {
 body.mobile #page-container .decal-gallery .decal-wrapper .decal,
 body.mobile #page-container .decal-gallery .decal-wrapper .decal-info {
   transition: 1s opacity;
+  transition-delay: 0.3s;
 }
 body.mobile #page-container .decal-gallery .decal-wrapper:hover .decal,
 body.mobile #page-container .decal-gallery .decal-wrapper.active .decal {
@@ -748,6 +749,9 @@ body.mobile #page-container #projects .project-row .page-content {
 }
 body.mobile #page-container #conclusion .copyright {
   margin-bottom: 0;
+}
+body.mobile.no-shadow .decal-gallery .decal-wrapper .decal {
+  filter: none;
 }
 body.mobile.portrait {
   font-size: 1.85em;
