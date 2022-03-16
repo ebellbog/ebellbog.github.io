@@ -92,11 +92,11 @@ function setupNavbar() {
 
 function hookEvents() {
     $('.home-link').on('click', () => {
-        scrollToPage(0, !isMobileDevice());
+        scrollToPage(0);
     });
     $('.nav-link').on('click', (e) => {
         const idx = $(e.target).index(); // (0th page is the intro, not a section)
-        scrollToPage(idx, !isMobileDevice());
+        scrollToPage(idx);
     });
     $('body').on('click', '.title-link', (e) => {
         const parentId = $(e.target).closest('[id]').attr('id');

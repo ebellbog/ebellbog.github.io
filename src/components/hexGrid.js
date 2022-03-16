@@ -146,22 +146,27 @@ class HexGrid {
 
         const HOLES_PERCENT = .2;
 
-        grid = [];
+        if (grid) grid.splice(height);
+        else grid = [];
+
         for (let i = 0; i < height; i++) {
-            let row = [];
+            const rowWidth = width - i % 2;
 
-            for (let j = 0; j < width - i % 2; j++) {
+            if (grid[i]) grid[i].splice(rowWidth);
+            else grid[i] = [];
+
+            for (let j = 0; j < rowWidth; j++) {
+                if (grid[i][j]) continue; // Hex already exists, don't replace
+
                 let newHex;
-
-            if (Math.random() > 1 - HOLES_PERCENT) {
+                if (Math.random() > 1 - HOLES_PERCENT) {
                     newHex = {hole: true};
                 } else {
                     newHex = {color: randColorClass()};
                 }
 
-                row.push(newHex);
+                grid[i][j] = newHex;
             }
-            grid.push(row);
         }
 
         // Update offsets (for centering) based on new grid dimensions

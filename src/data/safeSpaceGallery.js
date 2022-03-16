@@ -15,7 +15,7 @@ const safeSpaceGalleryData = {
     images: [
         {
             fileName: 'safe_space1.jpg',
-            caption: 'From the landing screen, players can choose three difficulty levels and visit a training area. The UI supports either mouse or keyboard input and can also be configured to work in an arcade cabiniet.',
+            caption: 'From the landing screen, players can choose three difficulty levels and visit a training area. The UI supports either mouse or keyboard input and can also be configured to work in an arcade cabinet.',
             altText: 'A landing screen reads: "Safe Space, a game of cooperation and community in outer space." Two buttons are labeled "How to play" and "Start easy." Colored lines encircle the text, against a starry backdrop.'
         },
         {

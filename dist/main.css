@@ -1172,7 +1172,7 @@ body.show-modal #modal-viewer #modal-caption {
   top: unset;
   bottom: 0;
   transform: none;
-  padding: 0.5em 0.8em;
+  padding: 1em 0.8em;
   box-sizing: border-box;
   font-size: 1.4em;
   background-color: rgba(85, 51, 156, 0.7);
