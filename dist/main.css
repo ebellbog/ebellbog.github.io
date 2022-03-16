@@ -719,14 +719,21 @@ body.mobile #page-container .decal-gallery .decal-wrapper .decal {
   display: block;
   margin: 0 auto;
 }
-body.mobile #page-container .decal-gallery .decal-wrapper .decal-info {
-  display: none;
-}
-body.mobile #page-container .decal-gallery .decal-wrapper .decal-info .decal-description {
+body.mobile #page-container .decal-gallery .decal-wrapper .decal-description {
   text-shadow: 0.06em 0.06em 0.1em black;
 }
-body.mobile #page-container .decal-gallery .decal-wrapper:hover .decal-info {
-  display: block;
+body.mobile #page-container .decal-gallery .decal-wrapper .decal,
+body.mobile #page-container .decal-gallery .decal-wrapper .decal-info {
+  transition: 1s opacity;
+}
+body.mobile #page-container .decal-gallery .decal-wrapper:hover .decal,
+body.mobile #page-container .decal-gallery .decal-wrapper.active .decal {
+  filter: none;
+  opacity: 0.6;
+}
+body.mobile #page-container .decal-gallery .decal-wrapper:hover .decal-info,
+body.mobile #page-container .decal-gallery .decal-wrapper.active .decal-info {
+  opacity: 1;
 }
 body.mobile #page-container #projects .project-row {
   display: block;
@@ -802,7 +809,7 @@ body.mobile.landscape #page-container #projects #tree-climber {
 }
 body.mobile.landscape #page-container .decal-gallery .decal {
   width: 65%;
-  max-height: 160vh;
+  max-height: 120vh;
   object-fit: contain;
 }
 
@@ -1097,6 +1104,7 @@ body.show-modal #modal-viewer #modal-caption {
 #modal-viewer #modal-caption {
   opacity: 0;
   transition: opacity 1s;
+  z-index: 1;
   position: absolute;
   width: calc(85% * 0.85);
   left: 50%;
@@ -1162,6 +1170,9 @@ body.show-modal #modal-viewer #modal-caption {
 .mobile .hex-gallery-row .hex-image-wrapper:hover .hex-image {
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.mobile .hex-gallery-row .hex-image {
+  margin: 0.55em;
 }
 .mobile .hex-gallery-row:last-child {
   margin-bottom: 0.75em;

@@ -145,15 +145,21 @@ body.mobile {
                     margin: 0 auto;
                 }
 
-                .decal-info {
-                    display: none; // Prevent accidental link clicks on mobile hover
-                    .decal-description {
-                        text-shadow: .06em .06em .1em black;
-                    }
+                .decal-description {
+                    text-shadow: .06em .06em .1em black;
                 }
-                &:hover {
+
+                .decal, .decal-info {
+                    transition: 1s opacity;
+                }
+
+                &:hover, &.active {
+                    .decal {
+                        filter: none;
+                        opacity: 0.6;
+                    }
                     .decal-info {
-                        display: block;
+                        opacity: 1;
                     }
                 }
             }
@@ -271,7 +277,7 @@ body.mobile {
             .decal-gallery {
                 .decal {
                     width: 65%;
-                    max-height: 160vh;
+                    max-height: 120vh;
                     object-fit: contain;
                 }
             }

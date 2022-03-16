@@ -134,6 +134,16 @@ function hookEvents() {
     }
     $(window).on('resize', () => setTimeout(() => resize(), 0)); // For some reason, this timeout is necessary to ensure user agent has already updated
     resize();
+
+    // For devices that don't support hover, automatically show hobby info when scrolled into view
+    if (isMobileDevice()) {
+        const threshold = 0.8;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(({target, intersectionRatio}) => $(target).toggleClass('active', intersectionRatio > threshold));
+        }, {threshold});
+        $('.decal-wrapper').each((idx, wrapper) => observer.observe(wrapper));
+        $('#hobbies').on('click', () => $('.decal-wrapper.active').removeClass('active'));
+    }
 }
 
 function scrollToPage(pageIdx, doAnimate) {

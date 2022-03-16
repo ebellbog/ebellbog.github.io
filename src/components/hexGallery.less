@@ -210,6 +210,8 @@
         opacity: 0;
         transition: opacity 1s;
 
+        z-index: 1;
+
         position: absolute;
         width: calc(@modalImageWidth * 0.85);
         left: 50%;
@@ -289,6 +291,10 @@
                 clip-path: @hexClip;
                 -webkit-clip-path: @hexClip;
             }
+        }
+
+        .hex-image {
+            margin: 0.55em;
         }
 
         &:last-child {
