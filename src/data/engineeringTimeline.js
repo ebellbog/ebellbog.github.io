@@ -57,7 +57,7 @@ const engTimelineData = [
         startDate: 'December, 2019',
         endDate: 'present',
         description: 'Collaborated closely with award-winning filmmaker <a href="https://philipshane.com/bio">Philip Shane</a> to develop a <a href="https://themystdocumentary.com">home page</a> & <a href="https://themystdocumentary.com/press">press page</a> for upcoming video-game documentary. Designed & implemented rich-media community archive, to collect & preserve player stories from the Myst franchise.',
-        skills: ['JavaScript', 'CSS / Less', 'SVG', 'Photoshop'],
+        skills: ['JavaScript', 'CSS / Less', 'SVG', 'Node', 'Photoshop'],
         imgUrl: 'myst_doc_logo.jpg'
     },
     {
