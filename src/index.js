@@ -38,7 +38,7 @@ $(document).ready(() => {
 
     // Initialize components
 
-    new HexTimeline($('#eng-timeline'), engTimelineData);
+    new HexTimeline($('#eng-timeline'), engTimelineData.reverse());
 
     new HexGallery($('#safe-space'), safeSpaceGalleryData);
     new HexGallery($('#mega-maze'), megaMazeGalleryData);

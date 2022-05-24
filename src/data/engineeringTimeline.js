@@ -50,6 +50,17 @@ const engTimelineData = [
         imgUrl: 'liwwa_logo.jpg'
     },
     {
+        organization: 'The Myst Documentary',
+        orgUrl: 'https://themystdocumentary.com',
+        title: 'Fullstack engineer',
+        location: 'Remote',
+        startDate: 'December, 2019',
+        endDate: 'present',
+        description: 'Collaborated closely with award-winning filmmaker <a href="https://philipshane.com/bio">Philip Shane</a> to develop a <a href="https://themystdocumentary.com">home page</a> & <a href="https://themystdocumentary.com/press">press page</a> for upcoming video-game documentary. Designed & implemented rich-media community archive, to collect & preserve player stories from the Myst franchise.',
+        skills: ['JavaScript', 'CSS / Less', 'SVG', 'Photoshop'],
+        imgUrl: 'myst_doc_logo.jpg'
+    },
+    {
         organization: 'Hospital IQ',
         orgUrl: 'https://hospiq.com',
         title: 'Senior front-end engineer',
@@ -59,17 +70,6 @@ const engTimelineData = [
         description: 'Used modern JavaScript to make product-wide contributions to mature web app offering predictive analytics to hospitals; consulted with clients and product managers to write detailed design documents; made improvements to build system, optimizing cross-browser performance',
         skills: ['JavaScript', 'Handlebars', 'CSS / Less', 'webpack', 'Babel'],
         imgUrl: 'hiq_logo.jpg'
-    },
-    {
-        organization: 'The Myst Documentary',
-        orgUrl: 'https://themystdocumentary.com',
-        title: 'Tech consultant',
-        location: 'Remote',
-        startDate: 'December, 2019',
-        endDate: 'present',
-        description: 'Collaborated closely with award-winning filmmaker <a href="https://philipshane.com/bio">Philip Shane</a> to develop a <a href="https://themystdocumentary.com">home page</a> & <a href="https://themystdocumentary.com/press">press page</a> for upcoming video-game documentary. Designed & implemented rich-media community archive, to collect & preserve player stories from the Myst franchise.',
-        skills: ['JavaScript', 'CSS / Less', 'SVG', 'Photoshop'],
-        imgUrl: 'myst_doc_logo.jpg'
     },
 ];
 
