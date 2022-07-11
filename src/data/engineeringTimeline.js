@@ -63,7 +63,7 @@ const engTimelineData = [
     {
         organization: 'Hospital IQ',
         orgUrl: 'https://hospiq.com',
-        title: 'Senior front-end engineer',
+        title: 'Staff front-end engineer',
         location: 'Remote',
         startDate: 'January, 2019',
         endDate: 'present',
