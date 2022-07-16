@@ -656,17 +656,17 @@ body.mobile #mobile-nav-menu .home-link {
   font-size: 1.4em;
   font-weight: 100;
   text-transform: uppercase;
-  padding: 0.65em 3em 0.65em 2.15em;
+  padding: 0.6em 3em 0.6em 2.15em;
 }
 body.mobile #mobile-nav-menu .nav-link.active::before,
 body.mobile #mobile-nav-menu .home-link.active::before {
   content: '\2B22 ';
   opacity: 0.8;
   font-family: 'Noto Sans Symbols 2', sans-serif;
-  font-size: 0.8em;
+  font-size: 0.85em;
   position: absolute;
-  top: 54%;
-  left: 1.2em;
+  top: 55%;
+  left: 1.15em;
   transform: translateY(-50%);
 }
 body.mobile #mobile-nav-menu .nav-link:not(:last-child),
@@ -797,8 +797,6 @@ body.mobile.landscape #mobile-nav-menu {
 }
 body.mobile.landscape #mobile-nav-menu .nav-link,
 body.mobile.landscape #mobile-nav-menu .home-link {
-  padding-top: 0.6em;
-  padding-bottom: 0.6em;
   font-size: 1.5em;
 }
 body.mobile.landscape #mobile-nav-menu .social-links {
