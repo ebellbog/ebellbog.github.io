@@ -28,7 +28,7 @@ body.scroll-container #page-container {
   min-width: 1400px;
   margin: 0 auto;
   box-sizing: border-box;
-  padding: 6px 10px;
+  padding: 7px 13px;
   overflow: auto;
   color: white;
   text-shadow: 1.5px 1px 1px #2b1a4f;
@@ -41,24 +41,28 @@ body.scroll-container #page-container {
 }
 #nav-bar #page-links {
   position: absolute;
-  top: 9px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 60%;
+  height: 100%;
   font-size: 1.2em;
   font-weight: 300;
   text-transform: uppercase;
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
 }
 #nav-bar #page-links a {
   cursor: pointer;
 }
 #nav-bar #page-links a.active {
   border-bottom: 3px solid white;
+  padding-top: 3px;
 }
 #nav-bar #page-links a:not(.active):hover {
   border-bottom: 1px solid white;
+  padding-top: 1px;
 }
 #nav-bar .social-links {
   float: right;
@@ -649,7 +653,7 @@ body.mobile #mobile-nav-menu .home-link {
   position: relative;
   color: white;
   font-family: 'Chakra Petch', serif;
-  font-size: 1.3em;
+  font-size: 1.4em;
   font-weight: 100;
   text-transform: uppercase;
   padding: 0.65em 3em 0.65em 2.15em;
@@ -670,7 +674,7 @@ body.mobile #mobile-nav-menu .home-link:not(:last-child) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 body.mobile #mobile-nav-menu .social-links {
-  font-size: 1.1em;
+  font-size: 1.3em;
   text-align: center;
   opacity: 0.8;
   padding-top: 0.65em;
@@ -792,9 +796,13 @@ body.mobile.landscape #mobile-nav-menu {
   font-size: 0.9em;
 }
 body.mobile.landscape #mobile-nav-menu .nav-link,
+body.mobile.landscape #mobile-nav-menu .home-link {
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
+  font-size: 1.5em;
+}
 body.mobile.landscape #mobile-nav-menu .social-links {
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+  font-size: 1.4em;
 }
 body.mobile.landscape #page-container .page {
   padding-left: 3.5em;
