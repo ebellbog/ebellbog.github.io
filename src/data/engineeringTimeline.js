@@ -67,7 +67,7 @@ const engTimelineData = [
         location: 'Remote',
         startDate: 'December, 2019',
         endDate: 'present',
-        description: 'Collaborated closely with award-winning filmmaker <a href="https://philipshane.com/bio">Philip Shane</a> to develop a <a href="https://themystdocumentary.com">home page</a> & <a href="https://themystdocumentary.com/press">press page</a> for upcoming video-game documentary. Designed & implemented immersive <a href="https://vault.themystdocumentary.com">multimedia archive</a>, to collect & preserve player stories from the Myst franchise.',
+        description: 'Collaborated closely with award-winning filmmaker <a href="https://philipshane.com/bio">Philip Shane</a> to develop a <a href="https://themystdocumentary.com">home page</a> & <a href="https://themystdocumentary.com/press">press page</a> for upcoming video-game documentary. Designed & implemented immersive <a href="https://vault.themystdocumentary.com">multimedia archive</a>, to collect & preserve player stories from the <i>Myst</i> franchise.',
         skills: ['JavaScript', 'CSS / Less', 'SVG', 'Node', 'Photoshop'],
         imgUrl: 'myst_doc_logo.jpg'
     },
