@@ -92,9 +92,6 @@ function setupNavbar() {
         $pageLinks.append($newLink);
         $mobileNav.append($newLink.clone());
     });
-
-    $('<div class="social-links">').html($('#nav-bar .social-links').html()).appendTo($mobileNav);
-    $('<div class="copyright">').html('&copy; Elana Bell Bogdan, 2022').appendTo($mobileNav);
 }
 
 function hookEvents() {
