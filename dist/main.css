@@ -1016,7 +1016,7 @@ body.mobile.landscape #page-container .decal-gallery .decal {
   font-size: 2.1em;
   color: white;
   filter: drop-shadow(0 0 0.1em rgba(0, 0, 0, 0.6));
-  animation: pulse 2.5s alternate-reverse infinite;
+  animation: pulse 1.8s alternate-reverse infinite;
   user-select: none;
 }
 @keyframes pulse {
