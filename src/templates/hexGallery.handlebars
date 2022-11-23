@@ -4,6 +4,7 @@
             {{#each this}}
                 <div class="hex-image-wrapper{{#if placeholder}} placeholder{{/if}}">
                     <img class="hex-image" src="./dist/{{fileName}}"{{#if caption}} data-caption="{{caption}}"{{/if}}{{#if altText}} alt="{{altText}}"{{/if}}>
+                    {{#if @root/isMobile}}<i class="fa fa-info-circle"></i>{{/if}}
                 </div>
             {{/each}}
         </div>
