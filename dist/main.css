@@ -683,27 +683,19 @@ body.mobile.show-mobile-nav #mobile-nav-menu {
 body.mobile #mobile-social-links {
   z-index: 2;
   position: fixed;
-  top: 0.4em;
+  top: 0.25em;
   right: 0.25em;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   height: 100vh;
-  font-size: 0.9em;
   opacity: 0.9;
 }
 body.mobile #mobile-social-links a {
   margin: 0.9em 0;
   padding: 0.55em 0.35em;
   border-radius: 2em;
-  backdrop-filter: blur(0.22em);
-  -webkit-backdrop-filter: blur(0.22em);
-  background-color: rgba(43, 26, 79, 0.6);
-}
-@supports ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
-  body.mobile #mobile-social-links a {
-    background-color: rgba(43, 26, 79, 0.45);
-  }
+  background-color: rgba(43, 26, 79, 0.8);
 }
 body.mobile #page-container {
   height: 100%;
