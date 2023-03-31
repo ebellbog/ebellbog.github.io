@@ -55,7 +55,7 @@ const engTimelineData = [
         title: 'Staff front-end engineer',
         location: 'Remote',
         startDate: 'January, 2019',
-        endDate: 'present',
+        endDate: 'March, 2023',
         description: 'Used modern JavaScript to make product-wide contributions to mature web app offering predictive analytics to hospitals; consulted with clients and product managers to write detailed design documents; made improvements to build system, optimizing cross-browser performance',
         skills: ['JavaScript', 'Handlebars', 'CSS / Less', 'webpack', 'Babel'],
         imgUrl: 'hiq_logo.jpg'
