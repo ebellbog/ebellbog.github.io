@@ -1002,20 +1002,24 @@ body.mobile.landscape #page-container .decal-gallery .decal {
 .hex-gallery-row .hex-image-wrapper .svg-inline--fa {
   z-index: 3;
   position: absolute;
-  bottom: 12%;
+  bottom: 7%;
   left: 50%;
   transform: translateX(-50%);
   font-size: 2.1em;
   color: white;
   filter: drop-shadow(0 0 0.1em rgba(0, 0, 0, 0.6));
-  animation: pulse 1.8s alternate-reverse infinite;
+  animation: pulse 2.2s alternate-reverse infinite;
   user-select: none;
+  pointer-events: none;
 }
 @keyframes pulse {
-  from {
+  0% {
     opacity: 0;
   }
-  to {
+  40% {
+    opacity: 0;
+  }
+  100% {
     opacity: 0.9;
   }
 }
