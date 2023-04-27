@@ -9,7 +9,7 @@ const justFiveGalleryData = {
     tools: ['JavaScript', 'CSS'],
     description: `An experiment in minimalist game design and "weird I/O." What kind of gameplay is possible when there is only
         one spatial dimension and five "pixels" to control? The simplicity of this game makes it possible to play either in a
-        browser or using physical light bulbs! Debuted at <a href="https://recurse.com">The Recurse Center</a> in NYC.`,
+        browser or using physical light bulbs! Debuted at the <a href="https://recurse.com">Recurse Center</a> in NYC.`,
     images: [
         {
             fileName: 'just_five1.jpg',
