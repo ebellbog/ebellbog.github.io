@@ -83,7 +83,7 @@ const engTimelineData = [
         imgUrl: 'lts_logo.jpg'
     },
     {
-        organization: 'Blue Ridge Labs',
+        organization: 'Blue Ridge Labs<div class="mobile-only"><br>@ Robin Hood</div>',
         orgUrl: 'https://www.labs.robinhood.org/',
         title: 'Engineering fellow',
         location: 'Brooklyn, NY',
