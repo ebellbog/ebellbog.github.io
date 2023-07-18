@@ -71,6 +71,28 @@ const engTimelineData = [
         skills: ['JavaScript', 'CSS / Less', 'SVG', 'Node', 'Photoshop'],
         imgUrl: 'myst_doc_logo.jpg'
     },
+    {
+        organization: 'Left Turn Studios',
+        orgUrl: 'https://www.leftturnstudios.com/',
+        title: 'Game designer & developer',
+        location: 'Remote',
+        startDate: null,
+        endDate: 'Summer 2022',
+        description: 'Contracted with indie game studio to design and implement UI elements, engineer gameplay in C#, and consult on narrative for quirky Unity game (<i>Snuggles the Unicorn</i>). Contributed early concept work for future VR experiences.',
+        skills: ['C#', 'Unity', 'Narrative design', 'UI design'],
+        imgUrl: 'lts_logo.jpg'
+    },
+    {
+        organization: 'Blue Ridge Labs',
+        orgUrl: 'https://www.labs.robinhood.org/',
+        title: 'Engineering fellow',
+        location: 'Brooklyn, NY',
+        startDate: 'June, 2023',
+        endDate: 'present',
+        description: 'As a fellow, I am conducting research into the experiences of youth and families living with poverty in NYC. Our goal is to prototype tech-enabled solutions for supporting youth physical and mental health. The team includes domain experts, designers, and product managers from a variety of professions.',
+        skills: ['User research', 'Community-driven design', 'Rapid prototyping'],
+        imgUrl: 'brl_logo.jpg'
+    },
 ];
 
 export default engTimelineData;

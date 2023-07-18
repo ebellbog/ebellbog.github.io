@@ -10,6 +10,8 @@ module.exports = function (data, options) {
         Node: 'green',
         Python: 'green',
         'C++': 'green',
+        'C#': 'green',
+        'Objective-C': 'green',
         Django: 'green',
         Flask: 'green',
         MySQL: 'green',
@@ -20,7 +22,7 @@ module.exports = function (data, options) {
         Blender: 'blue',
         'Blender renders': 'blue',
         Photoshop: 'blue',
-        'Objective-C': 'blue',
+        Unity: 'blue',
         AI: 'gray',
         Bioinformatics: 'gray',
         Gamification: 'gray'

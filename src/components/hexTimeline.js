@@ -22,7 +22,7 @@ class HexTimeline {
     declarePublicFields() {
         // Config values
         this.branchLength = 40;
-        this.trunkLength = 215;
+        this.trunkLength = 225;
 
         this.endpointRadius = 30;
         this.strokeWidth = 4;
