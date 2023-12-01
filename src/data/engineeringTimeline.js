@@ -85,11 +85,11 @@ const engTimelineData = [
     {
         organization: 'Blue Ridge Labs<div class="mobile-only"><br>@ Robin Hood</div>',
         orgUrl: 'https://www.labs.robinhood.org/',
-        title: 'Engineering fellow',
+        title: 'Social impact fellow',
         location: 'Brooklyn, NY',
         startDate: 'June, 2023',
         endDate: 'October, 2023',
-        description: 'As a fellow at a social impact incubator, I led a team investigating harassment of youth in online games; collaborated on a project to support English literacy outcomes for Bengali multilingual learners; and built a <a href="https://wasi-nyc.org">web directory</a> of social services and public benefits for recently arrived immigrants.',
+        description: 'As an engineering fellow at a social impact incubator, I led a team investigating harassment of youth in online games; collaborated on a project to support English literacy outcomes for Bengali multilingual learners; and built a <a href="https://wasi-nyc.org">web directory</a> of social services and public benefits for recently arrived immigrants.',
 
         description_old: 'As a fellow, I am conducting research into the experiences of youth and families living with poverty in NYC. Our goal is to prototype tech-enabled solutions for supporting youth physical and mental health. The team includes domain experts, designers, and product managers from a variety of professions.',
         skills: ['User research', 'Community-driven design', 'Rapid prototyping', 'JavaScript', 'CSS / Less'],
