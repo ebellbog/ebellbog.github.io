@@ -12,18 +12,18 @@ const engTimelineData = [
         location: 'Swarthmore, PA',
         startDate: null,
         endDate: '<i class="fa fa-graduation-cap"></i> Graduated May, 2015',
-        description: 'Majored in computer science at small liberal arts college; studied machine learning and adaptive robotics; participated in senior seminar on dynamic runtime analysis; planned independent study on accessible, low-cost augmented reality systems',
+        description: 'Majored in computer science at small liberal arts college. Studied machine learning and adaptive robotics. Participated in senior seminar on dynamic runtime analysis. Conducted independent study on accessible, low-cost augmented reality systems.',
         skills: ['C++', 'Python', 'AI', 'Gamification'],
         imgUrl: 'swat_logo.jpg'
     },
     {
         organization: 'Scopely',
         orgUrl: 'https://scopely.com',
-        title: 'iOS intern',
+        title: 'Game dev intern',
         location: 'Culver City, CA',
         startDate: null,
         endDate: 'Summer 2013',
-        description: 'Paid position working directly with a small team; used Objective-C to develop internal tools for improving efficiency of code and reducing time spent on code reviews; designed and implemented new character and power-ups for “Bubble Galaxy” iPhone game',
+        description: 'Used Objective-C to develop internal tools for indie game studio, improving efficiency of code and reducing time spent on code reviews. Designed and implemented new character and power-ups for “Bubble Galaxy” iOS game.',
         skills: ['Objective-C', 'iOS'],
         imgUrl: 'scopely_logo.jpg',
     },
@@ -34,7 +34,7 @@ const engTimelineData = [
         location: 'Washington, DC',
         startDate: 'April, 2015',
         endDate: 'March, 2016',
-        description: 'Improved site maintainability by migrating Django web server to Node.js microservice architecture; developed learning record store (LRS) for online course platform, in collaboration with instructional design team; produced front-end dashboard for visualizing LRS data',
+        description: 'Improved site maintainability by migrating Django web server to Node.js microservice architecture. Developed learning record store (LRS) for online course platform, in collaboration with instructional design team. Produced front-end dashboard for visualizing LRS data.',
         skills: ['JavaScript', 'Node'],
         imgUrl: 'techchange_logo.jpg',
     },
@@ -45,7 +45,7 @@ const engTimelineData = [
         location: 'New York, NY',
         startDate: 'August, 2016',
         endDate: 'November, 2017',
-        description: 'Built core functionality for fintech site, with direct accountability to CTO and business development; implemented architecture for investor notification system (MySQL + SQLAlchemy); created search tools to improve database access for CS team (Python + Whoosh); reduced operations overhead via automated provisioning for servers running bank statement OCR (Celery, Chef, Vagrant)',
+        description: 'Built core functionality for fintech site, with direct accountability to CTO and business development. Implemented architecture for investor notification system (MySQL + SQLAlchemy). Created search tools to improve database access for customer service team (Python + Whoosh). Reduced operations overhead via automated provisioning for servers running bank statement OCR (Celery, Chef, Vagrant).',
         skills: ['JavaScript', 'Python', 'MySQL', 'Chef'],
         imgUrl: 'liwwa_logo.jpg'
     },
@@ -56,7 +56,7 @@ const engTimelineData = [
         location: 'Remote',
         startDate: 'January, 2019',
         endDate: 'March, 2023',
-        description: 'Used modern JavaScript to make product-wide contributions to mature web app offering predictive analytics to hospitals; consulted with clients and product managers to write detailed design documents; made improvements to build system, optimizing cross-browser performance',
+        description: 'Used modern JavaScript to make product-wide contributions to mature web app offering predictive analytics to hospitals. Consulted with clients and product managers to write detailed design documents. Made improvements to build system, optimizing cross-browser performance.',
         skills: ['JavaScript', 'Handlebars', 'CSS / Less', 'webpack', 'Babel'],
         imgUrl: 'hiq_logo.jpg'
     },
@@ -90,8 +90,6 @@ const engTimelineData = [
         startDate: 'June, 2023',
         endDate: 'October, 2023',
         description: 'As an engineering fellow at a social impact incubator, I led a team investigating harassment of youth in online games; collaborated on a project to support English literacy outcomes for Bengali multilingual learners; and built a <a href="https://wasi-nyc.org">web directory</a> of social services and public benefits for recently arrived immigrants.',
-
-        description_old: 'As a fellow, I am conducting research into the experiences of youth and families living with poverty in NYC. Our goal is to prototype tech-enabled solutions for supporting youth physical and mental health. The team includes domain experts, designers, and product managers from a variety of professions.',
         skills: ['User research', 'Community-driven design', 'Rapid prototyping', 'JavaScript', 'CSS / Less'],
         imgUrl: 'brl_logo.jpg'
     },
