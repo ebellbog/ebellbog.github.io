@@ -3,6 +3,7 @@ import '../../img/scopely_logo.jpg';
 import '../../img/techchange_logo.jpg';
 import '../../img/liwwa_logo.jpg';
 import '../../img/hiq_logo.jpg';
+import '../../img/bolero_logo.jpg';
 
 const engTimelineData = [
     {
@@ -92,6 +93,17 @@ const engTimelineData = [
         description: 'As an engineering fellow at a social impact incubator, I led a team investigating harassment of youth in online games; collaborated on a project to support English literacy outcomes for Bengali multilingual learners; and built a <a href="https://wasi-nyc.org">web directory</a> of social services and public benefits for recently arrived immigrants.',
         skills: ['User research', 'Community-driven design', 'Rapid prototyping', 'JavaScript', 'CSS / Less'],
         imgUrl: 'brl_logo.jpg'
+    },
+    {
+        organization: 'Bolero Game Studio',
+        orgUrl: 'https://bolerogamestudio.com/',
+        title: 'Technical designer',
+        location: 'Remote',
+        startDate: 'February, 2024',
+        endDate: 'present',
+        description: 'Interdisciplinary role at an indie game studio, spanning design & development responsibilities in Unity. Our premiere project is <i>KODA</i>, a narrative-driven 2D platformer, which explores queer identity through the metaphor of music.',
+        skills: ['C#', 'Unity', 'Game design'],
+        imgUrl: 'bolero_logo.jpg'
     },
 ];
 
