@@ -1115,7 +1115,7 @@ body.mobile.landscape #page-container .decal-gallery .decal {
   transition: background-color 1s;
 }
 body.show-modal #modal-viewer {
-  background-color: rgba(43, 26, 79, 0.85);
+  background-color: rgba(43, 26, 79, 0.9);
   pointer-events: all;
 }
 body.show-modal #modal-viewer #modal-image {

@@ -11,6 +11,7 @@ import megaMazeGalleryData from './data/megaMazeGallery';
 import safeSpaceGalleryData from './data/safeSpaceGallery';
 import paintByGenderGalleryData from './data/paintByGenderGallery';
 import justFiveGalleryData from './data/justFiveGallery';
+import bannedTogetherGalleryData from './data/bannedTogetherGallery';
 
 import sanctumGalleryData from './data/sanctumGallery';
 import mudfishGalleryData from './data/mudfishGallery';
@@ -44,6 +45,7 @@ $(document).ready(() => {
     new HexGallery($('#mega-maze'), megaMazeGalleryData);
     new HexGallery($('#paint-by-gender'), paintByGenderGalleryData);
     new HexGallery($('#just-five-lights'), justFiveGalleryData);
+    new HexGallery($('#banned-together'), bannedTogetherGalleryData);
 
     new HexGallery($('#sanctum'), sanctumGalleryData, {isDigital: false});
     new HexGallery($('#mudfish'), mudfishGalleryData, {isDigital: false});

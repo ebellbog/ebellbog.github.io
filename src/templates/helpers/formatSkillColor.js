@@ -23,6 +23,8 @@ module.exports = function (data, options) {
         'Blender renders': 'blue',
         Photoshop: 'blue',
         Unity: 'blue',
+        Bitsy: 'blue',
+        'Bitsy 3D': 'blue',
         AI: 'gray',
         Bioinformatics: 'gray',
         Gamification: 'gray'
