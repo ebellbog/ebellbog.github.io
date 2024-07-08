@@ -9,7 +9,7 @@ const bannedTogetherGalleryData = {
     year: '2024 <i>(prototype)</i>',
     platforms: ['Browser'],
     tools: ['Bitsy 3D', 'JavaScript'],
-    description: `A story of young trans love set in a college library, against the backdrop of book banning in modern-day America. I designed this narrative-driven, first-person puzzle game with <a href="https://natmesnard.com/">Nat Mesnard</a> as part of <a href="https://www.justplayjam.com/">Just Play: A Game Jam For Justice</a>. To build <i>Banned Together</i>, we coded our <a href="https://github.com/ebellbog/bitsy-3d-plus">own custom fork</a> of the lightweight, open-source Bitsy 3D game engine. We are currently using this project for playtesting, while we develop a full-length game in Unity.`,
+    description: `A story of young trans love set in a college library, against the backdrop of book banning in modern-day America. I designed this narrative-driven, first-person puzzle game with <a href="https://natmesnard.com/">Nat Mesnard</a> as part of <a href="https://www.justplayjam.com/">Just Play: A Game Jam For Justice</a>. To build <i>Banned Together</i>, we coded our <a href="https://github.com/ebellbog/bitsy-3d-plus">own custom fork</a> of the lightweight, open-source Bitsy 3D game engine. We are currently using this project for playtesting, while we develop a full-length game in Unity, with the support of the <a href="https://gamecenter.nyu.edu/about/incubator/">NYU Game Center</a>.`,
     images: [
         {
             fileName: 'banned_together5.jpg',
@@ -44,7 +44,7 @@ const bannedTogetherGalleryData = {
         },
         {
             name: 'Play  (itch.io)',
-            url: 'https://unquietgames.com/banned-together',
+            url: 'https://unquietgames.itch.io/',
         },
     ]
 }
