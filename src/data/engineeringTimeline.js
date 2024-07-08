@@ -4,6 +4,7 @@ import '../../img/techchange_logo.jpg';
 import '../../img/liwwa_logo.jpg';
 import '../../img/hiq_logo.jpg';
 import '../../img/bolero_logo.jpg';
+import '../../img/unquiet_games_logo.jpg';
 
 const engTimelineData = [
     {
@@ -93,6 +94,17 @@ const engTimelineData = [
         description: 'As an engineering fellow at a social impact incubator, I led a team investigating harassment of youth in online games; collaborated on a project to support English literacy outcomes for Bengali multilingual learners; and built a <a href="https://wasi-nyc.org">web directory</a> of social services and public benefits for recently arrived immigrants.',
         skills: ['User research', 'Community-driven design', 'Rapid prototyping', 'JavaScript', 'CSS / Less'],
         imgUrl: 'brl_logo.jpg'
+    },
+    {
+        organization: 'Unquiet Games',
+        orgUrl: 'https://unquietgames.com',
+        title: 'Lead technical designer',
+        location: 'Remote',
+        startDate: 'November, 2023',
+        endDate: 'present',
+        description: 'I co-founded Unquiet Games in late 2023 with <a href="https://natmesnard.com/">Nat Mesnard</a>, a game design educator and veteran of the tabletop roleplaying industry. Thanks to the funding and support of the <a href="https://gamecenter.nyu.edu/about/incubator/">NYU Game Center</a>, we are making "darkly cozy," narrative-driven games, which engage compassionately with real-world issues.',
+        skills: ['C#', 'JavaScript', 'Unity', 'Photoshop', 'Game design'],
+        imgUrl: 'unquiet_games_logo.jpg'
     },
     {
         organization: 'Bolero Game Studio',
