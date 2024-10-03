@@ -21,7 +21,7 @@ const engTimelineData = [
     {
         organization: 'Scopely',
         orgUrl: 'https://scopely.com',
-        title: 'Game dev intern',
+        title: 'Game Dev Intern',
         location: 'Culver City, CA',
         startDate: null,
         endDate: 'Summer 2013',
@@ -32,7 +32,7 @@ const engTimelineData = [
     {
         organization: 'TechChange',
         orgUrl: 'https://techchange.org',
-        title: 'Web developer',
+        title: 'Web Developer',
         location: 'Washington, DC',
         startDate: 'April, 2015',
         endDate: 'March, 2016',
@@ -43,7 +43,7 @@ const engTimelineData = [
     {
         organization: 'liwwa',
         orgUrl: 'https://liwwa.com',
-        title: 'Fullstack engineer',
+        title: 'Fullstack Engineer',
         location: 'New York, NY',
         startDate: 'August, 2016',
         endDate: 'November, 2017',
@@ -54,7 +54,7 @@ const engTimelineData = [
     {
         organization: 'Hospital IQ',
         orgUrl: 'https://hospiq.com',
-        title: 'Staff front-end engineer',
+        title: 'Staff Front-End Engineer',
         location: 'Remote',
         startDate: 'January, 2019',
         endDate: 'March, 2023',
@@ -65,7 +65,7 @@ const engTimelineData = [
     {
         organization: 'The Myst Documentary',
         orgUrl: 'https://themystdocumentary.com',
-        title: 'Fullstack engineer',
+        title: 'Fullstack Engineer',
         location: 'Remote',
         startDate: 'December, 2019',
         endDate: 'present',
@@ -76,7 +76,7 @@ const engTimelineData = [
     {
         organization: 'Left Turn Studios',
         orgUrl: 'https://www.leftturnstudios.com/',
-        title: 'Game designer & developer',
+        title: 'Game Designer & Developer',
         location: 'Remote',
         startDate: null,
         endDate: 'Summer 2022',
@@ -87,7 +87,7 @@ const engTimelineData = [
     {
         organization: 'Blue Ridge Labs<div class="mobile-only"><br>@ Robin Hood</div>',
         orgUrl: 'https://www.labs.robinhood.org/',
-        title: 'Social impact fellow',
+        title: 'Social Impact Fellow',
         location: 'Brooklyn, NY',
         startDate: 'June, 2023',
         endDate: 'October, 2023',
@@ -98,23 +98,23 @@ const engTimelineData = [
     {
         organization: 'Unquiet Games',
         orgUrl: 'https://unquietgames.com',
-        title: 'Lead technical designer',
-        location: 'Remote',
+        title: 'Lead Technical Designer',
+        location: 'Brooklyn, NY',
         startDate: 'November, 2023',
         endDate: 'present',
         description: 'I co-founded Unquiet Games in late 2023 with <a href="https://natmesnard.com/">Nat Mesnard</a>, a game design educator and veteran of the tabletop roleplaying industry. Thanks to the funding and support of the <a href="https://gamecenter.nyu.edu/about/incubator/">NYU Game Center</a>, we are making "darkly cozy," narrative-driven games, which engage compassionately with real-world issues.',
-        skills: ['C#', 'JavaScript', 'Unity', 'Photoshop', 'Game design'],
+        skills: ['Game design', 'Unity', 'C#', 'JavaScript'],
         imgUrl: 'unquiet_games_logo.jpg'
     },
     {
         organization: 'Bolero Game Studio',
         orgUrl: 'https://bolerogamestudio.com/',
-        title: 'Technical designer',
+        title: 'Lead Game Designer',
         location: 'Remote',
         startDate: 'February, 2024',
         endDate: 'present',
-        description: 'Interdisciplinary role at an indie game studio, spanning design & development responsibilities in Unity. Our premiere project is <i>KODA</i>, a narrative-driven 2D platformer, which explores queer identity through the metaphor of music.',
-        skills: ['C#', 'Unity', 'Game design'],
+        description: 'Lead role concepting gameplay, in coordination with narrative and art leads, and prototyping in Unity. Our premiere project is <i>KODA</i>, a puzzle platformer exploring queer identity through the lens of music.',
+        skills: ['Game design', 'Unity', 'C#'],
         imgUrl: 'bolero_logo.jpg'
     },
 ];
