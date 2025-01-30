@@ -91,7 +91,7 @@ const engTimelineData = [
         location: 'Brooklyn, NY',
         startDate: 'June, 2023',
         endDate: 'October, 2023',
-        description: 'As an engineering fellow at a social impact incubator, I led a team investigating harassment of youth in online games; collaborated on a project to support English literacy outcomes for Bengali multilingual learners; and built a <a href="https://wasi-nyc.org">web directory</a> of social services and public benefits for recently arrived immigrants.',
+        description: 'As an engineering fellow at a social impact incubator, I led a team investigating harassment of youth in online games; collaborated on a project to support English literacy outcomes for Bengali multilingual learners; and built a <a href="https://elanabellbogdan.com/wasi/">web directory</a> of social services and public benefits for recently arrived immigrants.',
         skills: ['User research', 'Community-driven design', 'Rapid prototyping', 'JavaScript', 'CSS / Less'],
         imgUrl: 'brl_logo.jpg'
     },
