@@ -112,7 +112,7 @@ const engTimelineData = [
         title: 'Lead Game Designer',
         location: 'Remote',
         startDate: 'February, 2024',
-        endDate: 'present',
+        endDate: 'April, 2025',
         description: 'Lead role concepting gameplay, in coordination with narrative and art leads, and prototyping in Unity. Our premiere project is <i>KODA</i>, a puzzle platformer exploring queer identity through the lens of music.',
         skills: ['Game design', 'Unity', 'C#'],
         imgUrl: 'bolero_logo.jpg'
